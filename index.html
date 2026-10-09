@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criatório Brahma e Orpington do Sul - Ovos Férteis</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Custom Colors & Design System -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rustic-dark': '#2A2F25', /* Olive/Graphite dark */
+                        'rustic-green': '#3B4D36', /* Forest green */
+                        'rustic-earth': '#8B5A2B', /* Earthy brown */
+                        'rustic-gold': '#C89D3C', /* Soft amber/gold */
+                        'rustic-offwhite': '#F4F1EA', /* Off-white background */
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* Custom Scrollbar for better UI */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F1EA; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B4D36; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2A2F25; 
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-rustic-offwhite text-rustic-dark font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-rustic-dark/95 backdrop-blur-sm text-rustic-offwhite shadow-lg transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20 transition-all duration-300">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-12 h-12 object-contain drop-shadow-md">
+                    <span class="font-serif text-xl md:text-2xl font-bold tracking-wide leading-tight">
+                        Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
+                    </span>
+                </div>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10">
+                        <i class="ph-bold ph-book-open text-rustic-gold"></i>
+                        <span>E-books</span>
+                    </a>
+                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors duration-200" title="Instagram">
+                        <i class="ph ph-instagram-logo text-2xl sm:text-3xl"></i>
+                    </a>
+                    <button id="cartBtn" class="relative p-2 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-2 bg-rustic-green/30 rounded-full px-4 h-10">
+                        <i class="ph ph-shopping-cart text-2xl"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-transform">0</span>
+                        <span class="hidden md:inline font-medium">Carrinho</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-20 pb-32 flex content-center items-center justify-center min-h-[80vh]">
+        <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1548550023-2bf3c498ce64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+            <span class="w-full h-full absolute opacity-70 bg-rustic-dark"></span>
+        </div>
+        <div class="container relative mx-auto px-4">
+            <div class="items-center flex flex-wrap">
+                <div class="w-full lg:w-8/12 px-4 ml-auto mr-auto text-center">
+                    <h1 class="text-white font-serif font-bold text-4xl sm:text-5xl md:text-6xl leading-tight mb-6 drop-shadow-lg">
+                        Genética de Excelência em <span class="text-rustic-gold">Aves Puras</span>
+                    </h1>
+                    <p class="mt-4 text-lg text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                        Ovos férteis (galados) de raças gigantes e nobres. Seleção rigorosa para criadores exigentes.<br> <strong>Brahma, Orpington e GSB.</strong>
+                    </p>
+                    <a href="#catalogo" class="inline-flex items-center gap-3 bg-rustic-gold text-rustic-dark font-bold uppercase text-sm px-8 py-4 rounded-full shadow-lg hover:bg-yellow-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        Ver Catálogo
+                        <i class="ph-bold ph-arrow-down text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Catalogo Section -->
+    <section id="catalogo" class="py-20 bg-rustic-offwhite">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-rustic-green mb-4">Catálogo de Ovos Férteis</h2>
+                <div class="h-1 w-24 bg-rustic-gold mx-auto rounded mb-6"></div>
+                <p class="text-rustic-dark/80 max-w-2xl mx-auto text-lg">
+                    Selecione as raças e as quantidades desejadas. Nossos ovos são frescos e embalados com segurança máxima para envio.
+                </p>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products injected via JS -->
+            </div>
+
+            <!-- Spotlight E-books Oficiais (Brahma & GSB) -->
+            <div class="mt-16 bg-gradient-to-r from-rustic-dark via-[#343b2f] to-rustic-dark rounded-3xl p-6 sm:p-10 text-white shadow-2xl border border-rustic-gold/30 relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-rustic-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="text-center max-w-3xl mx-auto mb-10 relative z-10">
+                    <span class="bg-rustic-gold/20 text-rustic-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-rustic-gold/30">
+                        Manuais Técnicos Oficiais • Envio por PDF
+                    </span>
+                    <h3 class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mt-3 mb-2">
+                        E-books para Criadores & Apaixonados
+                    </h3>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                        Aprofunde seus conhecimentos em genética, padrão racial, reprodução e manejo com nossos guias oficiais.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                    
+                    <!-- E-book Orpington -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-rustic-gold/50 transition-all">
+                        <div>
+                            <div class="relative shrink-0 flex justify-center mb-4">
+                                <span class="absolute -top-2 -left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow z-10">
+                                    33% OFF
+                                </span>
+                                <img src="assets/images/ebook-orpington.png" alt="Guia Completo da Raça Orpington" class="h-48 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <span class="text-[11px] font-bold text-rustic-gold uppercase tracking-wider block mb-1">E-book Oficial</span>
+                            <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">Guia da Raça Orpington</h4>
+                            <p class="text-gray-300 text-xs leading-relaxed mb-3">
+                                Padrão racial, variedades de cores, genética, reprodução, manejo e dicas para aprimorar a qualidade do plantel.
+                            </p>
+                            <span class="text-xs text-green-400 font-semibold flex items-center gap-1 mb-4">
+                                <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF • Imediato
+                            </span>
+                        </div>
+
+                        <div>
+                            <div class="flex items-baseline gap-2 mb-3">
+                                <span class="text-gray-400 line-through text-xs">De R$ 89,90</span>
+                                <span class="text-2xl font-serif font-bold text-rustic-gold">Por R$ 59,90</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="addEbookFromIndex('ebook-orpington')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-2.5 px-2 rounded-xl transition-all shadow active:scale-95 flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-shopping-cart-simple text-sm"></i> Carrinho
+                                </button>
+                                <a href="ebooks.html#ebook-orpington" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 px-2 rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1 text-center">
+                                    Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E-book Brahma -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-rustic-gold/50 transition-all">
+                        <div>
+                            <div class="relative shrink-0 flex justify-center mb-4">
+                                <span class="absolute -top-2 -left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow z-10">
+                                    33% OFF
+                                </span>
+                                <img src="assets/images/ebook-brahma.png" alt="Guia Completo sobre Brahma" class="h-48 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <span class="text-[11px] font-bold text-rustic-gold uppercase tracking-wider block mb-1">E-book Oficial</span>
+                            <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">Guia Completo sobre Brahma</h4>
+                            <p class="text-gray-300 text-xs leading-relaxed mb-3">
+                                Características da raça gigante, variedades de cores nobres, genética, reprodução e seleção de reprodutores de elite.
+                            </p>
+                            <span class="text-xs text-green-400 font-semibold flex items-center gap-1 mb-4">
+                                <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF • Imediato
+                            </span>
+                        </div>
+
+                        <div>
+                            <div class="flex items-baseline gap-2 mb-3">
+                                <span class="text-gray-400 line-through text-xs">De R$ 59,90</span>
+                                <span class="text-2xl font-serif font-bold text-rustic-gold">Por R$ 39,90</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="addEbookFromIndex('ebook-brahma')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-2.5 px-2 rounded-xl transition-all shadow active:scale-95 flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-shopping-cart-simple text-sm"></i> Carrinho
+                                </button>
+                                <a href="ebooks.html#ebook-brahma" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 px-2 rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1 text-center">
+                                    Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E-book GSB -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-rustic-gold/50 transition-all">
+                        <div>
+                            <div class="relative shrink-0 flex justify-center mb-4">
+                                <span class="absolute -top-2 -left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow z-10">
+                                    33% OFF
+                                </span>
+                                <img src="assets/images/ebook-gsb.png" alt="Guia Completo da Raça GSB" class="h-48 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <span class="text-[11px] font-bold text-rustic-gold uppercase tracking-wider block mb-1">E-book Oficial</span>
+                            <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">Guia da Raça GSB (Sertaneja Balão)</h4>
+                            <p class="text-gray-300 text-xs leading-relaxed mb-3">
+                                Origem, conformação do balão, padrões raciais, manejo, nutrição, reprodução e cuidados para manter aves saudáveis.
+                            </p>
+                            <span class="text-xs text-green-400 font-semibold flex items-center gap-1 mb-4">
+                                <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF • Imediato
+                            </span>
+                        </div>
+
+                        <div>
+                            <div class="flex items-baseline gap-2 mb-3">
+                                <span class="text-gray-400 line-through text-xs">De R$ 59,90</span>
+                                <span class="text-2xl font-serif font-bold text-rustic-gold">Por R$ 39,90</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="addEbookFromIndex('ebook-gsb')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-2.5 px-2 rounded-xl transition-all shadow active:scale-95 flex items-center justify-center gap-1">
+                                    <i class="ph-bold ph-shopping-cart-simple text-sm"></i> Carrinho
+                                </button>
+                                <a href="ebooks.html#ebook-gsb" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 px-2 rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1 text-center">
+                                    Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section (Diferenciais) -->
+    <section class="py-16 bg-rustic-dark text-rustic-offwhite relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center mb-16">
+                <div class="p-6 border border-white/5 rounded-2xl bg-white/5 backdrop-blur-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 mx-auto bg-rustic-gold/20 rounded-full flex items-center justify-center mb-4">
+                            <i class="ph ph-shield-check text-3xl text-rustic-gold"></i>
+                        </div>
+                        <h3 class="font-serif text-lg font-bold mb-2">Alta Genética</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">Matrizes selecionadas no padrão da raça. Aves rústicas, vacinadas e com alto vigor genético.</p>
+                    </div>
+                </div>
+                <div class="p-6 border border-rustic-gold/40 rounded-2xl bg-rustic-gold/10 backdrop-blur-sm relative flex flex-col justify-between shadow-lg">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-rustic-gold text-rustic-dark text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">
+                        Garantia de 50%
+                    </span>
+                    <div>
+                        <div class="w-14 h-14 mx-auto bg-rustic-gold/25 rounded-full flex items-center justify-center mb-4">
+                            <i class="ph-bold ph-seal-check text-3xl text-rustic-gold"></i>
+                        </div>
+                        <h3 class="font-serif text-lg font-bold mb-2 text-white">Fertilidade Garantida</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed mb-3">Garantimos taxa mínima de 50% de fertilidade (comprovação por vídeo de ovoscopia).</p>
+                    </div>
+                    <div class="text-[11px] font-semibold text-rustic-gold bg-black/40 p-2 rounded-xl border border-rustic-gold/20">
+                        🎁 +1 ovo extra em 6 ovos<br>🎁 +3 ovos extras em 12 ovos!
+                    </div>
+                </div>
+                <div class="p-6 border border-white/5 rounded-2xl bg-white/5 backdrop-blur-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 mx-auto bg-rustic-gold/20 rounded-full flex items-center justify-center mb-4">
+                            <i class="ph ph-package text-3xl text-rustic-gold"></i>
+                        </div>
+                        <h3 class="font-serif text-lg font-bold mb-2">Embalagem Segura</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">Caixas especiais com berços e espumas antichoque que protegem os ovos durante todo o trajeto.</p>
+                    </div>
+                </div>
+                <div class="p-6 border border-white/5 rounded-2xl bg-white/5 backdrop-blur-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 mx-auto bg-rustic-gold/20 rounded-full flex items-center justify-center mb-4">
+                            <i class="ph ph-truck text-3xl text-rustic-gold"></i>
+                        </div>
+                        <h3 class="font-serif text-lg font-bold mb-2">Envio para Todo Brasil</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">Despachamos via Sedex e transportadoras com acompanhamento de rastreio em tempo real.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculadora de Frete Correios (Origem: 99890-000) -->
+            <div class="max-w-4xl mx-auto bg-[#1f231b] border border-rustic-gold/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative">
+                <div class="text-center mb-8">
+                    <span class="inline-flex items-center gap-2 bg-rustic-gold/20 text-rustic-gold text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-3 border border-rustic-gold/30">
+                        <i class="ph-bold ph-calculator text-sm"></i> Simulador Correios Oficial
+                    </span>
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white mb-2">Simule o Frete e Prazo de Entrega</h3>
+                    <p class="text-sm text-gray-300 max-w-xl mx-auto">
+                        Ovos férteis exigem rapidez. Consulte a previsão de entrega dos Correios direto do nosso criatório para o seu endereço.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-end mb-6">
+                    <!-- CEP Origem (Preenchido Automaticamente e Fixo) -->
+                    <div class="md:col-span-4">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
+                            <i class="ph-fill ph-map-pin text-rustic-gold"></i> CEP de Origem (Criatório):
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="pageCepOrigem" value="99890-000" readonly class="w-full bg-black/40 border border-rustic-gold/40 rounded-xl px-4 py-3.5 text-sm font-bold text-rustic-gold cursor-not-allowed select-none pl-10 focus:outline-none">
+                            <i class="ph-bold ph-lock-key absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 font-normal">Maximiliano de Almeida - RS</span>
+                        </div>
+                    </div>
+
+                    <!-- CEP Destino -->
+                    <div class="md:col-span-5">
+                        <label for="pageCepDestino" class="block text-xs font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
+                            <i class="ph-bold ph-house-line text-rustic-gold"></i> Digite seu CEP de Destino:
+                        </label>
+                        <input type="text" id="pageCepDestino" maxlength="9" placeholder="00000-000" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-rustic-gold focus:ring-1 focus:ring-rustic-gold font-medium transition-all">
+                    </div>
+
+                    <!-- Botão Calcular -->
+                    <div class="md:col-span-3">
+                        <button type="button" id="btnPageCalcularFrete" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform active:scale-95 text-sm">
+                            <span id="btnPageCalcularTxt">Calcular Frete</span>
+                            <i class="ph-bold ph-arrow-right text-base"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Info da embalagem padrão -->
+                <div class="flex flex-wrap items-center justify-between text-xs text-gray-400 bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 mb-6">
+                    <span class="flex items-center gap-1.5">
+                        <i class="ph-bold ph-box-arrow-up text-rustic-gold"></i> <strong>Caixa Padrão Ovos:</strong> 16cm (A) x 27cm (L) x 36cm (C)
+                    </span>
+                    <span class="flex items-center gap-1.5 mt-1 sm:mt-0">
+                        <i class="ph-bold ph-scales text-rustic-gold"></i> <strong>Peso:</strong> Até 3 kg (com proteção térmica e embalagem reforçada)
+                    </span>
+                    <a href="https://www2.correios.com.br/sistemas/precosPrazos/" target="_blank" class="text-rustic-gold hover:underline flex items-center gap-1 mt-1 sm:mt-0 text-[11px]">
+                        Ver site dos Correios <i class="ph ph-arrow-square-out"></i>
+                    </a>
+                </div>
+
+                <!-- Resultado dos Correios na Página (Apenas SEDEX) -->
+                <div id="pageFreteResultado" class="hidden">
+                    <div class="border-t border-white/10 pt-6">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <h4 class="text-white font-bold text-base flex items-center gap-2">
+                                <i class="ph-bold ph-check-circle text-rustic-gold"></i>
+                                Cotação para: <span id="pageDestinoLocal" class="text-rustic-gold"></span>
+                            </h4>
+                            <span class="text-xs text-gray-400">Origem: <strong>99890-000 (Maximiliano de Almeida - RS)</strong></span>
+                        </div>
+
+                        <!-- Card Exclusivo SEDEX -->
+                        <div class="max-w-xl mx-auto bg-gradient-to-br from-[#2b3524] to-[#1c2217] border-2 border-rustic-gold/60 rounded-2xl p-6 relative overflow-hidden shadow-xl">
+                            <div class="absolute top-0 right-0 bg-rustic-gold text-rustic-dark font-bold text-[10px] uppercase px-3.5 py-1.5 rounded-bl-xl tracking-wider">
+                                🚀 Envio Exclusivo via SEDEX
+                            </div>
+                            <div class="flex items-center gap-3.5 mb-2">
+                                <div class="w-12 h-12 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold">
+                                    <i class="ph-bold ph-airplane-takeoff text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-white font-bold text-xl">SEDEX Expresso</h5>
+                                    <p class="text-xs text-rustic-gold font-medium">Prioritário para máxima fertilidade e taxa de eclosão (Até 3kg)</p>
+                                </div>
+                            </div>
+                            <div class="mt-5 flex items-baseline justify-between pt-4 border-t border-white/10">
+                                <div>
+                                    <span class="text-xs text-gray-400 block mb-1">Prazo estimado dos Correios:</span>
+                                    <span class="text-base font-bold text-white flex items-center gap-1.5" id="pagePrazoSedex">
+                                        <i class="ph-bold ph-clock text-rustic-gold"></i> 1 a 3 dias úteis
+                                    </span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-gray-400 block mb-0.5">Valor do Frete:</span>
+                                    <span class="text-3xl font-bold text-rustic-gold" id="pageValorSedex">R$ 0,00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <a href="#catalogo" class="inline-flex items-center gap-2 bg-rustic-green hover:bg-[#4b6245] text-white font-bold text-sm px-6 py-3 rounded-full transition-all duration-300 shadow-md">
+                                <i class="ph-bold ph-egg"></i> Escolher Ovos e Fazer Pedido com este Frete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1c17] text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <img src="assets/images/logo.svg" alt="Criatório Brahma e Orpington do Sul" class="w-10 h-10 object-contain">
+                    <span class="font-serif text-xl font-bold text-white">Criatório Brahma e Orpington do Sul</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Especialistas na criação, preservação e aprimoramento genético de aves puras e nobres.</p>
+                <p class="text-xs text-rustic-gold">Maximiliano de Almeida - RS (CEP 99890-000)</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Políticas & Diretrizes</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="politica-de-privacidade.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-shield-check text-sm"></i> Política de Privacidade</a></li>
+                    <li><a href="politica-de-envio.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-truck text-sm"></i> Política de Envio</a></li>
+                    <li><a href="politica-de-garantia.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-seal-check text-sm"></i> Política de Garantia</a></li>
+                    <li><a href="termos-de-servico.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-file-text text-sm"></i> Termos de Serviço</a></li>
+                    <li><a href="aviso-legal.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-warning-circle text-sm"></i> Aviso Legal (Incubação)</a></li>
+                    <li><a href="ebooks.html" class="hover:text-rustic-gold text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-book-open text-sm"></i> E-book Guia da Raça GSB</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Contato & Redes</h4>
+                <p class="text-xs text-gray-400 mb-2">Acompanhe nossa rotina de criação e matrizes:</p>
+                <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="inline-flex items-center justify-center md:justify-start gap-2 hover:text-rustic-gold transition-colors mb-2 text-sm">
+                    <i class="ph ph-instagram-logo text-2xl text-rustic-gold"></i> @brahma_e_orpington_do_sul_
+                </a>
+                <p class="text-[11px] text-gray-400 mt-1">Atendimento humanizado e orientação pós-venda.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Aviso Importante</h4>
+                <p class="text-xs leading-relaxed">Enviamos ovos frescos e galados. A taxa de eclosão depende diretamente das condições do transporte e do manejo durante a incubação, não sendo possível garantir 100% de nascimento.</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-400 max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p>&copy; 2023-2026 Criatório Brahma e Orpington do Sul. Todos os direitos reservados.</p>
+            <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                <span>Criado por</span>
+                <a href="https://fpagency.com.br" target="_blank" rel="noopener noreferrer" class="text-rustic-gold hover:text-yellow-400 font-semibold transition-colors flex items-center gap-1 hover:underline">
+                    FP Agency <i class="ph-bold ph-arrow-square-out text-[11px]"></i>
+                </a>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 text-[11px]">
+                <a href="ebooks.html" class="text-rustic-gold hover:underline">E-books</a>
+                <span>•</span>
+                <a href="politica-de-privacidade.html" class="hover:text-rustic-gold hover:underline">Privacidade</a>
+                <span>•</span>
+                <a href="politica-de-envio.html" class="hover:text-rustic-gold hover:underline">Envio</a>
+                <span>•</span>
+                <a href="politica-de-garantia.html" class="hover:text-rustic-gold hover:underline">Garantia</a>
+                <span>•</span>
+                <a href="termos-de-servico.html" class="hover:text-rustic-gold hover:underline">Termos</a>
+                <span>•</span>
+                <a href="aviso-legal.html" class="hover:text-rustic-gold hover:underline">Aviso Legal</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar Overlay -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity duration-300 opacity-0 cursor-pointer"></div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full md:w-[450px] h-full bg-rustic-offwhite z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+        <!-- Header -->
+        <div class="bg-rustic-dark text-rustic-offwhite p-5 flex justify-between items-center shadow-md z-10">
+            <h2 class="font-serif text-xl font-bold flex items-center gap-3">
+                <i class="ph ph-shopping-bag text-rustic-gold text-2xl"></i> Meu Pedido
+            </h2>
+            <button id="closeCartBtn" class="text-gray-400 hover:text-white transition-colors bg-white/10 rounded-full p-2">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items Container -->
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-4 hidden">
+            <!-- Items injected via JS -->
+        </div>
+
+        <!-- Empty Cart Message -->
+        <div id="emptyCartMsg" class="flex-1 flex flex-col items-center justify-center p-5 text-gray-400">
+            <i class="ph-thin ph-egg-crack text-7xl mb-4 text-gray-300"></i>
+            <p class="text-lg font-medium text-gray-500">Seu carrinho está vazio.</p>
+            <p class="text-sm text-center mt-2">Escolha seus ovos no catálogo e eles aparecerão aqui.</p>
+        </div>
+
+        <!-- Footer / Checkout -->
+        <div class="bg-white p-5 border-t border-gray-200 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] z-10 max-h-[60vh] overflow-y-auto">
+            <!-- Box de Frete Correios no Carrinho -->
+            <div id="cartShippingBox" class="mb-4 bg-gray-50 border border-gray-200 rounded-2xl p-3.5">
+                <!-- Se apenas digital -->
+                <div id="cartDigitalShippingInfo" class="hidden flex items-center gap-3 p-1">
+                    <div class="w-9 h-9 rounded-xl bg-green-100 text-green-700 flex items-center justify-center shrink-0">
+                        <i class="ph-bold ph-file-pdf text-xl text-red-500"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-rustic-dark block">Envio Digital por PDF</span>
+                        <span class="text-[11px] text-green-700 font-semibold">Frete Grátis • Envio Imediato via WhatsApp/E-mail</span>
+                    </div>
+                </div>
+
+                <!-- Se tem ovos físicos (Correios) -->
+                <div id="cartPhysicalShippingInfo">
+                    <div class="flex items-center justify-between mb-2.5">
+                        <div class="flex items-center gap-1.5">
+                            <i class="ph-bold ph-truck text-rustic-green text-base"></i>
+                            <span class="text-xs font-bold text-rustic-dark">Frete Correios (Ovos Férteis)</span>
+                        </div>
+                        <span class="text-[10px] bg-rustic-gold/20 text-rustic-dark font-bold px-2 py-0.5 rounded-full border border-rustic-gold/30">
+                            Origem: 99890-000 (Maximiliano de Almeida - RS)
+                        </span>
+                    </div>
+
+                <div class="space-y-2">
+                    <!-- CEP Destino -->
+                    <div>
+                        <div class="flex gap-2">
+                            <input type="text" id="cartCepDestino" maxlength="9" placeholder="Digite seu CEP" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-rustic-dark focus:outline-none focus:border-rustic-green focus:ring-1 focus:ring-rustic-green font-medium">
+                            <button type="button" id="btnCartCalcularFrete" class="bg-rustic-green hover:bg-rustic-dark text-white px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shrink-0 active:scale-95">
+                                <span id="btnCartCalcularTxt">Calcular</span>
+                                <i class="ph-bold ph-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                        <p id="cartFreteLocalidade" class="text-[11px] text-rustic-green font-semibold mt-1 hidden flex items-center gap-1">
+                            <i class="ph-bold ph-map-pin"></i> <span></span>
+                        </p>
+                    </div>
+
+                    <!-- Resultado do Frete no Carrinho (Exclusivo SEDEX) -->
+                    <div id="cartFreteOpcoes" class="hidden pt-1">
+                        <div class="border border-rustic-green/40 bg-rustic-green/5 rounded-xl p-2.5 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-lg bg-rustic-green/10 flex items-center justify-center text-rustic-green">
+                                    <i class="ph-bold ph-airplane-takeoff text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-bold text-xs text-rustic-dark">SEDEX Expresso</span>
+                                        <span class="text-[9px] bg-rustic-gold/20 text-rustic-dark font-bold px-1.5 py-0.5 rounded">Até 3kg</span>
+                                    </div>
+                                    <span class="text-[10px] text-gray-500" id="cartPrazoSedex">1 a 3 dias úteis</span>
+                                </div>
+                            </div>
+                            <span class="font-bold text-xs text-rustic-green" id="cartValorSedex">R$ 0,00</span>
+                        </div>
+                        <p class="text-[10px] text-gray-500 mt-1 flex items-center gap-1">
+                            <i class="ph-bold ph-shield-check text-rustic-green"></i> Envio exclusivo via SEDEX para preservar a fertilidade dos ovos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumo Financeiro -->
+            <div class="space-y-1.5 mb-3.5 text-xs">
+                <div class="flex justify-between items-center text-gray-600">
+                    <span>Ovos (Subtotal):</span>
+                    <span class="font-semibold text-gray-800" id="cartSubtotal">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between items-center text-gray-600">
+                    <span class="flex items-center gap-1">
+                        Frete (<span id="cartFreteDescricao">A calcular</span>):
+                    </span>
+                    <span class="font-semibold text-rustic-green" id="cartFreteValor">--</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-gray-200 text-sm">
+                    <span class="font-bold text-gray-800">Total do Pedido:</span>
+                    <span class="font-bold text-xl text-rustic-dark" id="cartTotalGeral">R$ 0,00</span>
+                </div>
+            </div>
+            
+            <button id="checkoutBtn" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-[#25D366] shadow-md">
+                <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
+                Finalizar no WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-rustic-dark text-white px-6 py-3 rounded-full shadow-xl z-[80] transition-all duration-300 translate-y-[150%] opacity-0 flex items-center gap-3 border border-rustic-gold/30">
+        <i class="ph-fill ph-check-circle text-rustic-gold text-2xl"></i>
+        <span id="toastMsg" class="font-medium"></span>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        // --- Data Provided by User ---
+        const produtos = [
+          {
+            id: "combo-surpresa",
+            nome: "Combo Surpresa - Ovos Férteis",
+            categoria: "Combo Especial",
+            descricao: "Surpreenda-se com essa combinação especial! São 15 ovos férteis de raças raras, lindas e produtivas do nosso criatório. Uma oportunidade exclusiva para adquirir aves de padrão genético superior por um valor imperdível.",
+            detalhes: {
+              pesoMachos: "4,5 a 6,5 kg (conforme raça)",
+              pesoFemeas: "3,5 a 5,5 kg (conforme raça)",
+              postura: "Aproximadamente 150 a 250 ovos por ano",
+              ornamentais: "Possíveis raças e cores inclusas: Brahma Buff, Brahma Isabelli, GSB (Galinha Sertaneja Balão), Orpington Cuckoo, Orpington Negro e Orpington Mottled."
+            },
+            fotos: ["assets/images/combo-surpresa.jpg"],
+            precos: { combo15: 299.00 }
+          },
+          {
+            id: "brahma-buff",
+            nome: "Brahma Buff",
+            categoria: "Brahma",
+            descricao: "A Brahma Buff é uma ave de grande porte, conhecida por sua imponência e beleza. Possui corpo robusto, peito largo, plumagem abundante e pernas completamente emplumadas. Sua coloração dourada, combinada com marcações pretas no pescoço e na cauda, proporciona uma aparência elegante.",
+            detalhes: {
+              pesoMachos: "4,5 a 5,5 kg",
+              pesoFemeas: "3,5 a 4,5 kg",
+              postura: "Aproximadamente 120 a 150 ovos por ano",
+              ornamentais: "Destaca-se pelo porte imponente, pela plumagem volumosa e pela coloração característica. É muito apreciada na criação ornamental."
+            },
+            fotos: ["assets/images/brahma-buff-1.jpg", "assets/images/brahma-buff-2.jpg"],
+            precos: { meiaDuzia: 150.00, umaDuzia: 300.00, duasDuzias: 500.00 }
+          },
+          {
+            id: "brahma-isabelli",
+            nome: "Brahma Isabelli",
+            categoria: "Brahma",
+            descricao: "A Brahma Isabelli apresenta uma coloração diferenciada, com tonalidades claras e delicadas. É uma ave de grande porte, com corpo largo, estrutura robusta, plumagem abundante e pernas emplumadas, características marcantes da raça Brahma.",
+            detalhes: {
+              pesoMachos: "4,5 a 5,5 kg",
+              pesoFemeas: "3,5 a 4,5 kg",
+              postura: "Aproximadamente 120 a 150 ovos por ano",
+              ornamentais: "Sua coloração diferenciada, aliada ao porte imponente e à elegância da plumagem, faz dela uma ave muito apreciada por criadores e admiradores."
+            },
+            fotos: ["assets/images/brahma-isabelli-1.jpg"],
+            precos: { meiaDuzia: 150.00, umaDuzia: 300.00, duasDuzias: 500.00 }
+          },
+          {
+            id: "gsb",
+            nome: "Galinha Sertanejo Balão (GSB)",
+            categoria: "Sertanejo Balão",
+            descricao: "A Galinha Sertanejo Balão é uma ave de grande porte, com corpo robusto e aparência característica. Destaca-se pelo tamanho e pela presença marcante, sendo uma variedade apreciada por criadores que valorizam aves de origem nacional.",
+            detalhes: {
+              pesoMachos: "5,5 a 6,5 kg",
+              pesoFemeas: "4,5 a 5,5 kg",
+              postura: "Aproximadamente de 180 a 250 ovos por ano",
+              ornamentais: "Seu porte avantajado e sua estrutura corporal robusta são características que chamam a atenção. É uma ave interessante para quem aprecia variedades brasileiras."
+            },
+            fotos: ["assets/images/gsb-1.jpg"],
+            precos: { meiaDuzia: 175.00, umaDuzia: 350.00, duasDuzias: 600.00 }
+          },
+          {
+            id: "polaco-balao",
+            nome: "Polaco Balão",
+            categoria: "Sertanejo Balão",
+            descricao: "O Polaco Balão é uma ave rústica e imponente que une o porte avantajado da linhagem Balão com a rusticidade do pescoço pelado. Destaca-se pela carcaça pesada, peito amplo, excelente conversão alimentar e grande resistência.",
+            detalhes: {
+              pesoMachos: "5 a 6 kg",
+              pesoFemeas: "4 a 5 kg",
+              postura: "Aproximadamente 160 a 220 ovos por ano",
+              ornamentais: "A coloração marcante e o pescoço pelado contrastando com a musculatura densa e o dorso largo típico do padrão Balão tornam esta variedade muito requisitada tanto para produção quanto para ornamentação rústica."
+            },
+            fotos: ["assets/images/polaco-balao-1.jpg"],
+            precos: { meiaDuzia: 170.00, umaDuzia: 300.00, duasDuzias: 550.00 }
+          },
+          {
+            id: "orpington-negro",
+            nome: "Orpington Negro",
+            categoria: "Orpington",
+            descricao: "A Orpington Negra é uma ave de grande porte, conhecida pelo corpo largo, arredondado e pela plumagem extremamente abundante. Sua coloração preta, frequentemente acompanhada de reflexos esverdeados, proporciona uma aparência elegante e imponente.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "Seu formato arredondado, sua plumagem volumosa e seu porte robusto fazem dela uma variedade muito apreciada na criação ornamental."
+            },
+            fotos: ["assets/images/orpington-negro-1.jpg"],
+            precos: { meiaDuzia: 250.00, umaDuzia: 500.00, duasDuzias: 850.00 }
+          },
+          {
+            id: "orpington-azul",
+            nome: "Orpington Azul",
+            categoria: "Orpington",
+            descricao: "A Orpington Azul é uma ave de grande porte, com corpo largo, arredondado e plumagem abundante. Sua coloração azul-acinzentada pode apresentar diferentes tonalidades, conferindo um visual elegante e diferenciado.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "Destaca-se pela combinação entre seu porte volumoso, sua plumagem macia e sua coloração azulada, sendo muito valorizada na criação ornamental."
+            },
+            fotos: ["assets/images/orpington-azul-1.jpg"],
+            precos: { meiaDuzia: 250.00, umaDuzia: 500.00, duasDuzias: 850.00 }
+          },
+          {
+            id: "orpington-cuckoo",
+            nome: "Orpington Cuckoo (Barrado)",
+            categoria: "Orpington",
+            descricao: "A Orpington Cuckoo é uma ave de grande porte, com corpo largo, formato arredondado e plumagem abundante. Seu principal destaque é a coloração barrada, formada por faixas claras e escuras distribuídas pelas penas.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "A combinação do porte volumoso com a plumagem barrada torna essa variedade muito interessante para criadores e admiradores de aves ornamentais."
+            },
+            fotos: ["assets/images/orpington-cuckoo-1.jpg"],
+            precos: { meiaDuzia: 280.00, umaDuzia: 560.00, duasDuzias: 920.00 }
+          },
+          {
+            id: "orpington-mottled",
+            nome: "Orpington Mottled",
+            categoria: "Orpington",
+            descricao: "A Orpington Mottled é uma ave de grande porte, com corpo largo, arredondado e plumagem abundante. Sua característica mais marcante é a plumagem preta com manchas brancas nas extremidades das penas, formando um padrão contrastante e elegante.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "A distribuição das manchas brancas sobre a plumagem escura, combinada com o corpo volumoso, proporciona uma aparência diferenciada e muito apreciada na criação ornamental."
+            },
+            fotos: ["assets/images/orpington-mottled-1.jpg", "assets/images/orpington-mottled-2.jpg"],
+            precos: { meiaDuzia: 300.00, umaDuzia: 600.00, duasDuzias: 1000.00 }
+          },
+          {
+            id: "orpington-dourado-laceado-azul",
+            nome: "Orpington Dourado Laceado de Azul",
+            categoria: "Orpington",
+            descricao: "A Orpington Dourado Laceada de Azul é uma das variedades mais nobres e raras da raça. Possui corpo amplo e arredondado, peito profundo e penas douradas ricamente bordadas com tonalidade azul-acinzentada, proporcionando um contraste deslumbrante.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "A exuberância do padrão laceado de borda azul sobre a plumagem dourada, combinada com a imponência e docilidade clássicas da raça Orpington, confere alto valor ornamental e genético."
+            },
+            fotos: ["assets/images/orpington-dourado-laceado-azul-1.jpg"],
+            precos: { meiaDuzia: 350.00, umaDuzia: 650.00, duasDuzias: 1200.00 }
+          },
+          {
+            id: "orpington-lavanda",
+            nome: "Orpington Lavanda",
+            categoria: "Orpington",
+            descricao: "A Orpington Lavanda é uma das variedades mais cobiçadas e sofisticadas da avicultura ornamental. Possui plumagem volumosa e uniforme em tom cinza-prateado suave (lavanda), sobre um corpo largo, arredondado e de temperamento extremamente dócil.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "A coloração lavanda pura e sedosa, aliada ao formato compacto e majestoso da raça Orpington, faz desta variedade uma das mais admiradas e nobres para criadores exigentes."
+            },
+            fotos: ["assets/images/orpington-lavanda-1.jpg"],
+            precos: { meiaDuzia: 300.00, umaDuzia: 550.00, duasDuzias: 1000.00 }
+          },
+          {
+            id: "orpington-chocolate",
+            nome: "Orpington Chocolate",
+            categoria: "Orpington",
+            descricao: "A Orpington Chocolate é uma variedade nobre e rara, conhecida pela plumagem uniforme e aveludada em tom marrom-cacau profundo sobre um corpo volumoso, arredondado e de temperamento dócil.",
+            detalhes: {
+              pesoMachos: "4 a 4,8 kg",
+              pesoFemeas: "3 a 3,8 kg",
+              postura: "Aproximadamente 150 a 200 ovos por ano",
+              ornamentais: "A coloração chocolate sólida e brilhante, aliada à densidade da plumagem e à imponência do porte Orpington, confere grande valor genético e destaque na avicultura ornamental."
+            },
+            fotos: ["assets/images/orpington-chocolate-1.jpg"],
+            precos: { meiaDuzia: 300.00, umaDuzia: 550.00, duasDuzias: 1000.00 }
+          }
+        ];
+
+        // Placeholder image for when local assets aren't found
+        const FALLBACK_IMG = "https://images.unsplash.com/photo-1548435297-5ebfc2df1c13?auto=format&fit=crop&w=800&q=80";
+
+        // Substitua pelo número do WhatsApp da empresa (Ex: 5551999999999)
+        const WHATSAPP_NUMBER = "5551999999999"; 
+
+        // --- State & Persistence ---
+        const CART_STORAGE_KEY = 'bos_cart';
+        let cart = []; 
+        try {
+            const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        } catch (e) {
+            console.error("Erro ao ler carrinho:", e);
+            cart = [];
+        }
+
+        const saveCart = () => {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            } catch (e) {
+                console.error("Erro ao salvar carrinho:", e);
+            }
+        };
+
+        // --- Formatters ---
+        const formatMoney = (value) => {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+        };
+
+        const optionLabels = {
+            meiaDuzia: "Meia Dúzia (6)",
+            umaDuzia: "Uma Dúzia (12)",
+            duasDuzias: "Duas Dúzias (24)",
+            combo15: "Combo Especial (15 Ovos)",
+            pdf: "Envio por PDF"
+        };
+
+        // --- Render Products ---
+        const renderProducts = () => {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            produtos.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col group";
+                
+                // Photo rendering logic (handles arrays and fallbacks sem cortes)
+                let fotosHtml = '';
+                if(prod.fotos.length > 1) {
+                    fotosHtml = `
+                        <div class="relative w-full h-80 sm:h-96 overflow-hidden bg-stone-900">
+                            <div id="carousel-${prod.id}" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar w-full h-full" style="scroll-behavior: smooth;">
+                                ${prod.fotos.map(f => `
+                                    <div class="relative w-full h-full flex-shrink-0 snap-center flex items-center justify-center overflow-hidden bg-stone-950">
+                                        <img src="${f}" alt="" class="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-125 pointer-events-none" aria-hidden="true">
+                                        <img src="${f}" alt="${prod.nome}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}'" class="relative z-0 max-w-full max-h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105">
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button type="button" onclick="document.getElementById('carousel-${prod.id}').scrollBy({left: -320, behavior: 'smooth'})" class="absolute left-2.5 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/90 text-white rounded-full w-9 h-9 flex items-center justify-center backdrop-blur-md transition-all z-10 shadow-lg border border-white/20">
+                                <i class="ph-bold ph-caret-left text-lg"></i>
+                            </button>
+                            <button type="button" onclick="document.getElementById('carousel-${prod.id}').scrollBy({left: 320, behavior: 'smooth'})" class="absolute right-2.5 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/90 text-white rounded-full w-9 h-9 flex items-center justify-center backdrop-blur-md transition-all z-10 shadow-lg border border-white/20">
+                                <i class="ph-bold ph-caret-right text-lg"></i>
+                            </button>
+                            <div class="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1.5 bg-black/50 px-3 py-1 rounded-full backdrop-blur-md z-10 border border-white/10">
+                                ${prod.fotos.map((_, i) => `<div class="w-2 h-2 rounded-full bg-white/90"></div>`).join('')}
+                            </div>
+                            <div class="absolute top-4 left-4 bg-rustic-dark/95 text-rustic-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md shadow-lg z-10 border border-rustic-gold/30">
+                                ${prod.categoria}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    fotosHtml = `
+                        <div class="relative w-full h-80 sm:h-96 overflow-hidden bg-stone-950 flex items-center justify-center">
+                            <img src="${prod.fotos[0]}" alt="" class="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-125 pointer-events-none" aria-hidden="true">
+                            <img src="${prod.fotos[0]}" alt="${prod.nome}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}'" class="relative z-0 max-w-full max-h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute top-4 left-4 bg-rustic-dark/95 text-rustic-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md shadow-lg z-10 border border-rustic-gold/30">
+                                ${prod.categoria}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Options (Radio buttons styled as cards)
+                const precosEntries = Object.entries(prod.precos);
+                const hasSingleOption = precosEntries.length === 1;
+                const optionsHtml = precosEntries.map(([key, val], idx) => `
+                    <label for="opt-${prod.id}-${key}" class="cursor-pointer block" onclick="selectProductOption('${prod.id}', '${key}')">
+                        <input type="radio" id="opt-${prod.id}-${key}" name="qty-${prod.id}" value="${key}" class="peer sr-only" ${(key === 'umaDuzia' || (hasSingleOption && idx === 0)) ? 'checked' : ''} onchange="selectProductOption('${prod.id}', '${key}')">
+                        <div class="border border-gray-200 rounded-xl p-3 text-sm flex justify-between items-center peer-checked:border-rustic-green peer-checked:bg-rustic-green/5 peer-checked:ring-2 peer-checked:ring-rustic-green transition-all hover:bg-gray-50">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-4 h-4 rounded-full border-2 border-gray-300 peer-checked:border-rustic-green flex items-center justify-center transition-all bg-white shrink-0">
+                                    <div class="w-2 h-2 rounded-full bg-rustic-green opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                                </div>
+                                <span class="font-semibold text-gray-700 peer-checked:text-rustic-dark">${optionLabels[key] || key}</span>
+                            </div>
+                            <span class="font-bold text-rustic-dark peer-checked:text-rustic-green text-sm">${formatMoney(val)}</span>
+                        </div>
+                    </label>
+                `).join('');
+
+                card.innerHTML = `
+                    ${fotosHtml}
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="mb-1">
+                            <span class="text-xs font-bold text-rustic-earth uppercase tracking-widest">${prod.categoria}</span>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-rustic-dark mb-2">${prod.nome}</h3>
+                        <div class="mb-4">
+                            <p id="desc-${prod.id}" class="text-gray-600 text-sm leading-relaxed line-clamp-2 transition-all">
+                                ${prod.descricao}
+                            </p>
+                            <button type="button" onclick="toggleDescription('${prod.id}', this)" class="text-rustic-green hover:text-rustic-earth text-xs font-bold inline-flex items-center gap-1 mt-1.5 focus:outline-none transition-colors">
+                                <span class="btn-text">Ler mais</span>
+                                <i class="ph-bold ph-caret-down text-[11px] transition-transform duration-200"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Ficha Técnica da Raça -->
+                        <details class="group mb-6 border border-rustic-gold/30 rounded-xl bg-rustic-gold/5 overflow-hidden transition-all duration-200">
+                            <summary class="flex justify-between items-center p-3 text-xs font-bold text-rustic-green cursor-pointer list-none select-none hover:bg-rustic-gold/10 transition-colors">
+                                <span class="flex items-center gap-1.5"><i class="ph-bold ph-info text-rustic-gold text-base"></i> Ficha Técnica e Padrão da Raça</span>
+                                <i class="ph-bold ph-caret-down text-sm transition-transform duration-300 group-open:rotate-180 text-rustic-earth"></i>
+                            </summary>
+                            <div class="p-4 pt-2 text-xs text-rustic-dark space-y-3 border-t border-rustic-gold/15 bg-white/70">
+                                <div>
+                                    <span class="font-bold text-rustic-green block mb-1">⚖️ Peso Médio:</span>
+                                    <div class="grid grid-cols-2 gap-2 text-gray-700 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                                        <div><span class="text-gray-500">Machos:</span> <span class="font-semibold">${prod.detalhes.pesoMachos}</span></div>
+                                        <div><span class="text-gray-500">Fêmeas:</span> <span class="font-semibold">${prod.detalhes.pesoFemeas}</span></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-rustic-green block mb-1">🥚 Postura Anual:</span>
+                                    <p class="text-gray-700 bg-gray-50 p-2 rounded-lg border border-gray-100 font-medium">${prod.detalhes.postura}</p>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-rustic-green block mb-1">✨ Características Ornamentais:</span>
+                                    <p class="text-gray-700 leading-relaxed bg-gray-50 p-2.5 rounded-lg border border-gray-100">${prod.detalhes.ornamentais}</p>
+                                </div>
+                            </div>
+                        </details>
+                        
+                        <div class="space-y-2.5 mb-6 mt-auto">
+                            ${optionsHtml}
+                        </div>
+                        
+                        <button onclick="addToCart('${prod.id}')" class="w-full bg-rustic-dark hover:bg-rustic-green text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
+                            <i class="ph-bold ph-shopping-cart-simple text-lg"></i> Adicionar ao Carrinho
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        // --- Core Functions ---
+        const selectedOptions = {};
+
+        const toggleDescription = (productId, btn) => {
+            const desc = document.getElementById(`desc-${productId}`);
+            if (!desc) return;
+            const textSpan = btn.querySelector('.btn-text');
+            const icon = btn.querySelector('i');
+            const isClamped = desc.classList.contains('line-clamp-2');
+            
+            if (isClamped) {
+                desc.classList.remove('line-clamp-2');
+                if (textSpan) textSpan.textContent = 'Ler menos';
+                if (icon) icon.classList.add('rotate-180');
+            } else {
+                desc.classList.add('line-clamp-2');
+                if (textSpan) textSpan.textContent = 'Ler mais';
+                if (icon) icon.classList.remove('rotate-180');
+            }
+        };
+
+        const selectProductOption = (productId, optionKey) => {
+            selectedOptions[productId] = optionKey;
+            const radio = document.getElementById(`opt-${productId}-${optionKey}`);
+            if (radio) radio.checked = true;
+        };
+
+        const getSelectedOption = (productId) => {
+            if (selectedOptions[productId]) return selectedOptions[productId];
+            const radios = document.getElementsByName(`qty-${productId}`);
+            for (let radio of radios) {
+                if (radio.checked) return radio.value;
+            }
+            const prod = produtos.find(p => p.id === productId);
+            if (prod && prod.precos) {
+                const keys = Object.keys(prod.precos);
+                if (keys.includes('umaDuzia')) return 'umaDuzia';
+                if (keys.length > 0) return keys[0];
+            }
+            return 'umaDuzia';
+        };
+
+        const showToast = (message) => {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMsg');
+            msg.textContent = message;
+            
+            toast.classList.remove('translate-y-[150%]', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-[150%]', 'opacity-0');
+            }, 3000);
+        };
+
+        const recalcularFreteExistente = async () => {
+            if (!cartFrete || !cartFrete.calculado || !cartFrete.cep) return;
+            try {
+                const totalPhysicalItens = cart.filter(item => !item.isDigital).reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+                if (totalPhysicalItens === 0) return;
+                const cotacao = await calcularCotacaoCorreios(cartFrete.cep, Math.max(1, totalPhysicalItens));
+                cartFrete.cotacao = cotacao;
+                cartFrete.valor = cotacao.sedex.valor;
+                cartFrete.prazo = cotacao.sedex.prazo;
+                const valorEl = document.getElementById('cartValorSedex');
+                if (valorEl) valorEl.textContent = formatMoney(cartFrete.valor);
+                const freteValorFooter = document.getElementById('cartFreteValor');
+                if (freteValorFooter) freteValorFooter.textContent = formatMoney(cartFrete.valor);
+            } catch (e) {
+                console.error("Erro ao recalcular frete:", e);
+            }
+        };
+
+        const addToCart = async (productId) => {
+            const product = produtos.find(p => p.id === productId);
+            if (!product) return;
+            const selectedOption = getSelectedOption(productId);
+            const price = Number(product.precos[selectedOption]) || 0;
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.option === selectedOption);
+            
+            if(existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.nome,
+                    option: selectedOption,
+                    price: price,
+                    quantity: 1,
+                    photo: product.fotos[0],
+                    isDigital: false
+                });
+            }
+
+            saveCart();
+
+            if (cartFrete && cartFrete.calculado) {
+                await recalcularFreteExistente();
+            }
+
+            updateCartUI();
+            openCart();
+            showToast(`${product.nome} (${optionLabels[selectedOption]}) adicionado!`);
+        };
+
+        const EBOOKS_CATALOGO = {
+            'ebook-orpington': {
+                id: 'ebook-orpington',
+                name: 'Guia Completo da Raça Orpington',
+                option: 'pdf',
+                optionLabel: 'Envio por PDF (Download Imediato)',
+                price: 59.90,
+                photo: 'assets/images/ebook-orpington.png',
+                isDigital: true
+            },
+            'ebook-brahma': {
+                id: 'ebook-brahma',
+                name: 'Guia Completo sobre Brahma',
+                option: 'pdf',
+                optionLabel: 'Envio por PDF (Download Imediato)',
+                price: 39.90,
+                photo: 'assets/images/ebook-brahma.png',
+                isDigital: true
+            },
+            'ebook-gsb': {
+                id: 'ebook-gsb',
+                name: 'Guia Completo da Raça GSB – Galinha Sertaneja Balão',
+                option: 'pdf',
+                optionLabel: 'Envio por PDF (Download Imediato)',
+                price: 39.90,
+                photo: 'assets/images/ebook-gsb.png',
+                isDigital: true
+            }
+        };
+
+        const addEbookFromIndex = (ebookId = 'ebook-brahma') => {
+            const ebook = EBOOKS_CATALOGO[ebookId] || EBOOKS_CATALOGO['ebook-brahma'];
+            if (!ebook) return;
+
+            const existingIndex = cart.findIndex(item => item.id === ebook.id);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: ebook.id,
+                    name: ebook.name,
+                    option: ebook.option,
+                    optionLabel: ebook.optionLabel,
+                    price: ebook.price,
+                    quantity: 1,
+                    photo: ebook.photo,
+                    isDigital: true
+                });
+            }
+
+            saveCart();
+            updateCartUI();
+            openCart();
+            showToast(`${ebook.name} adicionado ao carrinho!`);
+        };
+
+        const removeFromCart = async (index) => {
+            cart.splice(index, 1);
+            saveCart();
+            if (cartFrete && cartFrete.calculado) {
+                await recalcularFreteExistente();
+            }
+            updateCartUI();
+        };
+
+        const updateQuantity = async (index, delta) => {
+            if (!cart[index]) return;
+            const newQty = cart[index].quantity + delta;
+            if (newQty > 0) {
+                cart[index].quantity = newQty;
+            } else {
+                await removeFromCart(index);
+                return;
+            }
+            saveCart();
+            if (cartFrete && cartFrete.calculado) {
+                await recalcularFreteExistente();
+            }
+            updateCartUI();
+        };
+
+        // --- Frete Correios State & Logic ---
+        const CEP_ORIGEM = "99890-000";
+        const CIDADE_ORIGEM = "Maximiliano de Almeida - RS";
+        let cartFrete = {
+            cep: '',
+            localidade: '',
+            uf: '',
+            tipo: 'sedex',
+            valor: 0,
+            prazo: '',
+            calculado: false,
+            cotacao: null
+        };
+
+        const formatCep = (value) => {
+            return value.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2').substr(0, 9);
+        };
+
+        const calcularCotacaoCorreios = async (cepDestino, totalItens = 1) => {
+            const cleanCep = cepDestino.replace(/\D/g, '');
+            if (cleanCep.length !== 8) {
+                throw new Error('Informe um CEP válido com 8 dígitos.');
+            }
+
+            let localidade = '';
+            let uf = '';
+
+            try {
+                const resp = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+                const data = await resp.json();
+                if (data.erro) {
+                    throw new Error('CEP não localizado pelos Correios.');
+                }
+                localidade = data.localidade || '';
+                uf = data.uf || '';
+            } catch (err) {
+                // Fallback inteligente caso ViaCEP esteja offline
+                const primeiroDigito = cleanCep[0];
+                const regioes = {
+                    '0': { uf: 'SP', localidade: 'São Paulo' },
+                    '1': { uf: 'SP', localidade: 'Interior de SP' },
+                    '2': { uf: 'RJ', localidade: 'Rio de Janeiro' },
+                    '3': { uf: 'MG', localidade: 'Minas Gerais' },
+                    '4': { uf: 'BA', localidade: 'Bahia' },
+                    '5': { uf: 'PE', localidade: 'Pernambuco' },
+                    '6': { uf: 'CE', localidade: 'Ceará' },
+                    '7': { uf: 'DF', localidade: 'Brasília' },
+                    '8': { uf: 'PR', localidade: 'Região Sul' },
+                    '9': { uf: 'RS', localidade: 'Rio Grande do Sul' }
+                };
+                const est = regioes[primeiroDigito] || { uf: 'RS', localidade: 'Sul' };
+                uf = est.uf;
+                localidade = est.localidade;
+            }
+
+            // Tabela Correios para Ovos Férteis (Caixa Térmica/Isopor Especial até 3kg)
+            // Origem: Maximiliano de Almeida - RS (CEP 99890-000) - Envio Exclusivo SEDEX
+            const tabelas = {
+                'RS': { sedex: 36.00, prazoSedex: '1 a 2 dias úteis' },
+                'SC': { sedex: 42.00, prazoSedex: '1 a 3 dias úteis' },
+                'PR': { sedex: 48.00, prazoSedex: '2 a 3 dias úteis' },
+                'SP': { sedex: 64.00, prazoSedex: '2 a 3 dias úteis' },
+                'RJ': { sedex: 72.00, prazoSedex: '2 a 4 dias úteis' },
+                'MG': { sedex: 76.00, prazoSedex: '2 a 4 dias úteis' },
+                'ES': { sedex: 82.00, prazoSedex: '3 a 5 dias úteis' },
+                'MS': { sedex: 88.00, prazoSedex: '3 a 5 dias úteis' },
+                'GO': { sedex: 92.00, prazoSedex: '3 a 5 dias úteis' },
+                'DF': { sedex: 89.00, prazoSedex: '3 a 5 dias úteis' },
+                'MT': { sedex: 98.00, prazoSedex: '3 a 6 dias úteis' },
+                'BA': { sedex: 104.00, prazoSedex: '3 a 6 dias úteis' },
+                'PE': { sedex: 118.00, prazoSedex: '4 a 6 dias úteis' },
+                'CE': { sedex: 124.00, prazoSedex: '4 a 7 dias úteis' },
+                'AL': { sedex: 120.00, prazoSedex: '4 a 6 dias úteis' },
+                'SE': { sedex: 116.00, prazoSedex: '4 a 6 dias úteis' },
+                'PB': { sedex: 122.00, prazoSedex: '4 a 7 dias úteis' },
+                'RN': { sedex: 125.00, prazoSedex: '4 a 7 dias úteis' },
+                'PI': { sedex: 126.00, prazoSedex: '4 a 7 dias úteis' },
+                'MA': { sedex: 132.00, prazoSedex: '4 a 7 dias úteis' },
+                'TO': { sedex: 122.00, prazoSedex: '4 a 6 dias úteis' },
+                'PA': { sedex: 138.00, prazoSedex: '4 a 8 dias úteis' },
+                'AM': { sedex: 155.00, prazoSedex: '5 a 8 dias úteis' },
+                'RO': { sedex: 136.00, prazoSedex: '4 a 7 dias úteis' },
+                'AC': { sedex: 168.00, prazoSedex: '5 a 9 dias úteis' },
+                'AP': { sedex: 158.00, prazoSedex: '5 a 9 dias úteis' },
+                'RR': { sedex: 172.00, prazoSedex: '5 a 9 dias úteis' }
+            };
+
+            const dados = tabelas[uf] || { sedex: 88.00, prazoSedex: '3 a 5 dias úteis' };
+            const volumeExtra = Math.max(0, totalItens - 2) * 8.00;
+
+            return {
+                cep: `${cleanCep.slice(0, 5)}-${cleanCep.slice(5)}`,
+                localidade: localidade,
+                uf: uf,
+                origem: `${CEP_ORIGEM} (${CIDADE_ORIGEM})`,
+                sedex: {
+                    valor: dados.sedex + volumeExtra,
+                    prazo: dados.prazoSedex
+                }
+            };
+        };
+
+        const selecionarFreteCart = () => {
+            if (!cartFrete.cotacao) return;
+            cartFrete.tipo = 'sedex';
+            cartFrete.valor = cartFrete.cotacao.sedex.valor;
+            cartFrete.prazo = cartFrete.cotacao.sedex.prazo;
+            cartFrete.calculado = true;
+
+            const descEl = document.getElementById('cartFreteDescricao');
+            const valorEl = document.getElementById('cartFreteValor');
+            if (descEl) descEl.textContent = 'SEDEX';
+            if (valorEl) valorEl.textContent = formatMoney(cartFrete.valor);
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const totalGeralEl = document.getElementById('cartTotalGeral');
+            if (totalGeralEl) totalGeralEl.textContent = formatMoney(subtotal + cartFrete.valor);
+        };
+
+        const updateCartUI = () => {
+            const countEl = document.getElementById('cartCount');
+            const container = document.getElementById('cartItemsContainer');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const totalGeralEl = document.getElementById('cartTotalGeral');
+            const cartShippingBox = document.getElementById('cartShippingBox');
+            const cartDigitalShippingInfo = document.getElementById('cartDigitalShippingInfo');
+            const cartPhysicalShippingInfo = document.getElementById('cartPhysicalShippingInfo');
+            const cartFreteDescricao = document.getElementById('cartFreteDescricao');
+            const cartFreteValor = document.getElementById('cartFreteValor');
+
+            const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+            if (countEl) {
+                countEl.textContent = totalItems;
+                if (totalItems > 0) {
+                    countEl.classList.add('scale-125');
+                    setTimeout(() => countEl.classList.remove('scale-125'), 300);
+                }
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
+            if (subtotalEl) {
+                subtotalEl.textContent = formatMoney(subtotal);
+            }
+
+            const hasPhysicalItems = cart.some(item => !item.isDigital);
+            const isAllDigital = cart.length > 0 && !hasPhysicalItems;
+
+            if (cart.length === 0) {
+                if (cartShippingBox) cartShippingBox.classList.add('hidden');
+            } else {
+                if (cartShippingBox) cartShippingBox.classList.remove('hidden');
+                if (isAllDigital) {
+                    if (cartDigitalShippingInfo) cartDigitalShippingInfo.classList.remove('hidden');
+                    if (cartPhysicalShippingInfo) cartPhysicalShippingInfo.classList.add('hidden');
+                    if (cartFreteDescricao) cartFreteDescricao.textContent = 'Envio Digital PDF';
+                    if (cartFreteValor) cartFreteValor.textContent = 'Grátis';
+                } else {
+                    if (cartDigitalShippingInfo) cartDigitalShippingInfo.classList.add('hidden');
+                    if (cartPhysicalShippingInfo) cartPhysicalShippingInfo.classList.remove('hidden');
+                    if (cartFreteDescricao) cartFreteDescricao.textContent = cartFrete.calculado ? 'SEDEX' : 'A calcular';
+                    if (cartFreteValor) cartFreteValor.textContent = cartFrete.calculado ? formatMoney(cartFrete.valor) : '--';
+                }
+            }
+
+            // Atualiza total geral somando com o frete se já calculado
+            const freteValor = (hasPhysicalItems && cartFrete && cartFrete.calculado) ? (Number(cartFrete.valor) || 0) : 0;
+            if (totalGeralEl) {
+                totalGeralEl.textContent = formatMoney(subtotal + freteValor);
+            }
+
+            if (cart.length === 0) {
+                if (emptyMsg) emptyMsg.classList.remove('hidden');
+                if (container) {
+                    container.classList.add('hidden');
+                    container.innerHTML = '';
+                }
+                if (checkoutBtn) checkoutBtn.disabled = true;
+            } else {
+                if (emptyMsg) emptyMsg.classList.add('hidden');
+                if (container) {
+                    container.classList.remove('hidden');
+                    container.innerHTML = cart.map((item, index) => {
+                        const itemSubtotal = (Number(item.price) || 0) * (Number(item.quantity) || 1);
+                        const label = item.isDigital ? 'Envio por PDF' : (optionLabels[item.option] || item.option);
+                        return `
+                        <div class="flex gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm relative group">
+                            <img src="${item.photo}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}'" alt="${item.name}" class="w-20 h-20 object-contain bg-stone-50 rounded-xl p-1 border border-stone-200 shrink-0">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-rustic-dark text-sm pr-6 leading-tight mb-1">${item.name}</h4>
+                                <div class="flex items-center gap-1.5 mb-1.5">
+                                    <span class="text-xs text-rustic-earth font-bold bg-rustic-gold/15 px-2 py-0.5 rounded flex items-center gap-1">
+                                        ${item.isDigital ? '<i class="ph-bold ph-file-pdf text-red-500"></i>' : '<i class="ph-bold ph-egg text-rustic-gold"></i>'}
+                                        ${label}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <div>
+                                        <span class="font-bold text-rustic-green text-sm">${formatMoney(itemSubtotal)}</span>
+                                        ${item.quantity > 1 ? `<span class="text-[10px] text-gray-400 block">(${formatMoney(item.price)} cada)</span>` : ''}
+                                    </div>
+                                    <div class="flex items-center bg-gray-50 rounded-lg border border-gray-200 shadow-inner">
+                                        <button type="button" onclick="updateQuantity(${index}, -1)" title="Diminuir" class="w-8 h-8 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 rounded-l-lg text-gray-700 transition-colors font-bold text-base"><i class="ph-bold ph-minus"></i></button>
+                                        <span class="text-sm font-bold w-8 text-center text-rustic-dark select-none">${item.quantity}</span>
+                                        <button type="button" onclick="updateQuantity(${index}, 1)" title="Aumentar" class="w-8 h-8 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 rounded-r-lg text-gray-700 transition-colors font-bold text-base"><i class="ph-bold ph-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="removeFromCart(${index})" title="Remover do carrinho" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors bg-gray-50 hover:bg-red-50 rounded-full p-1.5 shadow-sm">
+                                <i class="ph-bold ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    `}).join('');
+                }
+                if (checkoutBtn) checkoutBtn.disabled = false;
+            }
+        };
+
+        // --- UI Interactions ---
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        
+        const openCart = () => {
+            cartSidebar.classList.remove('translate-x-full');
+            cartOverlay.classList.remove('hidden');
+            setTimeout(() => cartOverlay.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeCart = () => {
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('opacity-0');
+            setTimeout(() => cartOverlay.classList.add('hidden'), 300);
+            document.body.style.overflow = 'auto';
+        };
+
+        document.getElementById('cartBtn').addEventListener('click', openCart);
+        document.getElementById('closeCartBtn').addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', closeCart);
+
+        // --- WhatsApp Checkout Format ---
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if(cart.length === 0) return;
+
+            const hasPhysicalItems = cart.some(item => !item.isDigital);
+            const isAllDigital = cart.length > 0 && !hasPhysicalItems;
+
+            let text = "Olá! Gostaria de fazer um pedido no *Criatório Brahma e Orpington do Sul*. 🐣📖%0A%0A";
+            text += "*RESUMO DOS ITENS:*%0A";
+            
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                const label = item.isDigital ? "Envio por PDF" : (optionLabels[item.option] || item.option);
+                text += `▪ ${item.quantity}x ${item.name} (${label}) -> ${formatMoney(itemTotal)}%0A`;
+            });
+
+            text += `%0A*Subtotal:* ${formatMoney(total)}%0A`;
+            
+            if (isAllDigital) {
+                text += `*Entrega:* Envio imediato em formato PDF via WhatsApp / E-mail (Frete Grátis)%0A%0A`;
+                text += `*VALOR TOTAL:* ${formatMoney(total)}%0A%0A`;
+                text += "Por favor, me informe a chave PIX para envio do material!";
+            } else if (cartFrete.calculado) {
+                text += `*Frete (${cartFrete.tipo.toUpperCase()}):* ${formatMoney(cartFrete.valor)} (Prazo: ${cartFrete.prazo})%0A`;
+                text += `*Origem da Postagem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
+                text += `*Destino da Entrega:* ${cartFrete.localidade} - ${cartFrete.uf} (CEP: ${cartFrete.cep})%0A%0A`;
+                text += `*VALOR TOTAL DO PEDIDO:* ${formatMoney(total + cartFrete.valor)}%0A%0A`;
+                text += "Por favor, confirme a disponibilidade e a chave PIX!";
+            } else {
+                text += `*Origem da Postagem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
+                const cepInformado = document.getElementById('cartCepDestino')?.value || '';
+                if (cepInformado) {
+                    text += `*Meu CEP de Entrega:* ${cepInformado}%0A%0A`;
+                } else {
+                    text += `*Meu CEP de Entrega:* _(a informar no chat)_%0A%0A`;
+                }
+                text += "Por favor, me informe o valor do frete e os dados para pagamento!";
+            }
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+            window.open(url, '_blank');
+        });
+
+        // --- Handlers de Cálculo de Frete ---
+        // 1. Calculadora da Landing Page
+        const setupPageFrete = () => {
+            const cepInput = document.getElementById('pageCepDestino');
+            const btnCalc = document.getElementById('btnPageCalcularFrete');
+            const btnTxt = document.getElementById('btnPageCalcularTxt');
+            const resContainer = document.getElementById('pageFreteResultado');
+
+            if (!cepInput || !btnCalc) return;
+
+            cepInput.addEventListener('input', (e) => {
+                e.target.value = formatCep(e.target.value);
+            });
+
+            cepInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') btnCalc.click();
+            });
+
+            btnCalc.addEventListener('click', async () => {
+                const cep = cepInput.value.trim();
+                if (!cep || cep.replace(/\D/g, '').length !== 8) {
+                    showToast('Digite um CEP válido com 8 dígitos.');
+                    cepInput.focus();
+                    return;
+                }
+
+                btnTxt.textContent = 'Calculando...';
+                btnCalc.disabled = true;
+
+                try {
+                    const cotacao = await calcularCotacaoCorreios(cep);
+                    document.getElementById('pageDestinoLocal').textContent = `${cotacao.localidade} - ${cotacao.uf} (${cotacao.cep})`;
+                    document.getElementById('pagePrazoSedex').textContent = cotacao.sedex.prazo;
+                    document.getElementById('pageValorSedex').textContent = formatMoney(cotacao.sedex.valor);
+
+                    resContainer.classList.remove('hidden');
+
+                    // Sincroniza com o carrinho automaticamente
+                    const cartCepInput = document.getElementById('cartCepDestino');
+                    if (cartCepInput) cartCepInput.value = cotacao.cep;
+
+                    showToast(`Cotação para ${cotacao.localidade} realizada!`);
+                } catch (err) {
+                    showToast(err.message || 'Erro ao calcular o frete.');
+                } finally {
+                    btnTxt.textContent = 'Calcular Frete';
+                    btnCalc.disabled = false;
+                }
+            });
+        };
+
+        // 2. Calculadora no Carrinho
+        const setupCartFrete = () => {
+            const cepInput = document.getElementById('cartCepDestino');
+            const btnCalc = document.getElementById('btnCartCalcularFrete');
+            const btnTxt = document.getElementById('btnCartCalcularTxt');
+            const localidadeEl = document.getElementById('cartFreteLocalidade');
+            const opcoesContainer = document.getElementById('cartFreteOpcoes');
+
+            if (!cepInput || !btnCalc) return;
+
+            cepInput.addEventListener('input', (e) => {
+                e.target.value = formatCep(e.target.value);
+            });
+
+            cepInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') btnCalc.click();
+            });
+
+            btnCalc.addEventListener('click', async () => {
+                const cep = cepInput.value.trim();
+                if (!cep || cep.replace(/\D/g, '').length !== 8) {
+                    showToast('Digite um CEP válido com 8 dígitos.');
+                    cepInput.focus();
+                    return;
+                }
+
+                btnTxt.textContent = '...';
+                btnCalc.disabled = true;
+
+                try {
+                    const totalItens = cart.reduce((sum, item) => sum + item.quantity, 1);
+                    const cotacao = await calcularCotacaoCorreios(cep, totalItens);
+                    cartFrete.cotacao = cotacao;
+                    cartFrete.cep = cotacao.cep;
+                    cartFrete.localidade = cotacao.localidade;
+                    cartFrete.uf = cotacao.uf;
+
+                    localidadeEl.querySelector('span').textContent = `${cotacao.localidade} - ${cotacao.uf}`;
+                    localidadeEl.classList.remove('hidden');
+
+                    document.getElementById('cartPrazoSedex').textContent = cotacao.sedex.prazo;
+                    document.getElementById('cartValorSedex').textContent = formatMoney(cotacao.sedex.valor);
+
+                    opcoesContainer.classList.remove('hidden');
+
+                    // Aplica SEDEX automaticamente
+                    selecionarFreteCart();
+
+                    showToast(`Frete calculado para ${cotacao.localidade}!`);
+                } catch (err) {
+                    showToast(err.message || 'Erro ao calcular frete no carrinho.');
+                } finally {
+                    btnTxt.textContent = 'Calcular';
+                    btnCalc.disabled = false;
+                }
+            });
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+            setupPageFrete();
+            setupCartFrete();
+            
+            // Navbar Glass Effect on Scroll
+            const navbar = document.getElementById('navbar');
+            const navInner = navbar.querySelector('div.flex');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    navInner.classList.replace('h-20', 'h-16');
+                } else {
+                    navInner.classList.replace('h-16', 'h-20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "brahmaeorpingtondosul",
+  "version": "1.0.0",
+  "description": "Criatório Brahma e Orpington do Sul - Landing Page e E-commerce de Ovos Férteis",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "landing-page",
+    "ecommerce",
+    "ovos-ferteis"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+

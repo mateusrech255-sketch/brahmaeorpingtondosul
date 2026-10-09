@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Serviço | Criatório Brahma e Orpington do Sul</title>
+    <meta name="description" content="Termos de Serviço e Condições de Venda do Criatório Brahma e Orpington do Sul. Informações sobre compras, pagamentos, disponibilidade e compromissos do comprador.">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Custom Colors & Design System -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rustic-dark': '#2A2F25',
+                        'rustic-green': '#3B4D36',
+                        'rustic-earth': '#8B5A2B',
+                        'rustic-gold': '#C89D3C',
+                        'rustic-offwhite': '#F4F1EA',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F4F1EA; }
+        ::-webkit-scrollbar-thumb { background: #3B4D36; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2A2F25; }
+    </style>
+</head>
+<body class="bg-rustic-offwhite text-rustic-dark font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-rustic-dark/95 backdrop-blur-sm text-rustic-offwhite shadow-lg transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-12 h-12 object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-200">
+                    <span class="font-serif text-xl md:text-2xl font-bold tracking-wide leading-tight">
+                        Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
+                    </span>
+                </a>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10 text-white">
+                        <i class="ph-bold ph-book-open text-rustic-gold"></i>
+                        <span>E-books</span>
+                    </a>
+                    <a href="index.html#catalogo" class="hidden sm:inline-flex items-center gap-2 bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full border border-rustic-gold/30 transition-all duration-200">
+                        <i class="ph-bold ph-egg text-base"></i> Ver Catálogo
+                    </a>
+                    <a href="index.html" class="inline-flex items-center gap-2 bg-rustic-green hover:bg-[#4b6245] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-full transition-all duration-200 shadow-md">
+                        <i class="ph-bold ph-arrow-left text-base"></i> Voltar à Loja
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Hero Banner -->
+    <header class="pt-28 pb-16 bg-gradient-to-b from-rustic-dark via-[#24291f] to-rustic-dark text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#C89D3C_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <!-- Breadcrumbs -->
+            <nav class="flex justify-center items-center gap-2 text-xs text-gray-300 mb-6" aria-label="Breadcrumb">
+                <a href="index.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1">
+                    <i class="ph-bold ph-house"></i> Início
+                </a>
+                <span class="text-gray-500">/</span>
+                <span class="text-rustic-gold font-semibold">Termos de Serviço</span>
+            </nav>
+
+            <span class="inline-flex items-center gap-2 bg-rustic-gold/20 text-rustic-gold text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4 border border-rustic-gold/30">
+                <i class="ph-bold ph-file-text text-sm"></i> Contrato de Compra e Venda de Ovos Férteis
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-4">
+                Termos de Serviço
+            </h1>
+            <p class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                Condições gerais que regem a navegação em nosso site, cotação de fretes e compra de ovos férteis de raças puras.
+            </p>
+            <div class="mt-6 flex items-center justify-center gap-4 text-xs text-gray-400">
+                <span class="flex items-center gap-1"><i class="ph-bold ph-scales"></i> Legislação Brasileira Vigente</span>
+                <span>•</span>
+                <span class="flex items-center gap-1"><i class="ph-bold ph-clock"></i> Leitura de 5 min</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Sidebar / Quick Nav (Desktop) -->
+            <aside class="hidden lg:block lg:col-span-4">
+                <div class="sticky top-28 space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                        <h3 class="font-serif font-bold text-base text-rustic-dark mb-4 flex items-center gap-2">
+                            <i class="ph-bold ph-list-dashes text-rustic-gold"></i> Cláusulas Contratuais
+                        </h3>
+                        <nav class="space-y-2 text-xs font-medium text-gray-600">
+                            <a href="#aceite" class="block py-1 hover:text-rustic-green transition-colors">1. Aceitação e Objeto</a>
+                            <a href="#disponibilidade" class="block py-1 hover:text-rustic-green transition-colors">2. Postura e Disponibilidade</a>
+                            <a href="#pedidos-checkout" class="block py-1 hover:text-rustic-green transition-colors">3. Pedidos e Atendimento</a>
+                            <a href="#precos-pagamentos" class="block py-1 hover:text-rustic-green transition-colors">4. Preços e Formas de Pagamento</a>
+                            <a href="#envio-responsabilidade" class="block py-1 hover:text-rustic-green transition-colors">5. Envio e Obrigações Postais</a>
+                            <a href="#cancelamentos" class="block py-1 hover:text-rustic-green transition-colors">6. Cancelamento e Perecibilidade</a>
+                            <a href="#propriedade" class="block py-1 hover:text-rustic-green transition-colors">7. Propriedade Intelectual</a>
+                            <a href="#foro" class="block py-1 hover:text-rustic-green transition-colors">8. Legislação e Foro</a>
+                        </nav>
+                    </div>
+
+                    <!-- Card Outras Políticas -->
+                    <div class="bg-rustic-dark text-white rounded-2xl p-6 shadow-md border border-white/10">
+                        <h4 class="font-serif font-bold text-sm text-rustic-gold mb-3 flex items-center gap-2">
+                            <i class="ph-bold ph-files"></i> Políticas Complementares
+                        </h4>
+                        <ul class="space-y-2 text-xs text-gray-300">
+                            <li><a href="aviso-legal.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Aviso Legal (Incubação)</a></li>
+                            <li><a href="politica-de-garantia.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Política de Garantia</a></li>
+                            <li><a href="politica-de-envio.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Política de Envio (SEDEX)</a></li>
+                            <li><a href="politica-de-privacidade.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Política de Privacidade</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Text Content -->
+            <article class="lg:col-span-8 space-y-8 bg-white p-6 sm:p-10 rounded-3xl shadow-sm border border-stone-200">
+                
+                <!-- Destaque Informativo -->
+                <div class="bg-stone-100 border-l-4 border-rustic-dark p-5 rounded-r-2xl">
+                    <p class="text-xs sm:text-sm font-semibold text-rustic-dark leading-relaxed">
+                        Ao navegar em nossa loja virtual, simular fretes dos Correios ou finalizar pedidos via WhatsApp com o <strong>Criatório Brahma e Orpington do Sul</strong>, você declara estar de acordo com os presentes Termos de Serviço e condições comerciais.
+                    </p>
+                </div>
+
+                <!-- Seção 1 -->
+                <section id="aceite" class="space-y-3 pt-2">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">1</span>
+                        Aceitação e Objeto
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Estes Termos de Serviço aplicam-se a todas as transações de compra e venda de ovos férteis de aves de raça pura (galinhas ornamentais e de corte nobre) realizadas através deste site e dos canais oficiais de atendimento do <strong>Criatório Brahma e Orpington do Sul</strong>, sediado em Maximiliano de Almeida - RS.
+                    </p>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        O objeto consiste na disponibilização de ovos galados e frescos das raças criadas e selecionadas pelo criatório (incluindo Brahma Buff, Brahma Isabelli, Orpington Negro, Orpington Azul, Orpington Cuckoo, Orpington Mottled e Gigante Negro de Jersey/GSB).
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 2 -->
+                <section id="disponibilidade" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">2</span>
+                        Postura Sazonal e Disponibilidade
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Por se tratar de criação natural e respeito ao bem-estar animal, a postura das aves está sujeita a ciclos naturais, fatores climáticos (estações do ano, temperatura e luminosidade) e períodos de muda de penas.
+                    </p>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        A inclusão de produtos no carrinho do site indica intenção de compra. A confirmação efetiva do lote e da data exata de envio é realizada diretamente via WhatsApp com nossa equipe, respeitando a ordem de reservas e a produção diária das matrizes.
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 3 -->
+                <section id="pedidos-checkout" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">3</span>
+                        Processo de Pedido e Atendimento Humanizado
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Adotamos um modelo de compra transparente e assistido:
+                    </p>
+                    <ol class="space-y-2 text-xs sm:text-sm text-gray-700 list-decimal list-inside">
+                        <li><strong>Seleção no Catálogo:</strong> O comprador escolhe as raças e quantidade de ovos no catálogo virtual.</li>
+                        <li><strong>Simulação de Frete:</strong> Informa o CEP de destino para cálculo automático do prazo e tarifa do SEDEX dos Correios.</li>
+                        <li><strong>Finalização via WhatsApp:</strong> O pedido estruturado é enviado com um clique ao nosso WhatsApp oficial.</li>
+                        <li><strong>Confirmação e Agendamento:</strong> Verificamos a coleta recente das matrizes desejadas e confirmamos a data da postagem (geralmente segundas ou terças-feiras).</li>
+                    </ol>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 4 -->
+                <section id="precos-pagamentos" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">4</span>
+                        Preços e Condições de Pagamento
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Os valores dos ovos estão informados em moeda corrente nacional (BRL - R$) por dúzia ou fração indicada no catálogo. O valor do frete SEDEX dos Correios é somado ao total do pedido.
+                    </p>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Aceitamos pagamentos via <strong>PIX</strong> e <strong>Transferência Bancária</strong>. A reserva e a embalagem dos ovos para envio são iniciadas apenas após a confirmação do pagamento e envio do respectivo comprovante bancário.
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 5 -->
+                <section id="envio-responsabilidade" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">5</span>
+                        Envio Postal e Obrigações do Comprador
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        É de responsabilidade exclusiva do comprador:
+                    </p>
+                    <ul class="space-y-2 text-xs sm:text-sm text-gray-700 list-disc list-inside">
+                        <li>Fornecer dados cadastrais e endereço de entrega completos, exatos e com número e referências.</li>
+                        <li>Acompanhar ativamente o código de rastreamento enviado no WhatsApp.</li>
+                        <li>Garantir a presença de pessoa apta a receber o pacote no endereço no dia da entrega dos Correios, evitando devoluções ou tentativas frustradas que estendam o tempo dos ovos fora de temperatura ideal.</li>
+                    </ul>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 6 -->
+                <section id="cancelamentos" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">6</span>
+                        Cancelamento e Perecibilidade do Produto
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        <strong>Antes do Despacho:</strong> O comprador pode solicitar o cancelamento e reembolso do pedido até o momento que antecede a separação, descanso final e embalagem dos ovos para postagem.
+                    </p>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        <strong>Após o Despacho nos Correios:</strong> Devido à natureza biológica perecível e ao prazo crítico de viabilidade dos embriões de aves, <strong>não é aplicável a devolução física de ovos despachados</strong>, uma vez que a viagem de retorno ao remetente inviabiliza 100% dos ovos para qualquer incubação futura. Questões relacionadas a avarias físicas no trajeto são regidas estritamente pela nossa <a href="politica-de-garantia.html" class="text-rustic-gold hover:underline font-semibold">Política de Garantia</a>.
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 7 -->
+                <section id="propriedade" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">7</span>
+                        Propriedade Intelectual
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Todo o conteúdo visual deste site — incluindo fotos reais dos reprodutores e matrizes, fotografias de piquetes, logomarcas, ilustrações do selo e descrições técnicas das raças — é de propriedade exclusiva do Criatório Brahma e Orpington do Sul. É proibida a reprodução, cópia ou veiculação comercial sem autorização prévia por escrito.
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 8 -->
+                <section id="foro" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">8</span>
+                        Legislação e Foro
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Estes Termos são regidos e interpretados segundo as leis da República Federativa do Brasil. Para dirimir quaisquer controvérsias decorrentes das transações, fica eleito o Foro da Comarca competente que abrange o município de Maximiliano de Almeida - RS, com renúncia a qualquer outro, por mais privilegiado que seja.
+                    </p>
+                </section>
+
+            </article>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1c17] text-gray-400 py-12 border-t border-white/5 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <img src="assets/images/logo.svg" alt="Criatório Brahma e Orpington do Sul" class="w-10 h-10 object-contain">
+                    <span class="font-serif text-lg font-bold text-white">Brahma & Orpington do Sul</span>
+                </div>
+                <p class="text-xs mb-4 leading-relaxed">Especialistas na criação, preservação e aprimoramento genético de aves nobres e produção de ovos férteis selecionados.</p>
+                <p class="text-[11px] text-rustic-gold">Maximiliano de Almeida - RS (CEP 99890-000)</p>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Políticas & Diretrizes</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="politica-de-privacidade.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-shield-check text-sm"></i> Política de Privacidade</a></li>
+                    <li><a href="politica-de-envio.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-truck text-sm"></i> Política de Envio</a></li>
+                    <li><a href="politica-de-garantia.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-seal-check text-sm"></i> Política de Garantia</a></li>
+                    <li><a href="termos-de-servico.html" class="text-rustic-gold font-medium hover:underline flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-file-text text-sm"></i> Termos de Serviço</a></li>
+                    <li><a href="aviso-legal.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-warning-circle text-sm"></i> Aviso Legal (Incubação)</a></li>
+                    <li><a href="ebooks.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-book-open text-sm"></i> E-books & Manuais</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Atendimento & Redes</h4>
+                <p class="text-xs text-gray-400 mb-2">Acompanhe nossa rotina de criação e matrizes:</p>
+                <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="inline-flex items-center justify-center md:justify-start gap-2 text-rustic-gold hover:text-yellow-400 transition-colors text-xs font-semibold mb-3">
+                    <i class="ph-bold ph-instagram-logo text-xl"></i> @brahma_e_orpington_do_sul_
+                </a>
+                <p class="text-[11px] text-gray-400">Atendimento personalizado com suporte direto no manejo dos ovos.</p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Aviso Biológico</h4>
+                <p class="text-xs leading-relaxed">Enviamos ovos frescos e galados. A taxa final de eclosão depende diretamente das condições do transporte postal e do manejo durante a incubação, não sendo possível garantir 100% de nascimentos.</p>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-400 max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p>&copy; 2023-2026 Criatório Brahma e Orpington do Sul. Todos os direitos reservados.</p>
+            <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                <span>Criado por</span>
+                <a href="https://fpagency.com.br" target="_blank" rel="noopener noreferrer" class="text-rustic-gold hover:text-yellow-400 font-semibold transition-colors flex items-center gap-1 hover:underline">
+                    FP Agency <i class="ph-bold ph-arrow-square-out text-[11px]"></i>
+                </a>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 text-[11px]">
+                <a href="index.html" class="hover:text-rustic-gold hover:underline">Início</a>
+                <span>•</span>
+                <a href="termos-de-servico.html" class="text-rustic-gold underline">Termos</a>
+                <span>•</span>
+                <a href="politica-de-privacidade.html" class="hover:underline">Privacidade</a>
+                <span>•</span>
+                <a href="aviso-legal.html" class="hover:underline">Aviso Legal</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

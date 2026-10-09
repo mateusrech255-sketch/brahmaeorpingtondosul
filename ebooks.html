@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-books & Manuais Técnicos | Criatório Brahma e Orpington do Sul</title>
+    <meta name="description" content="E-books técnicos para criadores: Guia Completo da Raça Orpington, Guia Completo sobre Brahma e Guia Completo da Raça GSB. Padrões raciais, genética, reprodução e manejo. Envio imediato em PDF.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Custom Colors & Design System -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rustic-dark': '#2A2F25',
+                        'rustic-green': '#3B4D36',
+                        'rustic-earth': '#8B5A2B',
+                        'rustic-gold': '#C89D3C',
+                        'rustic-offwhite': '#F4F1EA',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F1EA; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B4D36; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2A2F25; 
+        }
+        
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .animate-float {
+            animation: subtle-float 5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-rustic-offwhite text-rustic-dark font-sans antialiased selection:bg-rustic-gold selection:text-rustic-dark">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-rustic-dark/95 backdrop-blur-sm text-rustic-offwhite shadow-lg transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20 transition-all duration-300">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-12 h-12 object-contain drop-shadow-md group-hover:scale-105 transition-transform">
+                    <span class="font-serif text-xl md:text-2xl font-bold tracking-wide leading-tight">
+                        Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
+                    </span>
+                </a>
+
+                <!-- Navigation Links -->
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <a href="index.html#catalogo" class="hidden sm:inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10">
+                        <i class="ph-bold ph-egg text-rustic-gold"></i>
+                        <span>Ovos Férteis</span>
+                    </a>
+
+                    <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold text-rustic-gold bg-white/10 py-2 px-3 rounded-full border border-rustic-gold/30">
+                        <i class="ph-bold ph-book-open"></i>
+                        <span>E-books</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors p-2" title="Instagram">
+                        <i class="ph ph-instagram-logo text-2xl md:text-3xl"></i>
+                    </a>
+
+                    <!-- Cart Button with Counter -->
+                    <button id="cartBtn" class="relative p-2 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-2 bg-rustic-green/30 rounded-full px-4 h-10 border border-white/10">
+                        <i class="ph ph-shopping-cart text-2xl"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-transform">0</span>
+                        <span class="hidden md:inline font-medium text-sm">Carrinho</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Hero Banner -->
+    <header class="pt-28 pb-12 bg-gradient-to-b from-rustic-dark via-[#24291f] to-rustic-dark text-white border-b border-rustic-gold/20 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#C89D3C_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Breadcrumbs -->
+            <nav class="flex justify-center items-center gap-2 text-xs text-gray-300 mb-4" aria-label="Breadcrumb">
+                <a href="index.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1">
+                    <i class="ph-bold ph-house"></i> Início
+                </a>
+                <span class="text-gray-500">/</span>
+                <span class="text-rustic-gold font-semibold">Biblioteca de E-books</span>
+            </nav>
+
+            <span class="inline-flex items-center gap-2 bg-rustic-gold/20 text-rustic-gold text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-3 border border-rustic-gold/30">
+                <i class="ph-bold ph-books text-sm"></i> Coleção Completa de Avicultura Nobre
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-3">
+                E-books & Manuais Técnicos Oficiais
+            </h1>
+            <p class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed mb-6">
+                Aprofunde seus conhecimentos com materiais desenvolvidos para criadores iniciantes e experientes. Orpington, Brahma e Galinha Sertaneja Balão (GSB). Envio imediato em PDF.
+            </p>
+
+            <!-- Quick Navigation between the 3 eBooks -->
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#ebook-orpington" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full border border-white/20 transition-all">
+                    <i class="ph-bold ph-book text-rustic-gold"></i> Guia da Raça Orpington
+                </a>
+                <a href="#ebook-brahma" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full border border-white/20 transition-all">
+                    <i class="ph-bold ph-book text-rustic-gold"></i> Guia Completo sobre Brahma
+                </a>
+                <a href="#ebook-gsb" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full border border-white/20 transition-all">
+                    <i class="ph-bold ph-book text-rustic-gold"></i> Guia da Raça GSB
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Grid de Apresentação dos 3 E-books -->
+    <section class="py-12 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold text-rustic-earth uppercase tracking-widest block mb-1">Catálogo de Livros Digitais</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-rustic-dark">Escolha Seu Guia Técnico</h2>
+                <div class="h-1 w-16 bg-rustic-gold mx-auto rounded mt-3"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1: E-book Orpington -->
+                <div class="bg-rustic-offwhite rounded-3xl p-6 border-2 border-rustic-gold/50 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-rustic-dark text-rustic-gold text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                        33% OFF
+                    </div>
+                    <div>
+                        <div class="flex justify-center mb-4">
+                            <img src="assets/images/ebook-orpington.png" alt="E-book: Guia Completo da Raça Orpington" class="h-60 object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <span class="text-xs font-bold text-rustic-earth uppercase tracking-wider block mb-1">Manual Técnico Especial</span>
+                        <h3 class="font-serif text-xl font-bold text-rustic-dark mb-2">Guia da Raça Orpington</h3>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                            Descubra tudo sobre uma das raças mais admiradas! Padrão racial, variedades de cores, genética, reprodução e seleção para aprimorar o plantel.
+                        </p>
+                        <div class="flex items-center gap-2 text-xs text-rustic-green font-semibold mb-4 bg-white/80 p-2.5 rounded-xl border border-gray-200">
+                            <i class="ph-bold ph-file-pdf text-red-500 text-lg"></i>
+                            <span class="text-[11px]">Envio por PDF • Download Imediato</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-gray-400 line-through text-xs">De R$ 89,90</span>
+                            <span class="text-2xl font-serif font-bold text-rustic-gold">Por R$ 59,90</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="addEbookToCart('ebook-orpington')" class="bg-rustic-dark hover:bg-rustic-green text-white font-bold py-3 px-2 rounded-xl text-xs transition-all flex items-center justify-center gap-1 shadow active:scale-95">
+                                <i class="ph-bold ph-shopping-cart-simple text-sm text-rustic-gold"></i> Carrinho
+                            </button>
+                            <a href="#ebook-orpington" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3 px-2 rounded-xl text-xs transition-all flex items-center justify-center gap-1 text-center shadow active:scale-95">
+                                Ver Detalhes <i class="ph-bold ph-arrow-down text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: E-book Brahma -->
+                <div class="bg-rustic-offwhite rounded-3xl p-6 border-2 border-rustic-gold/40 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-rustic-dark text-rustic-gold text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                        33% OFF
+                    </div>
+                    <div>
+                        <div class="flex justify-center mb-4">
+                            <img src="assets/images/ebook-brahma.png" alt="E-book: Guia Completo sobre Brahma" class="h-60 object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <span class="text-xs font-bold text-rustic-earth uppercase tracking-wider block mb-1">Manual Técnico</span>
+                        <h3 class="font-serif text-xl font-bold text-rustic-dark mb-2">Guia Completo sobre Brahma</h3>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                            Características, variedades de cores nobres, genética, reprodução e seleção de reprodutores e matrizes de grande porte.
+                        </p>
+                        <div class="flex items-center gap-2 text-xs text-rustic-green font-semibold mb-4 bg-white/80 p-2.5 rounded-xl border border-gray-200">
+                            <i class="ph-bold ph-file-pdf text-red-500 text-lg"></i>
+                            <span class="text-[11px]">Envio por PDF • Download Imediato</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-gray-400 line-through text-xs">De R$ 59,90</span>
+                            <span class="text-2xl font-serif font-bold text-rustic-gold">Por R$ 39,90</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="addEbookToCart('ebook-brahma')" class="bg-rustic-dark hover:bg-rustic-green text-white font-bold py-3 px-2 rounded-xl text-xs transition-all flex items-center justify-center gap-1 shadow active:scale-95">
+                                <i class="ph-bold ph-shopping-cart-simple text-sm text-rustic-gold"></i> Carrinho
+                            </button>
+                            <a href="#ebook-brahma" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3 px-2 rounded-xl text-xs transition-all flex items-center justify-center gap-1 text-center shadow active:scale-95">
+                                Ver Detalhes <i class="ph-bold ph-arrow-down text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: E-book GSB -->
+                <div class="bg-rustic-offwhite rounded-3xl p-6 border-2 border-rustic-gold/40 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-rustic-dark text-rustic-gold text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                        33% OFF
+                    </div>
+                    <div>
+                        <div class="flex justify-center mb-4">
+                            <img src="assets/images/ebook-gsb.png" alt="E-book: Guia Completo da Raça GSB" class="h-60 object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <span class="text-xs font-bold text-rustic-earth uppercase tracking-wider block mb-1">Manual Técnico</span>
+                        <h3 class="font-serif text-xl font-bold text-rustic-dark mb-2">Guia da Raça GSB (Sertaneja Balão)</h3>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                            Origem, características físicas, conformação do formato balão, padrões raciais, manejo, nutrição e reprodução de matrizes gigantes.
+                        </p>
+                        <div class="flex items-center gap-2 text-xs text-rustic-green font-semibold mb-4 bg-white/80 p-2.5 rounded-xl border border-gray-200">
+                            <i class="ph-bold ph-file-pdf text-red-500 text-lg"></i>
+                            <span class="text-[11px]">Envio por PDF • Download Imediato</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-gray-400 line-through text-xs">De R$ 59,90</span>
+                            <span class="text-2xl font-serif font-bold text-rustic-gold">Por R$ 39,90</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="addEbookToCart('ebook-gsb')" class="bg-rustic-dark hover:bg-rustic-green text-white font-bold py-3 px-2 rounded-xl text-xs transition-all flex items-center justify-center gap-1 shadow active:scale-95">
+                                <i class="ph-bold ph-shopping-cart-simple text-sm text-rustic-gold"></i> Carrinho
+                            </button>
+                            <a href="#ebook-gsb" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3 px-2 rounded-xl text-xs transition-all flex items-center justify-center gap-1 text-center shadow active:scale-95">
+                                Ver Detalhes <i class="ph-bold ph-arrow-down text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DETALHE COMPLETO 1: GUIA DA RAÇA ORPINGTON  -->
+    <!-- ========================================== -->
+    <section id="ebook-orpington" class="py-16 md:py-24 bg-rustic-offwhite scroll-mt-20 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                
+                <!-- Imagem do Livro Orpington -->
+                <div class="lg:col-span-5 flex flex-col items-center">
+                    <div class="relative w-full max-w-md mx-auto group">
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-rustic-gold/30 via-rustic-green/15 to-transparent rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-rustic-gold/40 shadow-xl flex flex-col items-center">
+                            <div class="absolute top-4 left-4 bg-rustic-dark text-rustic-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                <i class="ph-bold ph-file-pdf text-red-400"></i> Envio por PDF
+                            </div>
+                            <div class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                <i class="ph-bold ph-lightning"></i> Envio Imediato
+                            </div>
+
+                            <div class="my-6 transform transition-all duration-500 group-hover:scale-105 animate-float">
+                                <img src="assets/images/ebook-orpington.png" alt="E-book Guia Completo da Raça Orpington" class="w-full max-h-[460px] object-contain drop-shadow-2xl rounded-lg">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2 w-full pt-4 border-t border-gray-200 text-center text-xs text-gray-700">
+                                <div class="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <i class="ph-bold ph-device-mobile text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Celular / PC</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <i class="ph-bold ph-printer text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Imprimível</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <i class="ph-bold ph-infinity text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Acesso Vitalício</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Orpington -->
+                <div class="lg:col-span-7 flex flex-col">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-flex items-center gap-1.5 bg-rustic-gold/20 text-rustic-dark font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full border border-rustic-gold/40">
+                            <i class="ph-bold ph-certificate text-rustic-earth"></i> Manual Técnico Premium
+                        </span>
+                        <span class="inline-flex items-center gap-1 text-amber-500 text-xs font-bold">
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <span class="text-gray-600 ml-1 font-medium">(Conhecimento que Transforma Criação)</span>
+                        </span>
+                    </div>
+
+                    <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-rustic-dark leading-tight mb-4">
+                        GUIA COMPLETO DA RAÇA <span class="text-rustic-green">ORPINGTON</span>
+                    </h2>
+
+                    <p class="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
+                        <strong>Descubra tudo sobre uma das raças mais admiradas da criação de galinhas ornamentais!</strong>
+                    </p>
+
+                    <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm mb-6 space-y-3">
+                        <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+                            Este e-book foi desenvolvido para criadores iniciantes e experientes que desejam conhecer melhor a raça Orpington, suas características, variedades de cores, genética e técnicas de criação.
+                        </p>
+                        <p class="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-3">
+                            Um material de consulta para quem deseja ampliar seus conhecimentos e aprimorar sua criação de Orpington.
+                        </p>
+                    </div>
+
+                    <!-- Preço e Envio -->
+                    <div class="bg-gradient-to-r from-rustic-dark to-[#343b2f] text-white rounded-2xl p-6 mb-6 shadow-xl border border-rustic-gold/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs uppercase tracking-widest text-gray-300 font-semibold block mb-1">
+                                    Oferta de Lançamento
+                                </span>
+                                <div class="flex items-baseline gap-3">
+                                    <span class="text-gray-400 line-through text-lg font-medium">De R$ 89,90</span>
+                                    <span class="text-3xl sm:text-4xl font-serif font-bold text-rustic-gold">Por R$ 59,90</span>
+                                    <span class="bg-rustic-gold/20 text-rustic-gold border border-rustic-gold/40 text-xs font-bold px-2.5 py-1 rounded-full uppercase">
+                                        33% OFF
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/10 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/10 text-left sm:text-right">
+                                <span class="text-xs text-gray-300 block">Formato & Envio:</span>
+                                <span class="text-sm font-bold text-white flex items-center sm:justify-end gap-1.5">
+                                    <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF
+                                </span>
+                                <span class="text-[11px] text-green-400 block font-semibold">Sem custo de frete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                        <button onclick="addEbookToCart('ebook-orpington')" class="flex-1 bg-rustic-dark hover:bg-rustic-green text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform active:scale-95 border border-white/10 group">
+                            <i class="ph-bold ph-shopping-cart-simple text-xl text-rustic-gold group-hover:scale-110 transition-transform"></i>
+                            <span class="text-base">Adicionar ao Carrinho</span>
+                        </button>
+
+                        <button onclick="buyDirectWhatsApp('ebook-orpington')" class="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform active:scale-95">
+                            <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
+                            <span class="text-base">Comprar no WhatsApp</span>
+                        </button>
+                    </div>
+
+                    <div class="text-center sm:text-left text-xs font-medium text-rustic-green">
+                        📖 Aprenda, evolua e leve sua criação a um novo nível!
+                    </div>
+                </div>
+            </div>
+
+            <!-- O que você vai encontrar (Lista do usuário) -->
+            <div class="mt-14 pt-12 border-t border-gray-200">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <span class="text-xs font-bold text-rustic-earth uppercase tracking-widest block mb-1">Conteúdo Programático</span>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-rustic-dark">📚 O Que Você Vai Encontrar no Guia Orpington</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3">
+                        <i class="ph-bold ph-scroll text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">História & Origem</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Origem britânica por William Cook e a evolução histórica da raça.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3">
+                        <i class="ph-bold ph-seal-check text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">Padrão Racial</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Formato arredondado, peito largo, dorso em U e plumagem extremamente densa.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3">
+                        <i class="ph-bold ph-palette text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">Variedades de Cores</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Negro, Azul, Splash, Cuckoo, Mottled e outras nuances raras.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3">
+                        <i class="ph-bold ph-dna text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">Genética & Hereditariedade</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Noções essenciais de cruzamentos e fixação de genes recessivos e dominantes.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3">
+                        <i class="ph-bold ph-egg text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">Reprodução & Seleção</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Como selecionar reprodutores para manter alta fertilidade e padrão morfológico.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3">
+                        <i class="ph-bold ph-heartbeat text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">Manejo & Cuidados</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Instalações, alimentação adequada para aves pesadas e higiene preventiva.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-start gap-3 md:col-span-2">
+                        <i class="ph-bold ph-trend-up text-rustic-gold text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-rustic-dark text-sm mb-1">Aprimoramento do Plantel</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">Dicas práticas de criadores experientes para elevar a qualidade genética das aves da sua propriedade a um novo nível.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DETALHE COMPLETO 2: GUIA SOBRE BRAHMA       -->
+    <!-- ========================================== -->
+    <section id="ebook-brahma" class="py-16 md:py-24 bg-white scroll-mt-20 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                
+                <!-- Imagem do Livro Brahma -->
+                <div class="lg:col-span-5 flex flex-col items-center">
+                    <div class="relative w-full max-w-md mx-auto group">
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-rustic-gold/25 via-rustic-green/15 to-transparent rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative bg-rustic-offwhite/90 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-rustic-gold/30 shadow-xl flex flex-col items-center">
+                            <div class="absolute top-4 left-4 bg-rustic-dark text-rustic-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                <i class="ph-bold ph-file-pdf text-red-400"></i> Envio por PDF
+                            </div>
+                            <div class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                <i class="ph-bold ph-lightning"></i> Envio Imediato
+                            </div>
+
+                            <div class="my-6 transform transition-all duration-500 group-hover:scale-105 animate-float">
+                                <img src="assets/images/ebook-brahma.png" alt="E-book Guia Completo sobre Brahma" class="w-full max-h-[460px] object-contain drop-shadow-2xl rounded-lg">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2 w-full pt-4 border-t border-gray-200 text-center text-xs text-gray-700">
+                                <div class="p-2 rounded-xl bg-white border border-gray-100">
+                                    <i class="ph-bold ph-device-mobile text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Celular / PC</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-white border border-gray-100">
+                                    <i class="ph-bold ph-printer text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Imprimível</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-white border border-gray-100">
+                                    <i class="ph-bold ph-infinity text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Acesso Vitalício</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Brahma -->
+                <div class="lg:col-span-7 flex flex-col">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-flex items-center gap-1.5 bg-rustic-gold/20 text-rustic-dark font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full border border-rustic-gold/40">
+                            <i class="ph-bold ph-certificate text-rustic-earth"></i> Manual Técnico Especial
+                        </span>
+                        <span class="inline-flex items-center gap-1 text-amber-500 text-xs font-bold">
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <span class="text-gray-600 ml-1 font-medium">(O Guia de Referência na Raça)</span>
+                        </span>
+                    </div>
+
+                    <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-rustic-dark leading-tight mb-4">
+                        GUIA COMPLETO SOBRE <span class="text-rustic-green">BRAHMA</span>
+                    </h2>
+
+                    <p class="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
+                        <strong>Descubra tudo sobre uma das raças de galinhas mais admiradas do mundo!</strong>
+                    </p>
+
+                    <div class="bg-rustic-offwhite rounded-2xl p-5 border border-gray-200/80 shadow-sm mb-6 space-y-3">
+                        <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+                            Neste e-book, você encontrará informações sobre a raça Brahma, suas características, variedades de cores, genética, reprodução e seleção de exemplares.
+                        </p>
+                        <p class="text-gray-600 text-sm leading-relaxed border-t border-gray-200 pt-3">
+                            Um material desenvolvido para criadores e apaixonados pela raça que desejam ampliar seus conhecimentos e aprimorar suas práticas de criação.
+                        </p>
+                    </div>
+
+                    <!-- Preço e Envio -->
+                    <div class="bg-gradient-to-r from-rustic-dark to-[#343b2f] text-white rounded-2xl p-6 mb-6 shadow-xl border border-rustic-gold/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs uppercase tracking-widest text-gray-300 font-semibold block mb-1">
+                                    Oferta de Lançamento
+                                </span>
+                                <div class="flex items-baseline gap-3">
+                                    <span class="text-gray-400 line-through text-lg font-medium">De R$ 59,90</span>
+                                    <span class="text-3xl sm:text-4xl font-serif font-bold text-rustic-gold">Por R$ 39,90</span>
+                                    <span class="bg-rustic-gold/20 text-rustic-gold border border-rustic-gold/40 text-xs font-bold px-2.5 py-1 rounded-full uppercase">
+                                        33% OFF
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/10 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/10 text-left sm:text-right">
+                                <span class="text-xs text-gray-300 block">Formato & Envio:</span>
+                                <span class="text-sm font-bold text-white flex items-center sm:justify-end gap-1.5">
+                                    <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF
+                                </span>
+                                <span class="text-[11px] text-green-400 block font-semibold">Sem custo de frete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                        <button onclick="addEbookToCart('ebook-brahma')" class="flex-1 bg-rustic-dark hover:bg-rustic-green text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform active:scale-95 border border-white/10 group">
+                            <i class="ph-bold ph-shopping-cart-simple text-xl text-rustic-gold group-hover:scale-110 transition-transform"></i>
+                            <span class="text-base">Adicionar ao Carrinho</span>
+                        </button>
+
+                        <button onclick="buyDirectWhatsApp('ebook-brahma')" class="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform active:scale-95">
+                            <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
+                            <span class="text-base">Comprar no WhatsApp</span>
+                        </button>
+                    </div>
+
+                    <div class="text-center sm:text-left text-xs font-medium text-rustic-green">
+                        📖 Adquira seu e-book e aprofunde seus conhecimentos sobre a raça Brahma!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DETALHE COMPLETO 3: GUIA DA RAÇA GSB        -->
+    <!-- ========================================== -->
+    <section id="ebook-gsb" class="py-16 md:py-24 bg-rustic-offwhite scroll-mt-20 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                
+                <!-- Imagem do Livro GSB -->
+                <div class="lg:col-span-5 flex flex-col items-center">
+                    <div class="relative w-full max-w-md mx-auto group">
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-rustic-gold/25 via-rustic-green/15 to-transparent rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-rustic-gold/30 shadow-xl flex flex-col items-center">
+                            <div class="absolute top-4 left-4 bg-rustic-dark text-rustic-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                <i class="ph-bold ph-file-pdf text-red-400"></i> Envio por PDF
+                            </div>
+                            <div class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                <i class="ph-bold ph-lightning"></i> Envio Imediato
+                            </div>
+
+                            <div class="my-6 transform transition-all duration-500 group-hover:scale-105 animate-float">
+                                <img src="assets/images/ebook-gsb.png" alt="E-book Guia Completo da Raça GSB - Galinha Sertaneja Balão" class="w-full max-h-[460px] object-contain drop-shadow-2xl rounded-lg">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2 w-full pt-4 border-t border-gray-200 text-center text-xs text-gray-700">
+                                <div class="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <i class="ph-bold ph-device-mobile text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Celular / PC</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <i class="ph-bold ph-printer text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Imprimível</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <i class="ph-bold ph-infinity text-rustic-green text-lg block mx-auto mb-1"></i>
+                                    <span class="font-medium text-[11px] block">Acesso Vitalício</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo GSB -->
+                <div class="lg:col-span-7 flex flex-col">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-flex items-center gap-1.5 bg-rustic-gold/20 text-rustic-dark font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full border border-rustic-gold/40">
+                            <i class="ph-bold ph-certificate text-rustic-earth"></i> Manual Técnico Oficial
+                        </span>
+                        <span class="inline-flex items-center gap-1 text-amber-500 text-xs font-bold">
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <span class="text-gray-600 ml-1 font-medium">(Avaliação Máxima de Criadores)</span>
+                        </span>
+                    </div>
+
+                    <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-rustic-dark leading-tight mb-4">
+                        GUIA COMPLETO DA RAÇA GSB – <span class="text-rustic-green">GALINHA SERTANEJA BALÃO</span>
+                    </h2>
+
+                    <p class="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
+                        Conheça tudo sobre a <strong>Galinha Sertaneja Balão (GSB)</strong> em um guia completo, desenvolvido para criadores e apaixonados pela raça.
+                    </p>
+
+                    <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm mb-6 space-y-3">
+                        <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+                            Neste e-book, você encontrará informações sobre a <strong>origem</strong>, as <strong>características físicas</strong>, os <strong>padrões raciais</strong>, a <strong>criação</strong>, a <strong>alimentação</strong>, a <strong>reprodução</strong> e os <strong>cuidados necessários</strong> para manter aves saudáveis.
+                        </p>
+                        <p class="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-3">
+                            Um material para quem deseja ampliar seus conhecimentos, aprimorar a criação e conhecer melhor as particularidades da raça GSB.
+                        </p>
+                    </div>
+
+                    <!-- Preço e Envio -->
+                    <div class="bg-gradient-to-r from-rustic-dark to-[#343b2f] text-white rounded-2xl p-6 mb-6 shadow-xl border border-rustic-gold/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs uppercase tracking-widest text-gray-300 font-semibold block mb-1">
+                                    Oferta Especial de Lançamento
+                                </span>
+                                <div class="flex items-baseline gap-3">
+                                    <span class="text-gray-400 line-through text-lg font-medium">De R$ 59,90</span>
+                                    <span class="text-3xl sm:text-4xl font-serif font-bold text-rustic-gold">Por R$ 39,90</span>
+                                    <span class="bg-rustic-gold/20 text-rustic-gold border border-rustic-gold/40 text-xs font-bold px-2.5 py-1 rounded-full uppercase">
+                                        33% OFF
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/10 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/10 text-left sm:text-right">
+                                <span class="text-xs text-gray-300 block">Formato & Entrega:</span>
+                                <span class="text-sm font-bold text-white flex items-center sm:justify-end gap-1.5">
+                                    <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF
+                                </span>
+                                <span class="text-[11px] text-green-400 block font-semibold">Sem custo de frete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                        <button onclick="addEbookToCart('ebook-gsb')" class="flex-1 bg-rustic-dark hover:bg-rustic-green text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform active:scale-95 border border-white/10 group">
+                            <i class="ph-bold ph-shopping-cart-simple text-xl text-rustic-gold group-hover:scale-110 transition-transform"></i>
+                            <span class="text-base">Adicionar ao Carrinho</span>
+                        </button>
+
+                        <button onclick="buyDirectWhatsApp('ebook-gsb')" class="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform active:scale-95">
+                            <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
+                            <span class="text-base">Comprar no WhatsApp</span>
+                        </button>
+                    </div>
+
+                    <div class="text-center sm:text-left text-xs font-medium text-rustic-green">
+                        📖 Adquira seu guia e aprofunde seus conhecimentos sobre a Galinha Sertaneja Balão!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold text-rustic-earth uppercase tracking-widest block mb-2">Tire Suas Dúvidas</span>
+                <h2 class="text-3xl font-serif font-bold text-rustic-dark mb-3">Perguntas Frequentes</h2>
+                <div class="h-1 w-16 bg-rustic-gold mx-auto rounded"></div>
+            </div>
+
+            <div class="space-y-4">
+                <details class="group bg-rustic-offwhite rounded-2xl border border-gray-200 overflow-hidden shadow-sm transition-all" open>
+                    <summary class="flex justify-between items-center p-5 text-sm sm:text-base font-bold text-rustic-dark cursor-pointer list-none select-none hover:bg-gray-100">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-question text-rustic-gold"></i> Como e quando recebo os e-books?
+                        </span>
+                        <i class="ph-bold ph-caret-down text-gray-500 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="px-5 pb-5 pt-1 text-sm text-gray-600 leading-relaxed border-t border-gray-200">
+                        O envio é <strong>100% digital em formato PDF</strong>. Imediatamente após a confirmação do pagamento pelo WhatsApp, os arquivos são enviados diretamente no seu WhatsApp e também para o seu e-mail, sem esperas e sem burocracia.
+                    </div>
+                </details>
+
+                <details class="group bg-rustic-offwhite rounded-2xl border border-gray-200 overflow-hidden shadow-sm transition-all">
+                    <summary class="flex justify-between items-center p-5 text-sm sm:text-base font-bold text-rustic-dark cursor-pointer list-none select-none hover:bg-gray-100">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-question text-rustic-gold"></i> Há algum custo de frete para os e-books?
+                        </span>
+                        <i class="ph-bold ph-caret-down text-gray-500 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="px-5 pb-5 pt-1 text-sm text-gray-600 leading-relaxed border-t border-gray-200">
+                        <strong>Não! O frete é totalmente grátis.</strong> Por se tratar de material digital em PDF, você paga apenas o valor do livro escolhido e recebe o arquivo instantaneamente.
+                    </div>
+                </details>
+
+                <details class="group bg-rustic-offwhite rounded-2xl border border-gray-200 overflow-hidden shadow-sm transition-all">
+                    <summary class="flex justify-between items-center p-5 text-sm sm:text-base font-bold text-rustic-dark cursor-pointer list-none select-none hover:bg-gray-100">
+                        <span class="flex items-center gap-2">
+                            <i class="ph-bold ph-question text-rustic-gold"></i> Posso comprar os 3 e-books ou incluir ovos férteis no mesmo pedido?
+                        </span>
+                        <i class="ph-bold ph-caret-down text-gray-500 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="px-5 pb-5 pt-1 text-sm text-gray-600 leading-relaxed border-t border-gray-200">
+                        Sim! Você pode adicionar o <strong>Guia da Raça Orpington</strong>, o <strong>Guia sobre Brahma</strong>, o <strong>Guia da Raça GSB</strong> e dúzias de ovos férteis no mesmo carrinho. Tudo será consolidado com total transparência no fechamento pelo WhatsApp.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-rustic-dark text-gray-400 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <img src="assets/images/logo.svg" alt="Criatório Brahma e Orpington do Sul" class="w-10 h-10 object-contain">
+                    <span class="font-serif text-lg font-bold text-white">Brahma & Orpington do Sul</span>
+                </div>
+                <p class="text-xs mb-4 leading-relaxed">Especialistas na criação, preservação e aprimoramento genético de aves nobres, produção de ovos férteis e manuais técnicos para criadores.</p>
+                <p class="text-[11px] text-rustic-gold">Maximiliano de Almeida - RS (CEP 99890-000)</p>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Biblioteca de E-books</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="ebooks.html#ebook-orpington" class="text-rustic-gold font-semibold hover:underline flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-book-open text-sm"></i> E-book Guia Orpington</a></li>
+                    <li><a href="ebooks.html#ebook-brahma" class="text-rustic-gold font-semibold hover:underline flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-book-open text-sm"></i> E-book Guia Brahma</a></li>
+                    <li><a href="ebooks.html#ebook-gsb" class="text-rustic-gold font-semibold hover:underline flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-book-open text-sm"></i> E-book Guia GSB</a></li>
+                    <li><a href="index.html#catalogo" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-egg text-sm"></i> Catálogo de Ovos Férteis</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Políticas & Diretrizes</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="politica-de-privacidade.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-shield-check text-sm"></i> Política de Privacidade</a></li>
+                    <li><a href="politica-de-envio.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-truck text-sm"></i> Política de Envio</a></li>
+                    <li><a href="politica-de-garantia.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-seal-check text-sm"></i> Política de Garantia</a></li>
+                    <li><a href="termos-de-servico.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-file-text text-sm"></i> Termos de Serviço</a></li>
+                    <li><a href="aviso-legal.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-warning-circle text-sm"></i> Aviso Legal</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Atendimento & Redes</h4>
+                <p class="text-xs text-gray-400 mb-2">Acompanhe nossa rotina de criação e matrizes:</p>
+                <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="inline-flex items-center justify-center md:justify-start gap-2 text-rustic-gold hover:text-yellow-400 transition-colors text-xs font-semibold mb-3">
+                    <i class="ph-bold ph-instagram-logo text-xl"></i> @brahma_e_orpington_do_sul_
+                </a>
+                <p class="text-[11px] text-gray-400">Envio imediato de manuais técnicos via WhatsApp e e-mail.</p>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-400 max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p>&copy; 2023-2026 Criatório Brahma e Orpington do Sul. Todos os direitos reservados.</p>
+            <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                <span>Criado por</span>
+                <a href="https://fpagency.com.br" target="_blank" rel="noopener noreferrer" class="text-rustic-gold hover:text-yellow-400 font-semibold transition-colors flex items-center gap-1 hover:underline">
+                    FP Agency <i class="ph-bold ph-arrow-square-out text-[11px]"></i>
+                </a>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 text-[11px]">
+                <a href="index.html" class="hover:text-rustic-gold hover:underline">Início</a>
+                <span>•</span>
+                <a href="politica-de-privacidade.html" class="hover:text-rustic-gold hover:underline">Privacidade</a>
+                <span>•</span>
+                <a href="politica-de-envio.html" class="hover:text-rustic-gold hover:underline">Envio</a>
+                <span>•</span>
+                <a href="politica-de-garantia.html" class="hover:text-rustic-gold hover:underline">Garantia</a>
+                <span>•</span>
+                <a href="termos-de-servico.html" class="hover:text-rustic-gold hover:underline">Termos</a>
+                <span>•</span>
+                <a href="aviso-legal.html" class="hover:text-rustic-gold hover:underline">Aviso Legal</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar Overlay -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity duration-300 opacity-0 cursor-pointer"></div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full md:w-[450px] h-full bg-rustic-offwhite z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+        <!-- Header -->
+        <div class="bg-rustic-dark text-rustic-offwhite p-5 flex justify-between items-center shadow-md z-10">
+            <h2 class="font-serif text-xl font-bold flex items-center gap-3">
+                <i class="ph ph-shopping-bag text-rustic-gold text-2xl"></i> Meu Pedido
+            </h2>
+            <button id="closeCartBtn" class="text-gray-400 hover:text-white transition-colors bg-white/10 rounded-full p-2">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items Container -->
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-4 hidden">
+            <!-- Items injected via JS -->
+        </div>
+
+        <!-- Empty Cart Message -->
+        <div id="emptyCartMsg" class="flex-1 flex flex-col items-center justify-center p-5 text-gray-400">
+            <i class="ph-thin ph-shopping-bag text-7xl mb-4 text-gray-300"></i>
+            <p class="text-lg font-medium text-gray-500">Seu carrinho está vazio.</p>
+            <p class="text-sm text-center mt-2">Adicione os e-books ou ovos férteis para finalizar o pedido.</p>
+        </div>
+
+        <!-- Footer / Checkout -->
+        <div class="bg-white p-5 border-t border-gray-200 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] z-10 max-h-[60vh] overflow-y-auto">
+            
+            <!-- Box de Frete / Envio -->
+            <div id="cartShippingBox" class="mb-4 bg-gray-50 border border-gray-200 rounded-2xl p-3.5">
+                <!-- Se apenas digital -->
+                <div id="cartDigitalShippingInfo" class="hidden flex items-center gap-3 p-1">
+                    <div class="w-9 h-9 rounded-xl bg-green-100 text-green-700 flex items-center justify-center shrink-0">
+                        <i class="ph-bold ph-file-pdf text-xl text-red-500"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-rustic-dark block">Envio Digital por PDF</span>
+                        <span class="text-[11px] text-green-700 font-semibold">Frete Grátis • Envio Imediato via WhatsApp/E-mail</span>
+                    </div>
+                </div>
+
+                <!-- Se tem ovos físicos (Correios) -->
+                <div id="cartPhysicalShippingInfo">
+                    <div class="flex items-center justify-between mb-2.5">
+                        <div class="flex items-center gap-1.5">
+                            <i class="ph-bold ph-truck text-rustic-green text-base"></i>
+                            <span class="text-xs font-bold text-rustic-dark">Frete para Ovos Férteis</span>
+                        </div>
+                        <span class="text-[10px] bg-rustic-gold/20 text-rustic-dark font-bold px-2 py-0.5 rounded-full border border-rustic-gold/30">
+                            Origem: 99890-000 (RS)
+                        </span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex gap-2">
+                            <input type="text" id="cartCepDestino" maxlength="9" placeholder="Digite seu CEP" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-rustic-dark focus:outline-none focus:border-rustic-green focus:ring-1 focus:ring-rustic-green font-medium">
+                            <button type="button" id="btnCartCalcularFrete" class="bg-rustic-green hover:bg-rustic-dark text-white px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shrink-0 active:scale-95">
+                                <span id="btnCartCalcularTxt">Calcular</span>
+                                <i class="ph-bold ph-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                        <p id="cartFreteLocalidade" class="text-[11px] text-rustic-green font-semibold mt-1 hidden flex items-center gap-1">
+                            <i class="ph-bold ph-map-pin"></i> <span></span>
+                        </p>
+
+                        <div id="cartFreteOpcoes" class="hidden pt-1">
+                            <div class="border border-rustic-green/40 bg-rustic-green/5 rounded-xl p-2.5 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 rounded-lg bg-rustic-green/10 flex items-center justify-center text-rustic-green">
+                                        <i class="ph-bold ph-airplane-takeoff text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="font-bold text-xs text-rustic-dark">SEDEX Expresso</span>
+                                        </div>
+                                        <span class="text-[10px] text-gray-500" id="cartPrazoSedex">1 a 3 dias úteis</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-xs text-rustic-green" id="cartValorSedex">R$ 0,00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumo Financeiro -->
+            <div class="space-y-1.5 mb-3.5 text-xs">
+                <div class="flex justify-between items-center text-gray-600">
+                    <span>Subtotal dos Itens:</span>
+                    <span class="font-semibold text-gray-800" id="cartSubtotal">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between items-center text-gray-600">
+                    <span class="flex items-center gap-1">
+                        Frete (<span id="cartFreteDescricao">Digital / A calcular</span>):
+                    </span>
+                    <span class="font-semibold text-rustic-green" id="cartFreteValor">Grátis</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-gray-200 text-sm">
+                    <span class="font-bold text-gray-800">Total do Pedido:</span>
+                    <span class="font-bold text-xl text-rustic-dark" id="cartTotalGeral">R$ 0,00</span>
+                </div>
+            </div>
+            
+            <button id="checkoutBtn" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-[#25D366] shadow-md">
+                <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
+                Finalizar no WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-rustic-dark text-white px-6 py-3 rounded-full shadow-xl z-[80] transition-all duration-300 translate-y-[150%] opacity-0 flex items-center gap-3 border border-rustic-gold/30">
+        <i class="ph-fill ph-check-circle text-rustic-gold text-2xl"></i>
+        <span id="toastMsg" class="font-medium text-sm"></span>
+    </div>
+
+    <!-- JS Logic & Cart Management -->
+    <script>
+        const WHATSAPP_NUMBER = "5551999999999";
+        const CEP_ORIGEM = "99890-000";
+        const CIDADE_ORIGEM = "Maximiliano de Almeida - RS";
+
+        // Catálogo de E-books
+        const EBOOKS = {
+            'ebook-orpington': {
+                id: "ebook-orpington",
+                name: "Guia Completo da Raça Orpington",
+                option: "pdf",
+                optionLabel: "Envio por PDF (Download Imediato)",
+                price: 59.90,
+                originalPrice: 89.90,
+                photo: "assets/images/ebook-orpington.png",
+                isDigital: true
+            },
+            'ebook-brahma': {
+                id: "ebook-brahma",
+                name: "Guia Completo sobre Brahma",
+                option: "pdf",
+                optionLabel: "Envio por PDF (Download Imediato)",
+                price: 39.90,
+                originalPrice: 59.90,
+                photo: "assets/images/ebook-brahma.png",
+                isDigital: true
+            },
+            'ebook-gsb': {
+                id: "ebook-gsb",
+                name: "Guia Completo da Raça GSB – Galinha Sertaneja Balão",
+                option: "pdf",
+                optionLabel: "Envio por PDF (Download Imediato)",
+                price: 39.90,
+                originalPrice: 59.90,
+                photo: "assets/images/ebook-gsb.png",
+                isDigital: true
+            }
+        };
+
+        const optionLabels = {
+            meiaDuzia: "Meia Dúzia (6)",
+            umaDuzia: "Uma Dúzia (12)",
+            duasDuzias: "Duas Dúzias (24)",
+            pdf: "Envio por PDF"
+        };
+
+        // Persistent Cart in LocalStorage
+        const CART_STORAGE_KEY = 'bos_cart';
+        let cart = [];
+
+        try {
+            const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        } catch (e) {
+            console.error("Erro ao carregar carrinho:", e);
+            cart = [];
+        }
+
+        const saveCart = () => {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            } catch (e) {
+                console.error("Erro ao salvar carrinho:", e);
+            }
+        };
+
+        const formatMoney = (value) => {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+        };
+
+        const showToast = (message) => {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMsg');
+            if (!toast || !msg) return;
+            msg.textContent = message;
+            toast.classList.remove('translate-y-[150%]', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-[150%]', 'opacity-0');
+            }, 3000);
+        };
+
+        // Adicionar E-book ao Carrinho (Orpington, Brahma ou GSB)
+        const addEbookToCart = (ebookId) => {
+            const ebook = EBOOKS[ebookId];
+            if (!ebook) return;
+
+            const existingIndex = cart.findIndex(item => item.id === ebook.id);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: ebook.id,
+                    name: ebook.name,
+                    option: ebook.option,
+                    optionLabel: ebook.optionLabel,
+                    price: ebook.price,
+                    quantity: 1,
+                    photo: ebook.photo,
+                    isDigital: true
+                });
+            }
+            saveCart();
+            updateCartUI();
+            openCart();
+            showToast(`${ebook.name} adicionado ao carrinho!`);
+        };
+
+        // Comprar Direto no WhatsApp
+        const buyDirectWhatsApp = (ebookId) => {
+            const ebook = EBOOKS[ebookId];
+            if (!ebook) return;
+
+            let text = `Olá! Gostaria de adquirir o *E-book: ${ebook.name}* 📖%0A%0A`;
+            text += `*Valor Promocional:* De ~R$ ${ebook.originalPrice.toFixed(2).replace('.', ',')}~ por *${formatMoney(ebook.price)}*%0A`;
+            text += `*Formato:* Envio imediato em PDF via WhatsApp / E-mail%0A%0A`;
+            text += `Por favor, me envie a chave PIX para eu realizar o pagamento e receber o material!`;
+            
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+            window.open(url, '_blank');
+        };
+
+        // Remove from cart
+        const removeFromCart = (index) => {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
+        };
+
+        // Update quantity
+        const updateQuantity = (index, delta) => {
+            if (!cart[index]) return;
+            const newQty = cart[index].quantity + delta;
+            if (newQty > 0) {
+                cart[index].quantity = newQty;
+            } else {
+                cart.splice(index, 1);
+            }
+            saveCart();
+            updateCartUI();
+        };
+
+        // Frete State for Physical items
+        let cartFrete = {
+            cep: '',
+            localidade: '',
+            uf: '',
+            tipo: 'sedex',
+            valor: 0,
+            prazo: '',
+            calculado: false,
+            cotacao: null
+        };
+
+        const updateCartUI = () => {
+            const countEl = document.getElementById('cartCount');
+            const container = document.getElementById('cartItemsContainer');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const totalGeralEl = document.getElementById('cartTotalGeral');
+            const cartShippingBox = document.getElementById('cartShippingBox');
+            const cartDigitalShippingInfo = document.getElementById('cartDigitalShippingInfo');
+            const cartPhysicalShippingInfo = document.getElementById('cartPhysicalShippingInfo');
+            const cartFreteDescricao = document.getElementById('cartFreteDescricao');
+            const cartFreteValor = document.getElementById('cartFreteValor');
+
+            const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+            if (countEl) {
+                countEl.textContent = totalItems;
+                if (totalItems > 0) {
+                    countEl.classList.add('scale-125');
+                    setTimeout(() => countEl.classList.remove('scale-125'), 300);
+                }
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
+            if (subtotalEl) {
+                subtotalEl.textContent = formatMoney(subtotal);
+            }
+
+            const hasPhysicalItems = cart.some(item => !item.isDigital);
+            const isAllDigital = cart.length > 0 && !hasPhysicalItems;
+
+            if (cart.length === 0) {
+                if (cartShippingBox) cartShippingBox.classList.add('hidden');
+            } else {
+                if (cartShippingBox) cartShippingBox.classList.remove('hidden');
+                if (isAllDigital) {
+                    if (cartDigitalShippingInfo) cartDigitalShippingInfo.classList.remove('hidden');
+                    if (cartPhysicalShippingInfo) cartPhysicalShippingInfo.classList.add('hidden');
+                    if (cartFreteDescricao) cartFreteDescricao.textContent = 'Envio Digital PDF';
+                    if (cartFreteValor) cartFreteValor.textContent = 'Grátis';
+                } else {
+                    if (cartDigitalShippingInfo) cartDigitalShippingInfo.classList.add('hidden');
+                    if (cartPhysicalShippingInfo) cartPhysicalShippingInfo.classList.remove('hidden');
+                    if (cartFreteDescricao) cartFreteDescricao.textContent = cartFrete.calculado ? 'SEDEX' : 'A calcular';
+                    if (cartFreteValor) cartFreteValor.textContent = cartFrete.calculado ? formatMoney(cartFrete.valor) : '--';
+                }
+            }
+
+            const freteValor = (hasPhysicalItems && cartFrete && cartFrete.calculado) ? (Number(cartFrete.valor) || 0) : 0;
+            if (totalGeralEl) {
+                totalGeralEl.textContent = formatMoney(subtotal + freteValor);
+            }
+
+            if (cart.length === 0) {
+                if (emptyMsg) emptyMsg.classList.remove('hidden');
+                if (container) {
+                    container.classList.add('hidden');
+                    container.innerHTML = '';
+                }
+                if (checkoutBtn) checkoutBtn.disabled = true;
+            } else {
+                if (emptyMsg) emptyMsg.classList.add('hidden');
+                if (container) {
+                    container.classList.remove('hidden');
+                    container.innerHTML = cart.map((item, index) => {
+                        const itemSubtotal = (Number(item.price) || 0) * (Number(item.quantity) || 1);
+                        const label = item.isDigital ? 'Envio por PDF' : (optionLabels[item.option] || item.option);
+                        return `
+                        <div class="flex gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm relative group">
+                            <img src="${item.photo}" alt="${item.name}" class="w-20 h-20 object-contain bg-stone-50 rounded-xl p-1 border border-stone-200 shrink-0">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-rustic-dark text-sm pr-6 leading-tight mb-1">${item.name}</h4>
+                                <div class="flex items-center gap-1.5 mb-1.5">
+                                    <span class="text-xs text-rustic-earth font-bold bg-rustic-gold/15 px-2 py-0.5 rounded flex items-center gap-1">
+                                        ${item.isDigital ? '<i class="ph-bold ph-file-pdf text-red-500"></i>' : '<i class="ph-bold ph-egg text-rustic-gold"></i>'}
+                                        ${label}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <div>
+                                        <span class="font-bold text-rustic-green text-sm">${formatMoney(itemSubtotal)}</span>
+                                        ${item.quantity > 1 ? `<span class="text-[10px] text-gray-400 block">(${formatMoney(item.price)} cada)</span>` : ''}
+                                    </div>
+                                    <div class="flex items-center bg-gray-50 rounded-lg border border-gray-200 shadow-inner">
+                                        <button type="button" onclick="updateQuantity(${index}, -1)" title="Diminuir" class="w-8 h-8 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 rounded-l-lg text-gray-700 transition-colors font-bold text-base"><i class="ph-bold ph-minus"></i></button>
+                                        <span class="text-sm font-bold w-8 text-center text-rustic-dark select-none">${item.quantity}</span>
+                                        <button type="button" onclick="updateQuantity(${index}, 1)" title="Aumentar" class="w-8 h-8 flex items-center justify-center hover:bg-gray-200 active:bg-gray-300 rounded-r-lg text-gray-700 transition-colors font-bold text-base"><i class="ph-bold ph-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="removeFromCart(${index})" title="Remover do carrinho" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors bg-gray-50 hover:bg-red-50 rounded-full p-1.5 shadow-sm">
+                                <i class="ph-bold ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    `}).join('');
+                }
+                if (checkoutBtn) checkoutBtn.disabled = false;
+            }
+        };
+
+        // Open/Close Cart
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        
+        const openCart = () => {
+            cartSidebar.classList.remove('translate-x-full');
+            cartOverlay.classList.remove('hidden');
+            setTimeout(() => cartOverlay.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeCart = () => {
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('opacity-0');
+            setTimeout(() => cartOverlay.classList.add('hidden'), 300);
+            document.body.style.overflow = 'auto';
+        };
+
+        document.getElementById('cartBtn').addEventListener('click', openCart);
+        document.getElementById('closeCartBtn').addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', closeCart);
+
+        // WhatsApp Checkout
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if(cart.length === 0) return;
+
+            const hasPhysicalItems = cart.some(item => !item.isDigital);
+            const isAllDigital = cart.length > 0 && !hasPhysicalItems;
+
+            let text = "Olá! Gostaria de fazer um pedido no *Criatório Brahma e Orpington do Sul*. 🐣📖%0A%0A";
+            text += "*RESUMO DOS ITENS:*%0A";
+            
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                const label = item.isDigital ? "Envio por PDF" : (optionLabels[item.option] || item.option);
+                text += `▪ ${item.quantity}x ${item.name} (${label}) -> ${formatMoney(itemTotal)}%0A`;
+            });
+
+            text += `%0A*Subtotal:* ${formatMoney(total)}%0A`;
+            
+            if (isAllDigital) {
+                text += `*Entrega:* Envio imediato em formato PDF via WhatsApp / E-mail (Frete Grátis)%0A%0A`;
+                text += `*VALOR TOTAL:* ${formatMoney(total)}%0A%0A`;
+                text += "Por favor, me informe a chave PIX para envio do material!";
+            } else if (cartFrete.calculado) {
+                text += `*Frete (${cartFrete.tipo.toUpperCase()}):* ${formatMoney(cartFrete.valor)} (Prazo: ${cartFrete.prazo})%0A`;
+                text += `*Origem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
+                text += `*Destino:* ${cartFrete.localidade} - ${cartFrete.uf} (CEP: ${cartFrete.cep})%0A%0A`;
+                text += `*VALOR TOTAL DO PEDIDO:* ${formatMoney(total + cartFrete.valor)}%0A%0A`;
+                text += "Por favor, confirme a disponibilidade e a chave PIX!";
+            } else {
+                text += `*Origem da Postagem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
+                const cepInformado = document.getElementById('cartCepDestino')?.value || '';
+                if (cepInformado) {
+                    text += `*Meu CEP de Entrega:* ${cepInformado}%0A%0A`;
+                } else {
+                    text += `*Meu CEP de Entrega:* _(a informar no chat)_%0A%0A`;
+                }
+                text += "Por favor, me informe o valor do frete e os dados para pagamento!";
+            }
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+            window.open(url, '_blank');
+        });
+
+        // Initialize UI
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartUI();
+
+            const navbar = document.getElementById('navbar');
+            const navInner = navbar.querySelector('div.flex');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    navInner.classList.replace('h-20', 'h-16');
+                } else {
+                    navInner.classList.replace('h-16', 'h-20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

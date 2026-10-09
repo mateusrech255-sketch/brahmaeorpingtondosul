@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviso Legal e Diretrizes de Incubação | Criatório Brahma e Orpington do Sul</title>
+    <meta name="description" content="Aviso Legal do Criatório Brahma e Orpington do Sul. Esclarecimentos biológicos sobre taxas de fertilidade vs eclosão, transporte postal e guia técnico de incubação.">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Custom Colors & Design System -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rustic-dark': '#2A2F25',
+                        'rustic-green': '#3B4D36',
+                        'rustic-earth': '#8B5A2B',
+                        'rustic-gold': '#C89D3C',
+                        'rustic-offwhite': '#F4F1EA',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F4F1EA; }
+        ::-webkit-scrollbar-thumb { background: #3B4D36; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2A2F25; }
+    </style>
+</head>
+<body class="bg-rustic-offwhite text-rustic-dark font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-rustic-dark/95 backdrop-blur-sm text-rustic-offwhite shadow-lg transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-12 h-12 object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-200">
+                    <span class="font-serif text-xl md:text-2xl font-bold tracking-wide leading-tight">
+                        Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
+                    </span>
+                </a>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10 text-white">
+                        <i class="ph-bold ph-book-open text-rustic-gold"></i>
+                        <span>E-books</span>
+                    </a>
+                    <a href="index.html#catalogo" class="hidden sm:inline-flex items-center gap-2 bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-full border border-rustic-gold/30 transition-all duration-200">
+                        <i class="ph-bold ph-egg text-base"></i> Ver Catálogo
+                    </a>
+                    <a href="index.html" class="inline-flex items-center gap-2 bg-rustic-green hover:bg-[#4b6245] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-full transition-all duration-200 shadow-md">
+                        <i class="ph-bold ph-arrow-left text-base"></i> Voltar à Loja
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Hero Banner -->
+    <header class="pt-28 pb-16 bg-gradient-to-b from-rustic-dark via-[#24291f] to-rustic-dark text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#C89D3C_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <!-- Breadcrumbs -->
+            <nav class="flex justify-center items-center gap-2 text-xs text-gray-300 mb-6" aria-label="Breadcrumb">
+                <a href="index.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1">
+                    <i class="ph-bold ph-house"></i> Início
+                </a>
+                <span class="text-gray-500">/</span>
+                <span class="text-rustic-gold font-semibold">Aviso Legal</span>
+            </nav>
+
+            <span class="inline-flex items-center gap-2 bg-rustic-gold/20 text-rustic-gold text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4 border border-rustic-gold/30">
+                <i class="ph-bold ph-warning-circle text-sm"></i> Informações Biológicas • Manejo Técnico
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-white mb-4">
+                Aviso Legal & Diretrizes Biológicas
+            </h1>
+            <p class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                Entenda a distinção entre taxa de fertilidade e taxa de eclosão, os impactos do transporte postal e as melhores práticas para o sucesso da sua incubação.
+            </p>
+            <div class="mt-6 flex items-center justify-center gap-4 text-xs text-gray-400">
+                <span class="flex items-center gap-1"><i class="ph-bold ph-book-open"></i> Guia Técnico e Termos de Isenção</span>
+                <span>•</span>
+                <span class="flex items-center gap-1"><i class="ph-bold ph-clock"></i> Leitura de 5 min</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Sidebar / Quick Nav (Desktop) -->
+            <aside class="hidden lg:block lg:col-span-4">
+                <div class="sticky top-28 space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                        <h3 class="font-serif font-bold text-base text-rustic-dark mb-4 flex items-center gap-2">
+                            <i class="ph-bold ph-list-dashes text-rustic-gold"></i> Índice do Aviso
+                        </h3>
+                        <nav class="space-y-2 text-xs font-medium text-gray-600">
+                            <a href="#fertilidade-vs-eclosao" class="block py-1 hover:text-rustic-green transition-colors">1. Fertilidade vs. Eclosão</a>
+                            <a href="#fatores-transporte" class="block py-1 hover:text-rustic-green transition-colors">2. Impactos do Transporte Postal</a>
+                            <a href="#guia-incubacao" class="block py-1 hover:text-rustic-green transition-colors">3. Parâmetros Ideais de Incubação</a>
+                            <a href="#ovoscopia" class="block py-1 hover:text-rustic-green transition-colors">4. Procedimento de Ovoscopia</a>
+                            <a href="#padrao-genetico" class="block py-1 hover:text-rustic-green transition-colors">5. Padrão Genético e Fenótipo</a>
+                            <a href="#isencao" class="block py-1 hover:text-rustic-green transition-colors">6. Termo Expresso de Isenção</a>
+                        </nav>
+                    </div>
+
+                    <!-- Card Outras Políticas -->
+                    <div class="bg-rustic-dark text-white rounded-2xl p-6 shadow-md border border-white/10">
+                        <h4 class="font-serif font-bold text-sm text-rustic-gold mb-3 flex items-center gap-2">
+                            <i class="ph-bold ph-files"></i> Políticas Relacionadas
+                        </h4>
+                        <ul class="space-y-2 text-xs text-gray-300">
+                            <li><a href="politica-de-garantia.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Política de Garantia</a></li>
+                            <li><a href="politica-de-envio.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Política de Envio (SEDEX)</a></li>
+                            <li><a href="termos-de-servico.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Termos de Serviço</a></li>
+                            <li><a href="politica-de-privacidade.html" class="hover:text-rustic-gold transition-colors flex items-center gap-1.5"><i class="ph ph-arrow-right text-[10px]"></i> Política de Privacidade</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Text Content -->
+            <article class="lg:col-span-8 space-y-8 bg-white p-6 sm:p-10 rounded-3xl shadow-sm border border-stone-200">
+                
+                <!-- Destaque Informativo -->
+                <div class="bg-amber-50 border-l-4 border-amber-600 p-5 rounded-r-2xl">
+                    <p class="text-xs sm:text-sm font-semibold text-amber-900 leading-relaxed">
+                        <strong class="text-amber-800">Aviso Fundamental aos Criadores:</strong> O Criatório Brahma e Orpington do Sul presa pela ética e verdade zootécnica. Nenhum criatório idôneo pode prometer ou garantir 100% de nascimento de ovos férteis enviados por via postal. A taxa final depende de dezenas de fatores externos após o envio.
+                    </p>
+                </div>
+
+                <!-- Seção 1 -->
+                <section id="fertilidade-vs-eclosao" class="space-y-3 pt-2">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">1</span>
+                        Diferença Técnica: Fertilidade vs. Eclosão
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        É fundamental para o avicultor compreender a diferença entre os dois conceitos zootécnicos:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                        <div class="p-4 bg-stone-50 rounded-2xl border border-stone-200">
+                            <span class="inline-block px-2.5 py-1 bg-rustic-green text-white text-[10px] font-bold uppercase rounded-md mb-2">Fertilidade (Galamento)</span>
+                            <h4 class="font-bold text-sm text-rustic-dark mb-1">O que é:</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Refere-se à presença do embrião fecundado no ovo pelo galo reprodutor. Nossas matrizes mantêm taxa de fertilidade média de <strong>80% a 90%</strong> comprovada no criatório. Garantimos uma <strong>taxa mínima de 50% de fertilidade</strong> (comprovação por vídeo de ovoscopia) e enviamos <strong>garantia antecipada</strong> (+1 ovo para 6 ovos e +3 ovos para 12 ovos).
+                            </p>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-2xl border border-stone-200">
+                            <span class="inline-block px-2.5 py-1 bg-rustic-gold text-rustic-dark text-[10px] font-bold uppercase rounded-md mb-2">Eclosão (Nascimento)</span>
+                            <h4 class="font-bold text-sm text-rustic-dark mb-1">O que é:</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Refere-se à capacidade do embrião vivo se desenvolver plenamente e romper a casca aos 21 dias. Depende 100% da integridade física pós-transporte e da precisão de temperatura e umidade da chocadeira. Não é coberta falha de incubação, armazenamento ou manuseio.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 2 -->
+                <section id="fatores-transporte" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">2</span>
+                        Fatores que Afetam os Ovos no Transporte Postal
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Mesmo com caixas especiais e espumas amortecedoras reforçadas, a viagem pelos Correios pode expor os ovos a condições adversas:
+                    </p>
+                    <ul class="space-y-2 text-xs sm:text-sm text-gray-700 list-disc list-inside">
+                        <li><strong>Vibração Mecânica Contínua:</strong> As trepidações das rodovias podem romper as <em>chalazas</em> (cordões microscópicos de proteína que mantêm a gema suspensa no centro do ovo), fazendo a gema colar na casca.</li>
+                        <li><strong>Deslocamento da Câmara de Ar:</strong> Impactos bruscos nas esteiras de triagem postal podem soltar ou deslocar a bolsa de ar para a lateral do ovo.</li>
+                        <li><strong>Variação Térmica:</strong> Ovos transportados no compartimento de carga de aeronaves ou furgões podem passar por oscilações severas de calor ou frio intenso.</li>
+                        <li><strong>Raios-X de Inspeção:</strong> Varreduras por raio-X em aeroportos e centros de triagem postal podem danificar ou inviabilizar o blastodisco embrionário.</li>
+                    </ul>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 3 -->
+                <section id="guia-incubacao" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">3</span>
+                        Guia de Manejo e Parâmetros Ideais de Incubação
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Para maximizar o índice de sucesso dos seus pintinhos, aplique rigorosamente esta tabela técnica:
+                    </p>
+                    
+                    <div class="overflow-x-auto pt-2">
+                        <table class="w-full text-left text-xs border border-stone-200 rounded-xl overflow-hidden">
+                            <thead class="bg-rustic-dark text-white">
+                                <tr>
+                                    <th class="p-3">Fase</th>
+                                    <th class="p-3">Período</th>
+                                    <th class="p-3">Temperatura</th>
+                                    <th class="p-3">Umidade</th>
+                                    <th class="p-3">Viragem dos Ovos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-stone-200 bg-stone-50">
+                                <tr>
+                                    <td class="p-3 font-bold text-rustic-dark">Descanso</td>
+                                    <td class="p-3">Chegada (24h)</td>
+                                    <td class="p-3">18°C a 22°C (ambiente)</td>
+                                    <td class="p-3">Ambiente arejado</td>
+                                    <td class="p-3">Imóvel (bico para baixo)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-rustic-dark">Incubação</td>
+                                    <td class="p-3">Do 1º ao 18º dia</td>
+                                    <td class="p-3 text-rustic-green font-bold">37,5°C a 37,8°C</td>
+                                    <td class="p-3">50% a 55%</td>
+                                    <td class="p-3">Automática (a cada 2h)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-rustic-dark">Nascimento</td>
+                                    <td class="p-3">Do 19º ao 21º dia</td>
+                                    <td class="p-3 text-rustic-green font-bold">37,2°C a 37,5°C</td>
+                                    <td class="p-3 text-rustic-gold font-bold">65% a 75%</td>
+                                    <td class="p-3 text-red-600 font-bold">Desligar viragem!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="text-xs text-stone-500 italic mt-2">
+                        * Dica de ouro: Nunca abra a tampa da chocadeira nos dias 19, 20 e 21 enquanto os pintinhos estiverem quebrando a casca. A perda repentina de umidade faz a membrana interna secar e colar no pintinho, impedindo que ele nasça.
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 4 -->
+                <section id="ovoscopia" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">4</span>
+                        Procedimento Recomendado de Ovoscopia
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        A ovoscopia consiste em iluminar o ovo em ambiente escuro com lanterna específica para ovoscópio:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 bg-stone-50 rounded-xl border border-stone-200">
+                            <strong class="text-rustic-dark block mb-1 font-bold">7º Dia de Chocadeira</strong>
+                            Verifica-se uma pequena mancha escura com uma teia de aranha de vasos sanguíneos vermelhos ao redor do embrião vivo.
+                        </div>
+                        <div class="p-3.5 bg-stone-50 rounded-xl border border-stone-200">
+                            <strong class="text-rustic-dark block mb-1 font-bold">14º Dia de Chocadeira</strong>
+                            O ovo deve estar escuro em mais de 70% da sua área, com a câmara de ar bem definida e transparente na extremidade larga.
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 5 -->
+                <section id="padrao-genetico" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">5</span>
+                        Padrão Genético e Fenótipo das Aves
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Trabalhamos com matrizes de alta pureza e seleção zootécnica de acordo com o padrão das raças Brahma (Buff e Isabelli), Orpington (Negro, Azul, Cuckoo, Mottled) e GSB. Como em qualquer processo genético natural de aves vivas, podem ocorrer variações normais de tonalidade de penas, distribuição de manchas ou características secundárias inerentes à biologia avícola.
+                    </p>
+                </section>
+
+                <hr class="border-stone-200">
+
+                <!-- Seção 6 -->
+                <section id="isencao" class="space-y-3">
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-rustic-green flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-full bg-rustic-green/10 text-rustic-green text-sm flex items-center justify-center font-bold">6</span>
+                        Declaração Expressa de Isenção de Responsabilidade
+                    </h2>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Ao adquirir ovos férteis do <strong>Criatório Brahma e Orpington do Sul</strong>, o comprador declara ciência e plena concordância de que:
+                    </p>
+                    <ul class="space-y-2 text-xs sm:text-sm text-gray-700 list-disc list-inside">
+                        <li>Não existe garantia de percentual mínimo de eclosão (nascimento) em ovos transportados.</li>
+                        <li>O criatório garante a fertilidade comprovada do seu plantel e a pureza racial das matrizes, mas não responde pelo manejo individual pós-entrega nem pelas intempéries do serviço postal terceirizado.</li>
+                        <li>A reposição limita-se exclusivamente a ovos comprovadamente quebrados/trincados na abertura da caixa dentro do prazo de 24 horas e à garantia de fertilidade mínima de 50% (comprovada por vídeo de ovoscopia na incubação), contando o cliente com ovos extras enviados como garantia antecipada, conforme os termos de nossa <a href="politica-de-garantia.html" class="text-rustic-gold hover:underline font-semibold">Política de Garantia</a>.</li>
+                    </ul>
+                </section>
+
+            </article>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1c17] text-gray-400 py-12 border-t border-white/5 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <img src="assets/images/logo.svg" alt="Criatório Brahma e Orpington do Sul" class="w-10 h-10 object-contain">
+                    <span class="font-serif text-lg font-bold text-white">Brahma & Orpington do Sul</span>
+                </div>
+                <p class="text-xs mb-4 leading-relaxed">Especialistas na criação, preservação e aprimoramento genético de aves nobres e produção de ovos férteis selecionados.</p>
+                <p class="text-[11px] text-rustic-gold">Maximiliano de Almeida - RS (CEP 99890-000)</p>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Políticas & Diretrizes</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="politica-de-privacidade.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-shield-check text-sm"></i> Política de Privacidade</a></li>
+                    <li><a href="politica-de-envio.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-truck text-sm"></i> Política de Envio</a></li>
+                    <li><a href="politica-de-garantia.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-seal-check text-sm"></i> Política de Garantia</a></li>
+                    <li><a href="termos-de-servico.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-file-text text-sm"></i> Termos de Serviço</a></li>
+                    <li><a href="aviso-legal.html" class="text-rustic-gold font-medium hover:underline flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-warning-circle text-sm"></i> Aviso Legal (Incubação)</a></li>
+                    <li><a href="ebooks.html" class="hover:text-rustic-gold transition-colors flex items-center justify-center md:justify-start gap-1.5"><i class="ph-bold ph-book-open text-sm"></i> E-books & Manuais</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Atendimento & Redes</h4>
+                <p class="text-xs text-gray-400 mb-2">Acompanhe nossa rotina de criação e matrizes:</p>
+                <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="inline-flex items-center justify-center md:justify-start gap-2 text-rustic-gold hover:text-yellow-400 transition-colors text-xs font-semibold mb-3">
+                    <i class="ph-bold ph-instagram-logo text-xl"></i> @brahma_e_orpington_do_sul_
+                </a>
+                <p class="text-[11px] text-gray-400">Atendimento personalizado com suporte direto no manejo dos ovos.</p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Aviso Biológico</h4>
+                <p class="text-xs leading-relaxed">Enviamos ovos frescos e galados. A taxa final de eclosão depende diretamente das condições do transporte postal e do manejo durante a incubação, não sendo possível garantir 100% de nascimentos.</p>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-400 max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p>&copy; 2023-2026 Criatório Brahma e Orpington do Sul. Todos os direitos reservados.</p>
+            <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                <span>Criado por</span>
+                <a href="https://fpagency.com.br" target="_blank" rel="noopener noreferrer" class="text-rustic-gold hover:text-yellow-400 font-semibold transition-colors flex items-center gap-1 hover:underline">
+                    FP Agency <i class="ph-bold ph-arrow-square-out text-[11px]"></i>
+                </a>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 text-[11px]">
+                <a href="index.html" class="hover:text-rustic-gold hover:underline">Início</a>
+                <span>•</span>
+                <a href="aviso-legal.html" class="text-rustic-gold underline">Aviso Legal</a>
+                <span>•</span>
+                <a href="politica-de-garantia.html" class="hover:underline">Garantia</a>
+                <span>•</span>
+                <a href="termos-de-servico.html" class="hover:underline">Termos</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+
