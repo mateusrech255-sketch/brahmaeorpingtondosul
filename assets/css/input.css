@@ -1,0 +1,52 @@
+@import "../fonts/phosphor/bold/style.css";
+@import "../fonts/phosphor/regular/style.css";
+@import "tailwindcss";
+
+@theme {
+  --color-rustic-dark: #2A2F25;
+  --color-rustic-green: #3B4D36;
+  --color-rustic-earth: #8B5A2B;
+  --color-rustic-gold: #C89D3C;
+  --color-rustic-offwhite: #F4F1EA;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F1EA; 
+}
+::-webkit-scrollbar-thumb {
+  background: #3B4D36; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2A2F25; 
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@keyframes subtle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: subtle-float 5s ease-in-out infinite;
+}

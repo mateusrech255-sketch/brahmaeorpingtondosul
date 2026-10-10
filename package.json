@@ -4,6 +4,8 @@
   "description": "Criatório Brahma e Orpington do Sul - Landing Page e E-commerce de Ovos Férteis",
   "main": "server.js",
   "scripts": {
+    "build": "tailwindcss -i assets/css/input.css -o assets/css/style.css --minify",
+    "build:css": "tailwindcss -i assets/css/input.css -o assets/css/style.css --minify",
     "start": "node server.js",
     "dev": "node server.js"
   },
@@ -13,6 +15,12 @@
     "ovos-ferteis"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "dependencies": {
+    "@phosphor-icons/web": "^2.1.2"
+  }
 }
-
