@@ -1524,6 +1524,20 @@
 
         // --- Sincronização Dinâmica com Painel Admin ---
         const carregarProdutosDaApi = async () => {
+            // 1. Tenta carregar do localStorage (alterações feitas pelo dono no navegador)
+            const savedCustom = localStorage.getItem('bos_custom_products');
+            if (savedCustom) {
+                try {
+                    const data = JSON.parse(savedCustom);
+                    if (Array.isArray(data) && data.length > 0) {
+                        produtos = data;
+                        renderProducts();
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            // 2. Tenta API do servidor local
             try {
                 const res = await fetch('/api/produtos');
                 if (res.ok) {
@@ -1531,30 +1545,64 @@
                     if (Array.isArray(data) && data.length > 0) {
                         produtos = data;
                         renderProducts();
+                        return;
                     }
                 }
-            } catch (err) {
-                // Silenciosamente mantém os produtos locais pré-carregados
-            }
-        };
+            } catch (err) {}
 
-        const carregarEbooksDaApi = async () => {
+            // 3. Fallback: carrega do arquivo estático data/products.json (compatível com GitHub Pages)
             try {
-                const res = await fetch('/api/ebooks');
+                const res = await fetch('data/products.json');
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
-                        data.forEach(eb => {
-                            EBOOKS_CATALOGO[eb.id] = {
-                                id: eb.id,
-                                name: eb.titulo,
-                                option: 'pdf',
-                                optionLabel: 'Envio por PDF (Download Imediato)',
-                                price: eb.precoPor,
-                                photo: eb.foto,
-                                isDigital: true
-                            };
-                        });
+                        produtos = data;
+                        renderProducts();
+                        return;
+                    }
+                }
+            } catch (err) {}
+        };
+
+        const carregarEbooksDaApi = async () => {
+            let dataEbooks = null;
+
+            // 1. Tenta do localStorage
+            const savedCustom = localStorage.getItem('bos_custom_ebooks');
+            if (savedCustom) {
+                try {
+                    dataEbooks = JSON.parse(savedCustom);
+                } catch (e) {}
+            }
+
+            // 2. Tenta do servidor local
+            if (!dataEbooks) {
+                try {
+                    const res = await fetch('/api/ebooks');
+                    if (res.ok) dataEbooks = await res.json();
+                } catch (err) {}
+            }
+
+            // 3. Tenta do arquivo estático
+            if (!dataEbooks) {
+                try {
+                    const res = await fetch('data/ebooks.json');
+                    if (res.ok) dataEbooks = await res.json();
+                } catch (err) {}
+            }
+
+            if (Array.isArray(dataEbooks) && dataEbooks.length > 0) {
+                dataEbooks.forEach(eb => {
+                    EBOOKS_CATALOGO[eb.id] = {
+                        id: eb.id,
+                        name: eb.titulo,
+                        option: 'pdf',
+                        optionLabel: 'Envio por PDF (Download Imediato)',
+                        price: eb.precoPor,
+                        photo: eb.foto,
+                        isDigital: true
+                    };
+                });
 
                         const grid = document.getElementById('ebooksIndexGrid');
                         if (grid) {

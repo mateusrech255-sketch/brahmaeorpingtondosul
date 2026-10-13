@@ -201,15 +201,23 @@
                     </div>
 
                     <div class="flex items-center gap-2 sm:gap-3">
-                        <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-stone-700 transition-all">
-                            <i class="ph-bold ph-arrow-square-out text-base text-rustic-gold"></i>
-                            Ver Loja Online
-                        </a>
-                        <button type="button" onclick="openChangePasswordModal()" class="bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-stone-700 transition-all flex items-center gap-1.5" title="Alterar Senha de Acesso">
-                            <i class="ph-bold ph-key text-base text-rustic-gold"></i>
-                            <span class="hidden md:inline">Alterar Senha</span>
+                        <div id="envBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-amber-950/40 border border-rustic-gold/30 text-rustic-gold">
+                            <span id="envBadgeDot" class="w-2 h-2 rounded-full bg-rustic-gold animate-pulse"></span>
+                            <span id="envBadgeText">GitHub Pages</span>
+                        </div>
+                        <button type="button" onclick="openExportModal()" class="bg-rustic-gold/15 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark text-xs font-bold px-3 py-2 rounded-xl border border-rustic-gold/30 transition-all flex items-center gap-1.5" title="Exportar dados salvos">
+                            <i class="ph-bold ph-download-simple text-base"></i>
+                            <span class="hidden md:inline">Exportar Dados</span>
                         </button>
-                        <button type="button" onclick="handleLogout()" class="bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs font-bold px-3.5 py-2.5 rounded-xl border border-red-800/50 transition-all flex items-center gap-1.5" title="Sair do Painel">
+                        <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3 py-2 rounded-xl border border-stone-700 transition-all">
+                            <i class="ph-bold ph-arrow-square-out text-base text-rustic-gold"></i>
+                            Ver Loja
+                        </a>
+                        <button type="button" onclick="openChangePasswordModal()" class="bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3 py-2 rounded-xl border border-stone-700 transition-all flex items-center gap-1.5" title="Alterar Senha de Acesso">
+                            <i class="ph-bold ph-key text-base text-rustic-gold"></i>
+                            <span class="hidden md:inline">Senha</span>
+                        </button>
+                        <button type="button" onclick="handleLogout()" class="bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs font-bold px-3 py-2 rounded-xl border border-red-800/50 transition-all flex items-center gap-1.5" title="Sair do Painel">
                             <i class="ph-bold ph-sign-out text-base text-red-400"></i>
                             <span class="hidden sm:inline">Sair</span>
                         </button>
@@ -648,6 +656,72 @@
     </div>
 
     <!-- ======================================================== -->
+    <!-- MODAL: EXPORTAR DADOS                                    -->
+    <!-- ======================================================== -->
+    <div id="exportModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#20251c] border border-rustic-gold/30 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-rustic-gold/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                        <i class="ph-bold ph-download-simple"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-white">Exportar / Sincronizar Dados</h3>
+                        <p class="text-xs text-stone-400">Baixe os arquivos JSON atualizados para o Git</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeExportModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <p class="text-xs text-stone-300 leading-relaxed">
+                    Suas alterações ficam salvas no navegador neste dispositivo. Para que as fotos e preços sejam publicados na internet para todos os clientes, você pode baixar os arquivos JSON atualizados e enviá-los ao repositório:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <button type="button" onclick="downloadProductsJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Catálogo de Aves</span>
+                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                            </div>
+                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">products.json</code></p>
+                        </div>
+                    </button>
+
+                    <button type="button" onclick="downloadEbooksJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Lista de E-books</span>
+                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                            </div>
+                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">ebooks.json</code></p>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="p-3.5 bg-black/40 border border-white/5 rounded-2xl text-[11px] text-stone-400 space-y-1">
+                    <p class="font-bold text-stone-300 flex items-center gap-1.5">
+                        <i class="ph-bold ph-info text-rustic-gold"></i> Onde colocar esses arquivos:
+                    </p>
+                    <p>Substitua os arquivos na pasta <code class="text-stone-300">data/</code> do seu projeto e rode <code class="text-rustic-gold">git push origin main</code>.</p>
+                </div>
+
+                <div class="pt-3 border-t border-white/5 flex items-center justify-between">
+                    <button type="button" onclick="resetToRepositoryData()" class="text-red-400 hover:text-red-300 text-xs font-semibold transition-colors flex items-center gap-1" title="Descartar alterações locais e restaurar original do Git">
+                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Restaurar dados originais
+                    </button>
+                    <button type="button" onclick="closeExportModal()" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-5 py-2.5 rounded-xl text-xs transition-all">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
     <!-- MODAL: ALTERAR SENHA                                     -->
     <!-- ======================================================== -->
     <div id="passwordModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -706,8 +780,12 @@
     <!-- LOGICA JAVASCRIPT DO PAINEL ADMIN                        -->
     <!-- ======================================================== -->
     <script>
-        // --- Estado Global ---
+        // --- Estado Global e Chaves de Persistência ---
         const STORAGE_TOKEN_KEY = 'bos_admin_token';
+        const STORAGE_CREDS_KEY = 'bos_admin_creds';
+        const STORAGE_PRODUCTS_KEY = 'bos_custom_products';
+        const STORAGE_EBOOKS_KEY = 'bos_custom_ebooks';
+
         let authToken = localStorage.getItem(STORAGE_TOKEN_KEY) || null;
         let products = [];
         let ebooks = [];
@@ -715,6 +793,32 @@
         let currentFilter = 'todas';
         let currentSearch = '';
         let modalPhotos = []; // Fotos temporárias do produto em edição
+        let isServerAvailable = false;
+
+        const getStoredCreds = () => {
+            try {
+                const saved = localStorage.getItem(STORAGE_CREDS_KEY);
+                if (saved) return JSON.parse(saved);
+            } catch (e) {}
+            return { username: 'admin', password: 'admin123' };
+        };
+
+        const updateEnvironmentBadge = () => {
+            const badge = document.getElementById('envBadge');
+            const dot = document.getElementById('envBadgeDot');
+            const text = document.getElementById('envBadgeText');
+            if (!badge || !dot || !text) return;
+
+            if (isServerAvailable) {
+                badge.className = "hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-950/40 border border-emerald-500/30 text-emerald-300";
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+                text.textContent = "Servidor Node Conectado";
+            } else {
+                badge.className = "hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-amber-950/40 border border-rustic-gold/30 text-rustic-gold";
+                dot.className = "w-2 h-2 rounded-full bg-rustic-gold animate-pulse";
+                text.textContent = "GitHub Pages (Local)";
+            }
+        };
 
         // --- Notificações Toast ---
         const showToast = (message, title = 'Sucesso', isError = false) => {
@@ -782,10 +886,19 @@
             }
         };
 
-        // --- Verificação de Autenticação ---
+        // --- Verificação de Autenticação Híbrida ---
         const checkAuth = async () => {
             if (!authToken) {
                 showLoginView();
+                return;
+            }
+
+            if (authToken.startsWith('bos_local_token_')) {
+                isServerAvailable = false;
+                showDashboardView();
+                updateEnvironmentBadge();
+                loadProducts();
+                loadEbooks();
                 return;
             }
 
@@ -795,18 +908,20 @@
                 });
 
                 if (res.ok) {
+                    isServerAvailable = true;
                     showDashboardView();
+                    updateEnvironmentBadge();
                     loadProducts();
                     loadEbooks();
-                } else {
-                    localStorage.removeItem(STORAGE_TOKEN_KEY);
-                    authToken = null;
-                    showLoginView();
+                    return;
                 }
-            } catch (err) {
-                console.error('Erro ao verificar sessão:', err);
-                showLoginView();
-            }
+            } catch (err) {}
+
+            isServerAvailable = false;
+            showDashboardView();
+            updateEnvironmentBadge();
+            loadProducts();
+            loadEbooks();
         };
 
         const showLoginView = () => {
@@ -819,7 +934,7 @@
             document.getElementById('dashboardSection').classList.remove('hidden');
         };
 
-        // --- Login e Logout ---
+        // --- Login e Logout Híbridos ---
         const handleLogin = async (e) => {
             e.preventDefault();
             const usernameInput = document.getElementById('loginUsername').value.trim();
@@ -832,6 +947,9 @@
             btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Entrando...`;
             errBox.classList.add('hidden');
 
+            let authenticated = false;
+
+            // 1. Tenta autenticar pelo Servidor Node (se online)
             try {
                 const res = await fetch('/api/login', {
                     method: 'POST',
@@ -839,34 +957,62 @@
                     body: JSON.stringify({ username: usernameInput, password: passwordInput })
                 });
 
-                const data = await res.json();
-
-                if (res.ok && data.success) {
-                    authToken = data.token;
-                    localStorage.setItem(STORAGE_TOKEN_KEY, authToken);
-                    showToast('Bem-vindo ao Painel do Criatório!', 'Conectado');
-                    showDashboardView();
-                    loadProducts();
-                    loadEbooks();
-                } else {
-                    errText.textContent = data.error || 'Credenciais inválidas.';
-                    errBox.classList.remove('hidden');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success) {
+                        authToken = data.token;
+                        localStorage.setItem(STORAGE_TOKEN_KEY, authToken);
+                        isServerAvailable = true;
+                        authenticated = true;
+                    } else {
+                        errText.textContent = data.error || 'Credenciais inválidas.';
+                        errBox.classList.remove('hidden');
+                        btn.disabled = false;
+                        btn.innerHTML = `<span>Entrar no Painel</span> <i class="ph-bold ph-arrow-right text-base"></i>`;
+                        return;
+                    }
                 }
             } catch (err) {
-                errText.textContent = 'Erro de conexão com o servidor.';
-                errBox.classList.remove('hidden');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<span>Entrar no Painel</span> <i class="ph-bold ph-arrow-right text-base"></i>`;
+                isServerAvailable = false;
             }
+
+            // 2. Se o servidor não estiver respondendo (ex: GitHub Pages), valida no modo Local
+            if (!authenticated) {
+                const creds = getStoredCreds();
+                if (usernameInput === creds.username && passwordInput === creds.password) {
+                    authToken = 'bos_local_token_' + Date.now();
+                    localStorage.setItem(STORAGE_TOKEN_KEY, authToken);
+                    isServerAvailable = false;
+                    authenticated = true;
+                } else {
+                    errText.textContent = 'Usuário ou senha incorretos.';
+                    errBox.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Entrar no Painel</span> <i class="ph-bold ph-arrow-right text-base"></i>`;
+                    return;
+                }
+            }
+
+            if (authenticated) {
+                showToast(isServerAvailable ? 'Conectado ao Servidor Node!' : 'Painel aberto no Modo GitHub Pages!', 'Conectado');
+                showDashboardView();
+                updateEnvironmentBadge();
+                loadProducts();
+                loadEbooks();
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = `<span>Entrar no Painel</span> <i class="ph-bold ph-arrow-right text-base"></i>`;
         };
 
         const handleLogout = async () => {
             try {
-                await fetch('/api/logout', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
+                if (isServerAvailable) {
+                    await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                }
             } catch (e) {}
 
             localStorage.removeItem(STORAGE_TOKEN_KEY);
@@ -877,18 +1023,48 @@
 
         // --- Carregar e Renderizar Produtos (Aves) ---
         const loadProducts = async () => {
+            // 1. Se o servidor estiver disponível, tenta a API
+            if (isServerAvailable) {
+                try {
+                    const res = await fetch('/api/produtos');
+                    if (res.ok) {
+                        products = await res.json();
+                        updateStats();
+                        renderProductsGrid();
+                        return;
+                    }
+                } catch (err) {
+                    isServerAvailable = false;
+                    updateEnvironmentBadge();
+                }
+            }
+
+            // 2. Tenta do localStorage (alterações feitas pelo criador neste aparelho)
+            const savedCustom = localStorage.getItem(STORAGE_PRODUCTS_KEY);
+            if (savedCustom) {
+                try {
+                    const parsed = JSON.parse(savedCustom);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        products = parsed;
+                        updateStats();
+                        renderProductsGrid();
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            // 3. Fallback: carrega do arquivo estático data/products.json (compatível com GitHub Pages)
             try {
-                const res = await fetch('/api/produtos');
+                const res = await fetch('data/products.json');
                 if (res.ok) {
                     products = await res.json();
                     updateStats();
                     renderProductsGrid();
-                } else {
-                    showToast('Falha ao carregar lista de produtos.', 'Erro', true);
+                    return;
                 }
-            } catch (err) {
-                showToast('Erro ao comunicar com a API.', 'Erro', true);
-            }
+            } catch (err) {}
+
+            showToast('Falha ao carregar catálogo de aves.', 'Erro', true);
         };
 
         const updateStats = () => {
@@ -1108,25 +1284,36 @@
             for (const file of files) {
                 try {
                     const base64 = await readFileAsBase64(file);
-                    const res = await fetch('/api/upload', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify({
-                            filename: file.name,
-                            base64: base64
-                        })
-                    });
+                    let uploadedUrl = null;
 
-                    const data = await res.json();
-                    if (res.ok && data.success) {
-                        modalPhotos.push(data.url);
-                        renderModalPhotos();
-                    } else {
-                        showToast(data.error || 'Erro ao enviar imagem.', 'Erro no Upload', true);
+                    if (isServerAvailable) {
+                        try {
+                            const res = await fetch('/api/upload', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authToken}`
+                                },
+                                body: JSON.stringify({
+                                    filename: file.name,
+                                    base64: base64
+                                })
+                            });
+
+                            const data = await res.json();
+                            if (res.ok && data.success) {
+                                uploadedUrl = data.url;
+                            }
+                        } catch (err) {}
                     }
+
+                    // Se não tiver servidor rodando, usa Data URL Base64 direto (compatível com GitHub Pages e mobile)
+                    if (!uploadedUrl) {
+                        uploadedUrl = base64;
+                    }
+
+                    modalPhotos.push(uploadedUrl);
+                    renderModalPhotos();
                 } catch (err) {
                     showToast('Erro ao processar imagem.', 'Erro', true);
                 }
@@ -1134,7 +1321,7 @@
 
             spinner.classList.add('hidden');
             e.target.value = '';
-            showToast(`${files.length} foto(s) carregada(s) com sucesso!`);
+            showToast(`${files.length} foto(s) carregada(s)!`);
         };
 
         const readFileAsBase64 = (file) => {
@@ -1180,65 +1367,73 @@
             btnSave.disabled = true;
             btnSave.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Salvando...`;
 
-            try {
-                let updatedProducts = [...products];
+            let updatedProducts = [...products];
 
-                if (idInput) {
-                    const index = updatedProducts.findIndex(p => p.id === idInput);
-                    if (index !== -1) {
-                        updatedProducts[index] = {
-                            ...updatedProducts[index],
-                            nome: nomeInput,
-                            categoria: categoriaInput,
-                            descricao: descricaoInput,
-                            precos: precos,
-                            detalhes: detalhes,
-                            fotos: modalPhotos.length > 0 ? modalPhotos : updatedProducts[index].fotos
-                        };
-                    }
-                } else {
-                    const newId = nomeInput.toLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/^-+|-+$/g, '') || ('ave-' + Date.now());
-
-                    const newProduct = {
-                        id: newId,
+            if (idInput) {
+                const index = updatedProducts.findIndex(p => p.id === idInput);
+                if (index !== -1) {
+                    updatedProducts[index] = {
+                        ...updatedProducts[index],
                         nome: nomeInput,
                         categoria: categoriaInput,
                         descricao: descricaoInput,
                         precos: precos,
                         detalhes: detalhes,
-                        fotos: modalPhotos.length > 0 ? modalPhotos : ['assets/images/combo-surpresa.jpg']
+                        fotos: modalPhotos.length > 0 ? modalPhotos : updatedProducts[index].fotos
                     };
-                    updatedProducts.push(newProduct);
                 }
+            } else {
+                const newId = nomeInput.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '') || ('ave-' + Date.now());
 
-                const res = await fetch('/api/produtos', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify(updatedProducts)
-                });
+                const newProduct = {
+                    id: newId,
+                    nome: nomeInput,
+                    categoria: categoriaInput,
+                    descricao: descricaoInput,
+                    precos: precos,
+                    detalhes: detalhes,
+                    fotos: modalPhotos.length > 0 ? modalPhotos : ['assets/images/combo-surpresa.jpg']
+                };
+                updatedProducts.push(newProduct);
+            }
 
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    products = updatedProducts;
-                    updateStats();
-                    renderProductsGrid();
-                    closeProductModal();
-                    showToast('Produto gravado com sucesso no catálogo!', 'Salvo');
-                } else {
-                    showToast(data.error || 'Erro ao salvar produto.', 'Erro', true);
-                }
-            } catch (err) {
-                showToast('Erro de comunicação com o servidor.', 'Erro', true);
-            } finally {
-                btnSave.disabled = false;
-                btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar Alterações</span>`;
+            // Sempre persiste no localStorage (ativa na loja deste aparelho)
+            localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(updatedProducts));
+            products = updatedProducts;
+            updateStats();
+            renderProductsGrid();
+            closeProductModal();
+
+            // Se o servidor estiver ativo, envia para gravar no disco
+            let savedOnDisk = false;
+            if (isServerAvailable) {
+                try {
+                    const res = await fetch('/api/produtos', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify(updatedProducts)
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        savedOnDisk = true;
+                    }
+                } catch (err) {}
+            }
+
+            btnSave.disabled = false;
+            btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar Alterações</span>`;
+
+            if (savedOnDisk) {
+                showToast('Produto gravado no servidor e arquivos do projeto!', 'Salvo');
+            } else {
+                showToast('Produto salvo no navegador! Ativo na loja deste aparelho.', 'Salvo');
             }
         };
 
@@ -1250,46 +1445,68 @@
             const confirmed = confirm(`Tem certeza que deseja excluir "${prod.nome}" do catálogo? Esta ação não pode ser desfeita.`);
             if (!confirmed) return;
 
-            try {
-                const updatedProducts = products.filter(p => p.id !== productId);
-                const res = await fetch('/api/produtos', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify(updatedProducts)
-                });
+            const updatedProducts = products.filter(p => p.id !== productId);
+            localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(updatedProducts));
+            products = updatedProducts;
+            updateStats();
+            renderProductsGrid();
 
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    products = updatedProducts;
-                    updateStats();
-                    renderProductsGrid();
-                    showToast(`"${prod.nome}" foi removido com sucesso.`);
-                } else {
-                    showToast(data.error || 'Erro ao excluir.', 'Erro', true);
-                }
-            } catch (err) {
-                showToast('Erro ao comunicar com a API.', 'Erro', true);
+            if (isServerAvailable) {
+                try {
+                    await fetch('/api/produtos', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify(updatedProducts)
+                    });
+                } catch (err) {}
             }
+
+            showToast(`"${prod.nome}" foi removido com sucesso.`);
         };
 
         // ========================================================
         // GERENCIAMENTO DE E-BOOKS
         // ========================================================
         const loadEbooks = async () => {
+            if (isServerAvailable) {
+                try {
+                    const res = await fetch('/api/ebooks');
+                    if (res.ok) {
+                        ebooks = await res.json();
+                        renderEbooksGrid();
+                        return;
+                    }
+                } catch (err) {
+                    isServerAvailable = false;
+                    updateEnvironmentBadge();
+                }
+            }
+
+            const savedCustom = localStorage.getItem(STORAGE_EBOOKS_KEY);
+            if (savedCustom) {
+                try {
+                    const parsed = JSON.parse(savedCustom);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        ebooks = parsed;
+                        renderEbooksGrid();
+                        return;
+                    }
+                } catch (e) {}
+            }
+
             try {
-                const res = await fetch('/api/ebooks');
+                const res = await fetch('data/ebooks.json');
                 if (res.ok) {
                     ebooks = await res.json();
                     renderEbooksGrid();
-                } else {
-                    showToast('Falha ao carregar lista de e-books.', 'Erro', true);
+                    return;
                 }
-            } catch (err) {
-                showToast('Erro ao comunicar com a API de e-books.', 'Erro', true);
-            }
+            } catch (err) {}
+
+            showToast('Falha ao carregar lista de e-books.', 'Erro', true);
         };
 
         const renderEbooksGrid = () => {
@@ -1394,26 +1611,36 @@
 
             try {
                 const base64 = await readFileAsBase64(file);
-                const res = await fetch('/api/upload', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({
-                        filename: file.name,
-                        base64: base64
-                    })
-                });
+                let uploadedUrl = null;
 
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    document.getElementById('ebookFormFoto').value = data.url;
-                    document.getElementById('ebookCoverPreview').src = data.url;
-                    showToast('Capa do e-book carregada com sucesso!');
-                } else {
-                    showToast(data.error || 'Erro ao enviar imagem de capa.', 'Erro', true);
+                if (isServerAvailable) {
+                    try {
+                        const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authToken}`
+                            },
+                            body: JSON.stringify({
+                                filename: file.name,
+                                base64: base64
+                            })
+                        });
+
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            uploadedUrl = data.url;
+                        }
+                    } catch (err) {}
                 }
+
+                if (!uploadedUrl) {
+                    uploadedUrl = base64;
+                }
+
+                document.getElementById('ebookFormFoto').value = uploadedUrl;
+                document.getElementById('ebookCoverPreview').src = uploadedUrl;
+                showToast('Capa do e-book carregada com sucesso!');
             } catch (err) {
                 showToast('Erro ao processar imagem de capa.', 'Erro', true);
             } finally {
@@ -1439,33 +1666,13 @@
             btnSave.disabled = true;
             btnSave.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Salvando...`;
 
-            try {
-                let updatedEbooks = [...ebooks];
+            let updatedEbooks = [...ebooks];
 
-                if (idInput) {
-                    const idx = updatedEbooks.findIndex(eb => eb.id === idInput);
-                    if (idx !== -1) {
-                        updatedEbooks[idx] = {
-                            ...updatedEbooks[idx],
-                            titulo: tituloInput,
-                            subtitulo: subtituloInput,
-                            tag: tagInput,
-                            descricao: descricaoInput,
-                            precoDe: precoDeInput,
-                            precoPor: precoPorInput,
-                            foto: fotoInput,
-                            link: linkInput || `ebooks.html#${idInput}`
-                        };
-                    }
-                } else {
-                    const newId = 'ebook-' + (tituloInput.toLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/^-+|-+$/g, '') || Date.now());
-
-                    const newEbook = {
-                        id: newId,
+            if (idInput) {
+                const idx = updatedEbooks.findIndex(eb => eb.id === idInput);
+                if (idx !== -1) {
+                    updatedEbooks[idx] = {
+                        ...updatedEbooks[idx],
                         titulo: tituloInput,
                         subtitulo: subtituloInput,
                         tag: tagInput,
@@ -1473,34 +1680,60 @@
                         precoDe: precoDeInput,
                         precoPor: precoPorInput,
                         foto: fotoInput,
-                        link: linkInput || `ebooks.html#${newId}`
+                        link: linkInput || `ebooks.html#${idInput}`
                     };
-                    updatedEbooks.push(newEbook);
                 }
+            } else {
+                const newId = 'ebook-' + (tituloInput.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '') || Date.now());
 
-                const res = await fetch('/api/ebooks', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify(updatedEbooks)
-                });
+                const newEbook = {
+                    id: newId,
+                    titulo: tituloInput,
+                    subtitulo: subtituloInput,
+                    tag: tagInput,
+                    descricao: descricaoInput,
+                    precoDe: precoDeInput,
+                    precoPor: precoPorInput,
+                    foto: fotoInput,
+                    link: linkInput || `ebooks.html#${newId}`
+                };
+                updatedEbooks.push(newEbook);
+            }
 
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    ebooks = updatedEbooks;
-                    renderEbooksGrid();
-                    closeEbookModal();
-                    showToast('E-book salvo com sucesso!', 'Salvo');
-                } else {
-                    showToast(data.error || 'Erro ao salvar e-book.', 'Erro', true);
-                }
-            } catch (err) {
-                showToast('Erro de comunicação com o servidor.', 'Erro', true);
-            } finally {
-                btnSave.disabled = false;
-                btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar E-book</span>`;
+            localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(updatedEbooks));
+            ebooks = updatedEbooks;
+            renderEbooksGrid();
+            closeEbookModal();
+
+            let savedOnDisk = false;
+            if (isServerAvailable) {
+                try {
+                    const res = await fetch('/api/ebooks', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify(updatedEbooks)
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        savedOnDisk = true;
+                    }
+                } catch (err) {}
+            }
+
+            btnSave.disabled = false;
+            btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar E-book</span>`;
+
+            if (savedOnDisk) {
+                showToast('E-book gravado no servidor!', 'Salvo');
+            } else {
+                showToast('E-book salvo com sucesso no navegador!', 'Salvo');
             }
         };
 
@@ -1512,28 +1745,25 @@
             const confirmed = confirm(`Tem certeza que deseja excluir o e-book "${eb.titulo}"? Esta ação não pode ser desfeita.`);
             if (!confirmed) return;
 
-            try {
-                const updatedEbooks = ebooks.filter(e => e.id !== ebookId);
-                const res = await fetch('/api/ebooks', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify(updatedEbooks)
-                });
+            const updatedEbooks = ebooks.filter(e => e.id !== ebookId);
+            localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(updatedEbooks));
+            ebooks = updatedEbooks;
+            renderEbooksGrid();
 
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    ebooks = updatedEbooks;
-                    renderEbooksGrid();
-                    showToast(`E-book "${eb.titulo}" excluído com sucesso.`);
-                } else {
-                    showToast(data.error || 'Erro ao excluir.', 'Erro', true);
-                }
-            } catch (err) {
-                showToast('Erro ao comunicar com a API.', 'Erro', true);
+            if (isServerAvailable) {
+                try {
+                    await fetch('/api/ebooks', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify(updatedEbooks)
+                    });
+                } catch (err) {}
             }
+
+            showToast(`E-book "${eb.titulo}" excluído.`);
         };
 
         // --- Modal Alterar Senha ---
@@ -1565,34 +1795,102 @@
             btn.disabled = true;
             btn.textContent = 'Salvando...';
 
-            try {
-                const res = await fetch('/api/change-password', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({
-                        currentPassword: currentPass,
-                        newUsername: newUsername,
-                        newPassword: newPass
-                    })
-                });
+            let serverSuccess = false;
+            if (isServerAvailable) {
+                try {
+                    const res = await fetch('/api/change-password', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            currentPassword: currentPass,
+                            newUsername: newUsername,
+                            newPassword: newPass
+                        })
+                    });
 
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    closeChangePasswordModal();
-                    showToast('Senha de acesso atualizada com sucesso!', 'Segurança');
-                } else {
-                    errBox.textContent = data.error || 'Erro ao alterar senha.';
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        serverSuccess = true;
+                    }
+                } catch (err) {}
+            }
+
+            // Validação no modo local / GitHub Pages
+            const currentCreds = getStoredCreds();
+            if (!serverSuccess) {
+                if (currentPass !== currentCreds.password) {
+                    errBox.textContent = 'Senha atual incorreta.';
                     errBox.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.textContent = 'Salvar Nova Senha';
+                    return;
                 }
-            } catch (err) {
-                errBox.textContent = 'Erro ao comunicar com o servidor.';
-                errBox.classList.remove('hidden');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Salvar Nova Senha';
+            }
+
+            const updatedCreds = {
+                username: newUsername || currentCreds.username,
+                password: newPass
+            };
+            localStorage.setItem(STORAGE_CREDS_KEY, JSON.stringify(updatedCreds));
+
+            btn.disabled = false;
+            btn.textContent = 'Salvar Nova Senha';
+            closeChangePasswordModal();
+            showToast('Credenciais atualizadas com sucesso!', 'Segurança');
+        };
+
+        // --- Exportação e Download de Dados JSON ---
+        const openExportModal = () => {
+            document.getElementById('exportModal').classList.remove('hidden');
+        };
+
+        const closeExportModal = () => {
+            document.getElementById('exportModal').classList.add('hidden');
+        };
+
+        const downloadJsonFile = (filename, dataObj) => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataObj, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", filename);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showToast(`Arquivo "${filename}" baixado com sucesso!`);
+        };
+
+        const downloadProductsJson = () => {
+            downloadJsonFile('products.json', products);
+        };
+
+        const downloadEbooksJson = () => {
+            downloadJsonFile('ebooks.json', ebooks);
+        };
+
+        const resetToRepositoryData = async () => {
+            const confirmReset = confirm("Deseja realmente descartar todas as alterações salvas no navegador e restaurar os dados originais do repositório?");
+            if (!confirmReset) return;
+
+            localStorage.removeItem(STORAGE_PRODUCTS_KEY);
+            localStorage.removeItem(STORAGE_EBOOKS_KEY);
+
+            try {
+                const [resProd, resEb] = await Promise.all([
+                    fetch('data/products.json'),
+                    fetch('data/ebooks.json')
+                ]);
+                if (resProd.ok) products = await resProd.json();
+                if (resEb.ok) ebooks = await resEb.json();
+                updateStats();
+                renderProductsGrid();
+                renderEbooksGrid();
+                closeExportModal();
+                showToast('Dados restaurados para o padrão do repositório!', 'Restaurado');
+            } catch (e) {
+                showToast('Erro ao recarregar dados do repositório.', 'Erro', true);
             }
         };
 
