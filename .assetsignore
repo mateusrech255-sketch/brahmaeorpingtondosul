@@ -1,0 +1,12 @@
+node_modules/
+**/node_modules/**
+.git/
+.github/
+.vscode/
+server.js
+package.json
+package-lock.json
+README.md
+*.log
+.env
+.DS_Store

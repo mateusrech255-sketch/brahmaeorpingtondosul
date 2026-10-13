@@ -7,7 +7,8 @@
     "build": "tailwindcss -i assets/css/input.css -o assets/css/style.css --minify",
     "build:css": "tailwindcss -i assets/css/input.css -o assets/css/style.css --minify",
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "deploy": "wrangler deploy"
   },
   "keywords": [
     "landing-page",
@@ -18,7 +19,8 @@
   "license": "ISC",
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "wrangler": "^4.150.0"
   },
   "dependencies": {
     "@phosphor-icons/web": "^2.1.2"
