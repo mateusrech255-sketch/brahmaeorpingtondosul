@@ -1550,9 +1550,9 @@
                 }
             } catch (err) {}
 
-            // 3. Fallback: carrega do arquivo estático data/products.json (compatível com GitHub Pages)
+            // 3. Fallback: carrega do arquivo estático data/produtos.json (compatível com GitHub Pages e Cloudflare)
             try {
-                const res = await fetch('data/products.json');
+                const res = await fetch('data/produtos.json');
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
@@ -1604,46 +1604,44 @@
                     };
                 });
 
-                        const grid = document.getElementById('ebooksIndexGrid');
-                        if (grid) {
-                            grid.innerHTML = data.map(eb => `
-                                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-rustic-gold/50 transition-all">
-                                    <div>
-                                        <div class="relative shrink-0 flex justify-center mb-4">
-                                            <span class="absolute -top-2 -left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow z-10">
-                                                ${eb.tag || '33% OFF'}
-                                            </span>
-                                            <img src="${eb.foto}" alt="${eb.titulo}" class="h-48 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300">
-                                        </div>
-                                        <span class="text-[11px] font-bold text-rustic-gold uppercase tracking-wider block mb-1">${eb.subtitulo || 'E-book Oficial'}</span>
-                                        <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">${eb.titulo}</h4>
-                                        <p class="text-gray-300 text-xs leading-relaxed mb-3">
-                                            ${eb.descricao}
-                                        </p>
-                                        <span class="text-xs text-green-400 font-semibold flex items-center gap-1 mb-4">
-                                            <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF • Imediato
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-baseline gap-2 mb-3">
-                                            ${eb.precoDe ? `<span class="text-gray-400 line-through text-xs">De ${formatMoney(eb.precoDe)}</span>` : ''}
-                                            <span class="text-2xl font-serif font-bold text-rustic-gold">Por ${formatMoney(eb.precoPor)}</span>
-                                        </div>
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <button type="button" onclick="addEbookFromIndex('${eb.id}')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-2.5 px-2 rounded-xl transition-all shadow active:scale-95 flex items-center justify-center gap-1">
-                                                <i class="ph-bold ph-shopping-cart-simple text-sm"></i> Carrinho
-                                            </button>
-                                            <a href="${eb.link || 'ebooks.html#' + eb.id}" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 px-2 rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1 text-center">
-                                                Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                const grid = document.getElementById('ebooksIndexGrid');
+                if (grid) {
+                    grid.innerHTML = dataEbooks.map(eb => `
+                        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-rustic-gold/50 transition-all">
+                            <div>
+                                <div class="relative shrink-0 flex justify-center mb-4">
+                                    <span class="absolute -top-2 -left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow z-10">
+                                        ${eb.tag || '33% OFF'}
+                                    </span>
+                                    <img src="${eb.foto}" alt="${eb.titulo}" class="h-48 object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300">
                                 </div>
-                            `).join('');
-                        }
-                    }
+                                <span class="text-[11px] font-bold text-rustic-gold uppercase tracking-wider block mb-1">${eb.subtitulo || 'E-book Oficial'}</span>
+                                <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">${eb.titulo}</h4>
+                                <p class="text-gray-300 text-xs leading-relaxed mb-3">
+                                    ${eb.descricao}
+                                </p>
+                                <span class="text-xs text-green-400 font-semibold flex items-center gap-1 mb-4">
+                                    <i class="ph-bold ph-file-pdf text-red-400 text-base"></i> Envio por PDF • Imediato
+                                </span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2 mb-3">
+                                    ${eb.precoDe ? `<span class="text-gray-400 line-through text-xs">De ${formatMoney(eb.precoDe)}</span>` : ''}
+                                    <span class="text-2xl font-serif font-bold text-rustic-gold">Por ${formatMoney(eb.precoPor)}</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" onclick="addEbookFromIndex('${eb.id}')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-2.5 px-2 rounded-xl transition-all shadow active:scale-95 flex items-center justify-center gap-1">
+                                        <i class="ph-bold ph-shopping-cart-simple text-sm"></i> Carrinho
+                                    </button>
+                                    <a href="${eb.link || 'ebooks.html#' + eb.id}" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 px-2 rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1 text-center">
+                                        Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
                 }
-            } catch (err) {}
+            }
         };
 
         // --- Initialization ---

@@ -1053,9 +1053,9 @@
                 } catch (e) {}
             }
 
-            // 3. Fallback: carrega do arquivo estático data/products.json (compatível com GitHub Pages)
+            // 3. Fallback: carrega do arquivo estático data/produtos.json (compatível com GitHub Pages e Cloudflare)
             try {
-                const res = await fetch('data/products.json');
+                const res = await fetch('data/produtos.json');
                 if (res.ok) {
                     products = await res.json();
                     updateStats();
