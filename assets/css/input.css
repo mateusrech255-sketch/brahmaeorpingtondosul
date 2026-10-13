@@ -50,3 +50,64 @@
 .animate-float {
   animation: subtle-float 5s ease-in-out infinite;
 }
+
+/* Alinhamento de ícones e prefixos em inputs */
+.input-icon-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: #a8a29e;
+  z-index: 10;
+  line-height: 1;
+}
+.input-icon-left i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.input-icon-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a8a29e;
+  z-index: 10;
+  line-height: 1;
+}
+.input-icon-right button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.input-prefix-currency {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #C89D3C;
+  z-index: 10;
+  line-height: 1;
+}
