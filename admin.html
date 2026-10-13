@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Brahma & Orpington do Sul</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Local) -->
+    <link rel="stylesheet" href="assets/fonts/phosphor/regular/style.css">
+    <link rel="stylesheet" href="assets/fonts/phosphor/bold/style.css">
+    
+    <!-- Tailwind CSS (Estilo Base e CDN para utilitários do painel) -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rustic-dark': '#2A2F25',
+                        'rustic-green': '#3B4D36',
+                        'rustic-earth': '#8B5A2B',
+                        'rustic-gold': '#C89D3C',
+                        'rustic-offwhite': '#F4F1EA',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#181c15] text-stone-100 font-sans min-h-screen antialiased flex flex-col selection:bg-rustic-gold selection:text-rustic-dark">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-[100] transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-rustic-gold/40">
+        <i id="toastIcon" class="ph-bold ph-check-circle text-2xl text-rustic-gold"></i>
+        <div>
+            <p id="toastTitle" class="text-xs font-bold uppercase tracking-wider text-rustic-gold">Sucesso</p>
+            <p id="toastMsg" class="text-sm text-stone-200 font-medium">Operação realizada com sucesso!</p>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TELA 1: LOGIN                                            -->
+    <!-- ======================================================== -->
+    <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+        <!-- Elementos decorativos de fundo -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-rustic-green/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-rustic-gold/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="w-full max-w-md bg-[#22271e]/90 backdrop-blur-xl border border-rustic-gold/30 rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-rustic-dark border-2 border-rustic-gold/40 shadow-inner mb-4">
+                    <img src="assets/images/logo.svg" alt="Logo Criatório" class="w-14 h-14 object-contain">
+                </div>
+                <h1 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">Painel do Criador</h1>
+                <p class="text-xs text-stone-400">Criatório Brahma & Orpington do Sul</p>
+                <div class="inline-block mt-3 bg-rustic-gold/15 border border-rustic-gold/30 text-rustic-gold text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    Acesso Restrito
+                </div>
+            </div>
+
+            <form id="loginForm" class="space-y-5" onsubmit="handleLogin(event)">
+                <div id="loginError" class="hidden p-3.5 bg-red-950/80 border border-red-500/50 rounded-xl text-red-200 text-xs flex items-center gap-2">
+                    <i class="ph-bold ph-warning-circle text-lg text-red-400 shrink-0"></i>
+                    <span id="loginErrorText">Usuário ou senha incorretos.</span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Usuário</label>
+                    <div class="relative">
+                        <i class="ph-bold ph-user absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-lg"></i>
+                        <input type="text" id="loginUsername" required placeholder="admin" autocomplete="username" class="w-full bg-stone-900/80 border border-stone-700 focus:border-rustic-gold rounded-xl py-3.5 pl-11 pr-4 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Senha de Acesso</label>
+                    <div class="relative">
+                        <i class="ph-bold ph-lock-key absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-lg"></i>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password" class="w-full bg-stone-900/80 border border-stone-700 focus:border-rustic-gold rounded-xl py-3.5 pl-11 pr-11 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-1">
+                            <i class="ph-bold ph-eye text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnLoginSubmit" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-4 rounded-xl text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform active:scale-95 flex items-center justify-center gap-2 mt-2">
+                    <span>Entrar no Painel</span>
+                    <i class="ph-bold ph-arrow-right text-base"></i>
+                </button>
+
+                <div class="pt-2 text-center">
+                    <p class="text-[11px] text-stone-400">
+                        Senha padrão inicial: <code class="text-rustic-gold bg-stone-900/80 px-2 py-0.5 rounded border border-rustic-gold/20">admin123</code>
+                    </p>
+                    <a href="index.html" class="inline-flex items-center gap-1.5 text-xs text-stone-400 hover:text-rustic-gold transition-colors mt-3">
+                        <i class="ph-bold ph-arrow-left"></i> Voltar para a Loja
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TELA 2: DASHBOARD ADMIN                                  -->
+    <!-- ======================================================== -->
+    <div id="dashboardSection" class="hidden flex-1 flex flex-col">
+        
+        <!-- Header Superior -->
+        <header class="bg-[#20251c] border-b border-rustic-gold/25 sticky top-0 z-40 backdrop-blur-md bg-opacity-95 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex items-center gap-4">
+                        <img src="assets/images/logo.svg" alt="Logo" class="w-12 h-12 object-contain rounded-full bg-rustic-dark p-1 border border-rustic-gold/30">
+                        <div>
+                            <h2 class="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Painel Administrativo</h2>
+                            <p class="text-[11px] text-stone-400">Brahma & Orpington do Sul</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-stone-700 transition-all">
+                            <i class="ph-bold ph-arrow-square-out text-base text-rustic-gold"></i>
+                            Ver Loja Online
+                        </a>
+                        <button type="button" onclick="openChangePasswordModal()" class="bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-stone-700 transition-all flex items-center gap-1.5" title="Alterar Senha de Acesso">
+                            <i class="ph-bold ph-key text-base text-rustic-gold"></i>
+                            <span class="hidden md:inline">Alterar Senha</span>
+                        </button>
+                        <button type="button" onclick="handleLogout()" class="bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs font-bold px-3.5 py-2.5 rounded-xl border border-red-800/50 transition-all flex items-center gap-1.5" title="Sair do Painel">
+                            <i class="ph-bold ph-sign-out text-base text-red-400"></i>
+                            <span class="hidden sm:inline">Sair</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+            
+            <!-- Abas Principais: Aves vs E-books -->
+            <div class="flex items-center gap-3 mb-8 border-b border-white/10 pb-4">
+                <button type="button" id="tabBtnAves" onclick="switchMainTab('aves')" class="main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg">
+                    <i class="ph-bold ph-egg text-lg"></i>
+                    <span>Aves & Ovos Férteis</span>
+                </button>
+                <button type="button" id="tabBtnEbooks" onclick="switchMainTab('ebooks')" class="main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5">
+                    <i class="ph-bold ph-book-open text-lg text-rustic-gold"></i>
+                    <span>E-books & Manuais Digitais</span>
+                </button>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- ABA 1: AVES & OVOS FÉRTEIS                     -->
+            <!-- ============================================== -->
+            <div id="tabContentAves" class="space-y-8">
+                <!-- Cards de Resumo -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-[#22271e] border border-rustic-gold/20 rounded-2xl p-4 sm:p-5 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-2xl shrink-0">
+                            <i class="ph-bold ph-egg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-stone-400 uppercase font-semibold">Total de Aves</p>
+                            <p id="statTotal" class="font-serif text-2xl sm:text-3xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-white/5 rounded-2xl p-4 sm:p-5 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-rustic-green/30 flex items-center justify-center text-green-400 text-2xl shrink-0">
+                            <i class="ph-bold ph-feather"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-stone-400 uppercase font-semibold">Orpington</p>
+                            <p id="statOrpington" class="font-serif text-2xl sm:text-3xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-white/5 rounded-2xl p-4 sm:p-5 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-900/30 flex items-center justify-center text-amber-400 text-2xl shrink-0">
+                            <i class="ph-bold ph-crown"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-stone-400 uppercase font-semibold">Brahma</p>
+                            <p id="statBrahma" class="font-serif text-2xl sm:text-3xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-white/5 rounded-2xl p-4 sm:p-5 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-stone-700/30 flex items-center justify-center text-stone-300 text-2xl shrink-0">
+                            <i class="ph-bold ph-sparkle"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-stone-400 uppercase font-semibold">Balão & Combos</p>
+                            <p id="statOutros" class="font-serif text-2xl sm:text-3xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de Ações & Filtros -->
+                <div class="bg-[#22271e] border border-rustic-gold/20 rounded-2xl p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <!-- Filtros & Busca -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+                        <!-- Busca rápida -->
+                        <div class="relative flex-1 max-w-md">
+                            <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-base"></i>
+                            <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Buscar ave por nome ou cor..." class="w-full bg-stone-900/80 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+
+                        <!-- Abas de categoria -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 hide-scrollbar" id="categoryFilterContainer">
+                            <button type="button" onclick="setCategoryFilter('todas')" class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-rustic-gold text-rustic-dark shrink-0" data-cat="todas">
+                                Todas
+                            </button>
+                            <button type="button" onclick="setCategoryFilter('Orpington')" class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-cat="Orpington">
+                                Orpington
+                            </button>
+                            <button type="button" onclick="setCategoryFilter('Brahma')" class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-cat="Brahma">
+                                Brahma
+                            </button>
+                            <button type="button" onclick="setCategoryFilter('Sertanejo Balão')" class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-cat="Sertanejo Balão">
+                                Balão (GSB)
+                            </button>
+                            <button type="button" onclick="setCategoryFilter('Combo Especial')" class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-cat="Combo Especial">
+                                Combos
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Botão Criar Novo Produto -->
+                    <button type="button" onclick="openProductModal()" class="bg-rustic-green hover:bg-[#475c40] text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 shrink-0 border border-rustic-gold/30">
+                        <i class="ph-bold ph-plus-circle text-lg text-rustic-gold"></i>
+                        <span>Cadastrar Nova Ave</span>
+                    </button>
+                </div>
+
+                <!-- Grade de Produtos -->
+                <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+
+                <!-- Estado Vazio -->
+                <div id="emptyState" class="hidden text-center py-16 bg-[#22271e] rounded-3xl border border-white/5 p-8">
+                    <i class="ph-bold ph-magnifying-glass text-5xl text-stone-500 mb-4 inline-block"></i>
+                    <h3 class="font-serif text-xl font-bold text-white mb-2">Nenhum produto encontrado</h3>
+                    <p class="text-xs text-stone-400 max-w-md mx-auto mb-6">Nenhum item corresponde ao filtro ou busca selecionada.</p>
+                    <button type="button" onclick="resetFilters()" class="bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold px-4 py-2.5 rounded-xl border border-stone-600 transition-all">
+                        Limpar Filtros
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- ABA 2: E-BOOKS & MANUAIS DIGITAIS              -->
+            <!-- ============================================== -->
+            <div id="tabContentEbooks" class="hidden space-y-8">
+                <!-- Cabeçalho da Seção de E-books -->
+                <div class="bg-[#22271e] border border-rustic-gold/20 rounded-2xl p-6 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-rustic-gold uppercase tracking-wider bg-rustic-gold/15 px-3 py-1 rounded-full mb-2 border border-rustic-gold/30">
+                            <i class="ph-bold ph-book-open"></i> Materiais Digitais
+                        </span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white">Biblioteca de E-books Técnicos</h3>
+                        <p class="text-xs text-stone-400">Edite capas, títulos, descrições e valores dos guias vendidos na loja e na página de e-books.</p>
+                    </div>
+
+                    <button type="button" onclick="openEbookModal()" class="bg-rustic-green hover:bg-[#475c40] text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 shrink-0 border border-rustic-gold/30">
+                        <i class="ph-bold ph-plus-circle text-lg text-rustic-gold"></i>
+                        <span>Cadastrar Novo E-book</span>
+                    </button>
+                </div>
+
+                <!-- Grade de E-books -->
+                <div id="ebooksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: EDITAR / CRIAR PRODUTO (AVES)                     -->
+    <!-- ======================================================== -->
+    <div id="productModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-8 overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15]">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                        <i id="modalIcon" class="ph-bold ph-pencil-simple"></i>
+                    </div>
+                    <div>
+                        <h3 id="modalTitle" class="font-serif text-xl font-bold text-white">Editar Produto</h3>
+                        <p class="text-xs text-stone-400">Atualize informações, fotos e preços da ave</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeProductModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Formulário com Scroll) -->
+            <form id="productForm" onsubmit="saveProductForm(event)" class="overflow-y-auto p-6 sm:p-8 space-y-8 flex-1">
+                <input type="hidden" id="prodFormId">
+
+                <!-- 1. Informações Básicas -->
+                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-info text-base"></i> Identificação da Ave
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Nome da Variedade / Raça *</label>
+                            <input type="text" id="prodFormNome" required placeholder="Ex: Orpington Prata Laceado" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Categoria / Grupo *</label>
+                            <input type="text" id="prodFormCategoria" required placeholder="Ex: Orpington, Brahma, Sertanejo Balão..." list="categorySuggestions" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            <datalist id="categorySuggestions">
+                                <option value="Orpington">
+                                <option value="Brahma">
+                                <option value="Sertanejo Balão">
+                                <option value="Combo Especial">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Descrição Comercial da Ave *</label>
+                        <textarea id="prodFormDescricao" rows="3" required placeholder="Descreva os pontos fortes, visual, linhagem e padrão..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold leading-relaxed"></textarea>
+                    </div>
+                </div>
+
+                <!-- 2. Galeria de Fotos -->
+                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-white/5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                            <i class="ph-bold ph-image text-base"></i> Fotos da Ave (<span id="prodFormPhotoCount">0</span>)
+                        </h4>
+                        <span class="text-[11px] text-stone-400">A 1ª foto é a capa</span>
+                    </div>
+
+                    <!-- Miniaturas das fotos atuais -->
+                    <div id="photosContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <!-- Preenchido dinamicamente -->
+                    </div>
+
+                    <!-- Área de Upload de Nova Foto -->
+                    <div class="border-2 border-dashed border-stone-700 hover:border-rustic-gold/60 rounded-2xl p-6 text-center transition-colors bg-stone-900/40 relative">
+                        <input type="file" id="photoFileInput" accept="image/jpeg,image/png,image/webp" multiple onchange="handlePhotoUpload(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-12 h-12 rounded-full bg-rustic-gold/15 flex items-center justify-center text-rustic-gold text-2xl mb-2">
+                                <i class="ph-bold ph-cloud-arrow-up"></i>
+                            </div>
+                            <p class="text-xs font-bold text-white mb-1">Clique para enviar novas fotos ou arraste arquivos aqui</p>
+                            <p class="text-[11px] text-stone-400">Suporta JPG, PNG, WEBP (várias fotos por vez)</p>
+                            <div id="uploadSpinner" class="hidden mt-3 text-xs text-rustic-gold flex items-center gap-2">
+                                <i class="ph-bold ph-spinner animate-spin text-base"></i> Enviando foto...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Preços dos Ovos -->
+                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-currency-circle-dollar text-base"></i> Valores dos Ovos (R$)
+                    </h4>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="standardPricesRow">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Meia Dúzia (6 ovos)</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-rustic-gold">R$</span>
+                                <input type="number" step="0.01" min="0" id="prodPriceMeia" placeholder="150.00" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Uma Dúzia (12 ovos)</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-rustic-gold">R$</span>
+                                <input type="number" step="0.01" min="0" id="prodPriceUma" placeholder="300.00" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Duas Dúzias (24 ovos)</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-rustic-gold">R$</span>
+                                <input type="number" step="0.01" min="0" id="prodPriceDuas" placeholder="500.00" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preço de Combo Especial (se aplicável) -->
+                    <div id="comboPriceRow" class="pt-2 border-t border-white/5">
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Combo Especial (15 Ovos) - Opcional</label>
+                        <div class="relative max-w-xs">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-rustic-gold">R$</span>
+                            <input type="number" step="0.01" min="0" id="prodPriceCombo" placeholder="299.00" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Ficha Técnica da Raça -->
+                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-scales text-base"></i> Ficha Técnica e Padrão da Raça
+                    </h4>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Peso Médio Machos</label>
+                            <input type="text" id="prodFormPesoMachos" placeholder="Ex: 4 a 4,8 kg" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Peso Médio Fêmeas</label>
+                            <input type="text" id="prodFormPesoFemeas" placeholder="Ex: 3 a 3,8 kg" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Postura Anual</label>
+                            <input type="text" id="prodFormPostura" placeholder="Ex: 150 a 200 ovos/ano" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Características Ornamentais / Detalhes</label>
+                        <textarea id="prodFormOrnamentais" rows="2" placeholder="Características de plumagem, crista, porte, conformação..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold leading-relaxed"></textarea>
+                    </div>
+                </div>
+
+                <!-- Footer do Modal -->
+                <div class="pt-4 border-t border-rustic-gold/20 flex items-center justify-end gap-3 sticky bottom-0 bg-[#1f241a] py-3">
+                    <button type="button" onclick="closeProductModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-5 py-3 rounded-xl text-xs transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btnSaveProduct" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-7 py-3 rounded-xl text-xs transition-all shadow-lg hover:shadow-xl transform active:scale-95 flex items-center gap-2">
+                        <i class="ph-bold ph-floppy-disk text-base"></i>
+                        <span>Salvar Alterações</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: EDITAR / CRIAR E-BOOK                             -->
+    <!-- ======================================================== -->
+    <div id="ebookModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-8 overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15]">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                        <i id="ebookModalIcon" class="ph-bold ph-book-open"></i>
+                    </div>
+                    <div>
+                        <h3 id="ebookModalTitle" class="font-serif text-xl font-bold text-white">Editar E-book</h3>
+                        <p class="text-xs text-stone-400">Atualize título, capa, descrição e valores do material digital</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeEbookModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <form id="ebookForm" onsubmit="saveEbookForm(event)" class="overflow-y-auto p-6 sm:p-8 space-y-6 flex-1">
+                <input type="hidden" id="ebookFormId">
+
+                <!-- 1. Identificação -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Título do E-book *</label>
+                        <input type="text" id="ebookFormTitulo" required placeholder="Ex: Guia da Raça Orpington" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Subtítulo / Categoria</label>
+                            <input type="text" id="ebookFormSubtitulo" placeholder="Ex: E-book Oficial ou Manual Técnico" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Selo / Tag de Destaque</label>
+                            <input type="text" id="ebookFormTag" placeholder="Ex: 33% OFF, Lançamento..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Descrição Curta *</label>
+                        <textarea id="ebookFormDescricao" rows="3" required placeholder="Resumo do conteúdo abordado no e-book..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold leading-relaxed"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Link da Página de Detalhes</label>
+                        <input type="text" id="ebookFormLink" placeholder="ebooks.html#ebook-orpington" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                    </div>
+                </div>
+
+                <!-- 2. Preços -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-4">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-currency-circle-dollar text-base"></i> Valores do E-book
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Preço Original ("De R$")</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-rustic-gold">R$</span>
+                                <input type="number" step="0.01" min="0" id="ebookFormPrecoDe" placeholder="89.90" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Preço Promocional ("Por R$") *</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-rustic-gold">R$</span>
+                                <input type="number" step="0.01" min="0" id="ebookFormPrecoPor" required placeholder="59.90" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Imagem de Capa -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-4">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-image text-base"></i> Capa do E-book
+                    </h4>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-5">
+                        <div class="w-32 h-44 bg-stone-950 rounded-xl border border-stone-700 overflow-hidden flex items-center justify-center shrink-0 p-2">
+                            <img id="ebookCoverPreview" src="assets/images/ebook-orpington.png" alt="Capa" class="w-full h-full object-contain">
+                        </div>
+                        
+                        <div class="flex-1 w-full space-y-3">
+                            <input type="hidden" id="ebookFormFoto" value="assets/images/ebook-orpington.png">
+                            <div class="border-2 border-dashed border-stone-700 hover:border-rustic-gold/60 rounded-xl p-4 text-center transition-colors bg-stone-900/40 relative">
+                                <input type="file" id="ebookCoverFileInput" accept="image/png,image/jpeg,image/webp" onchange="handleEbookCoverUpload(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                                <div class="flex flex-col items-center justify-center">
+                                    <i class="ph-bold ph-upload-simple text-2xl text-rustic-gold mb-1"></i>
+                                    <p class="text-xs font-bold text-white">Enviar Nova Imagem de Capa</p>
+                                    <p class="text-[10px] text-stone-400">Formatos recomendados: PNG transparente ou JPG</p>
+                                </div>
+                            </div>
+                            <div id="ebookUploadSpinner" class="hidden text-xs text-rustic-gold flex items-center gap-2 justify-center">
+                                <i class="ph-bold ph-spinner animate-spin text-base"></i> Enviando imagem...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer do Modal -->
+                <div class="pt-4 border-t border-rustic-gold/20 flex items-center justify-end gap-3 sticky bottom-0 bg-[#1f241a] py-3">
+                    <button type="button" onclick="closeEbookModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-5 py-3 rounded-xl text-xs transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btnSaveEbook" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-7 py-3 rounded-xl text-xs transition-all shadow-lg hover:shadow-xl transform active:scale-95 flex items-center gap-2">
+                        <i class="ph-bold ph-floppy-disk text-base"></i>
+                        <span>Salvar E-book</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: ALTERAR SENHA                                     -->
+    <!-- ======================================================== -->
+    <div id="passwordModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#20251c] border border-rustic-gold/30 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-rustic-gold/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                        <i class="ph-bold ph-key"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-white">Alterar Senha</h3>
+                        <p class="text-xs text-stone-400">Atualize as credenciais de acesso</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeChangePasswordModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <form id="changePasswordForm" onsubmit="handleChangePassword(event)" class="space-y-4">
+                <div id="passwordError" class="hidden p-3 bg-red-950/80 border border-red-500/50 rounded-xl text-red-200 text-xs"></div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 mb-1.5">Novo Nome de Usuário (opcional)</label>
+                    <input type="text" id="newUsernameInput" placeholder="admin" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 mb-1.5">Senha Atual *</label>
+                    <input type="password" id="currentPasswordInput" required placeholder="Digite sua senha atual" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 mb-1.5">Nova Senha *</label>
+                    <input type="password" id="newPasswordInput" required minlength="4" placeholder="Mínimo 4 caracteres" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 mb-1.5">Confirme a Nova Senha *</label>
+                    <input type="password" id="confirmNewPasswordInput" required minlength="4" placeholder="Repita a nova senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                </div>
+
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/5">
+                    <button type="button" onclick="closeChangePasswordModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-4 py-2.5 rounded-xl text-xs transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btnSavePassword" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-md">
+                        Salvar Nova Senha
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- LOGICA JAVASCRIPT DO PAINEL ADMIN                        -->
+    <!-- ======================================================== -->
+    <script>
+        // --- Estado Global ---
+        const STORAGE_TOKEN_KEY = 'bos_admin_token';
+        let authToken = localStorage.getItem(STORAGE_TOKEN_KEY) || null;
+        let products = [];
+        let ebooks = [];
+        let currentMainTab = 'aves'; // 'aves' | 'ebooks'
+        let currentFilter = 'todas';
+        let currentSearch = '';
+        let modalPhotos = []; // Fotos temporárias do produto em edição
+
+        // --- Notificações Toast ---
+        const showToast = (message, title = 'Sucesso', isError = false) => {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastTitle.textContent = title;
+            toastMsg.textContent = message;
+
+            if (isError) {
+                toastTitle.className = 'text-xs font-bold uppercase tracking-wider text-red-400';
+                toastIcon.className = 'ph-bold ph-warning-circle text-2xl text-red-400';
+                toast.classList.add('border-red-500/50');
+                toast.classList.remove('border-rustic-gold/40');
+            } else {
+                toastTitle.className = 'text-xs font-bold uppercase tracking-wider text-rustic-gold';
+                toastIcon.className = 'ph-bold ph-check-circle text-2xl text-rustic-gold';
+                toast.classList.add('border-rustic-gold/40');
+                toast.classList.remove('border-red-500/50');
+            }
+
+            toast.classList.remove('-translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('-translate-y-20', 'opacity-0');
+            }, 3500);
+        };
+
+        const togglePasswordVisibility = (inputId, btn) => {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'ph-bold ph-eye-slash text-lg';
+            } else {
+                input.type = 'password';
+                icon.className = 'ph-bold ph-eye text-lg';
+            }
+        };
+
+        const formatMoney = (val) => {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
+        };
+
+        // --- Alternar Abas Principais (Aves vs E-books) ---
+        const switchMainTab = (tab) => {
+            currentMainTab = tab;
+            const btnAves = document.getElementById('tabBtnAves');
+            const btnEbooks = document.getElementById('tabBtnEbooks');
+            const secAves = document.getElementById('tabContentAves');
+            const secEbooks = document.getElementById('tabContentEbooks');
+
+            if (tab === 'aves') {
+                btnAves.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg';
+                btnEbooks.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5';
+                secAves.classList.remove('hidden');
+                secEbooks.classList.add('hidden');
+            } else {
+                btnEbooks.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg';
+                btnAves.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5';
+                secAves.classList.add('hidden');
+                secEbooks.classList.remove('hidden');
+                loadEbooks();
+            }
+        };
+
+        // --- Verificação de Autenticação ---
+        const checkAuth = async () => {
+            if (!authToken) {
+                showLoginView();
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth-check', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (res.ok) {
+                    showDashboardView();
+                    loadProducts();
+                    loadEbooks();
+                } else {
+                    localStorage.removeItem(STORAGE_TOKEN_KEY);
+                    authToken = null;
+                    showLoginView();
+                }
+            } catch (err) {
+                console.error('Erro ao verificar sessão:', err);
+                showLoginView();
+            }
+        };
+
+        const showLoginView = () => {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+        };
+
+        const showDashboardView = () => {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+        };
+
+        // --- Login e Logout ---
+        const handleLogin = async (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('loginUsername').value.trim();
+            const passwordInput = document.getElementById('loginPassword').value.trim();
+            const btn = document.getElementById('btnLoginSubmit');
+            const errBox = document.getElementById('loginError');
+            const errText = document.getElementById('loginErrorText');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Entrando...`;
+            errBox.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: usernameInput, password: passwordInput })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    authToken = data.token;
+                    localStorage.setItem(STORAGE_TOKEN_KEY, authToken);
+                    showToast('Bem-vindo ao Painel do Criatório!', 'Conectado');
+                    showDashboardView();
+                    loadProducts();
+                    loadEbooks();
+                } else {
+                    errText.textContent = data.error || 'Credenciais inválidas.';
+                    errBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                errText.textContent = 'Erro de conexão com o servidor.';
+                errBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>Entrar no Painel</span> <i class="ph-bold ph-arrow-right text-base"></i>`;
+            }
+        };
+
+        const handleLogout = async () => {
+            try {
+                await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+            } catch (e) {}
+
+            localStorage.removeItem(STORAGE_TOKEN_KEY);
+            authToken = null;
+            showLoginView();
+            showToast('Sessão encerrada.', 'Logout');
+        };
+
+        // --- Carregar e Renderizar Produtos (Aves) ---
+        const loadProducts = async () => {
+            try {
+                const res = await fetch('/api/produtos');
+                if (res.ok) {
+                    products = await res.json();
+                    updateStats();
+                    renderProductsGrid();
+                } else {
+                    showToast('Falha ao carregar lista de produtos.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro ao comunicar com a API.', 'Erro', true);
+            }
+        };
+
+        const updateStats = () => {
+            document.getElementById('statTotal').textContent = products.length;
+            document.getElementById('statOrpington').textContent = products.filter(p => p.categoria === 'Orpington').length;
+            document.getElementById('statBrahma').textContent = products.filter(p => p.categoria === 'Brahma').length;
+            document.getElementById('statOutros').textContent = products.filter(p => p.categoria !== 'Orpington' && p.categoria !== 'Brahma').length;
+        };
+
+        const setCategoryFilter = (cat) => {
+            currentFilter = cat;
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-rustic-gold text-rustic-dark shrink-0';
+                } else {
+                    btn.className = 'cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0';
+                }
+            });
+            renderProductsGrid();
+        };
+
+        const handleSearch = (query) => {
+            currentSearch = query.toLowerCase().trim();
+            renderProductsGrid();
+        };
+
+        const resetFilters = () => {
+            document.getElementById('searchInput').value = '';
+            currentSearch = '';
+            setCategoryFilter('todas');
+        };
+
+        const renderProductsGrid = () => {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyState');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchCategory = currentFilter === 'todas' || p.categoria === currentFilter;
+                const matchSearch = !currentSearch || 
+                    (p.nome && p.nome.toLowerCase().includes(currentSearch)) ||
+                    (p.categoria && p.categoria.toLowerCase().includes(currentSearch)) ||
+                    (p.descricao && p.descricao.toLowerCase().includes(currentSearch));
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-[#22271e] border border-stone-800 hover:border-rustic-gold/40 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group";
+
+                const coverPhoto = (p.fotos && p.fotos.length > 0) ? p.fotos[0] : 'assets/images/combo-surpresa.jpg';
+                const photoCount = p.fotos ? p.fotos.length : 0;
+
+                let precosHtml = '';
+                if (p.precos) {
+                    if (p.precos.meiaDuzia) precosHtml += `<span class="bg-black/40 text-stone-300 px-2.5 py-1 rounded-lg border border-white/5">6 ovos: <b class="text-white">${formatMoney(p.precos.meiaDuzia)}</b></span>`;
+                    if (p.precos.umaDuzia) precosHtml += `<span class="bg-black/40 text-stone-300 px-2.5 py-1 rounded-lg border border-white/5">12 ovos: <b class="text-white">${formatMoney(p.precos.umaDuzia)}</b></span>`;
+                    if (p.precos.duasDuzias) precosHtml += `<span class="bg-black/40 text-stone-300 px-2.5 py-1 rounded-lg border border-white/5">24 ovos: <b class="text-white">${formatMoney(p.precos.duasDuzias)}</b></span>`;
+                    if (p.precos.combo15) precosHtml += `<span class="bg-rustic-gold/20 text-rustic-gold px-2.5 py-1 rounded-lg border border-rustic-gold/30">Combo (15): <b class="text-white">${formatMoney(p.precos.combo15)}</b></span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="relative h-64 bg-stone-950 overflow-hidden flex items-center justify-center">
+                        <img src="${coverPhoto}" alt="" class="absolute inset-0 w-full h-full object-cover blur-xl opacity-20 pointer-events-none scale-125">
+                        <img src="${coverPhoto}" alt="${p.nome}" class="relative z-0 max-w-full max-h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-stone-300 text-[11px] font-bold px-2.5 py-1 rounded-lg border border-white/10 flex items-center gap-1.5 z-10">
+                            <i class="ph-bold ph-camera text-rustic-gold"></i>
+                            <span>${photoCount} foto${photoCount !== 1 ? 's' : ''}</span>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="mb-2">
+                            <span class="inline-block bg-rustic-gold text-rustic-dark text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                                ${p.categoria}
+                            </span>
+                        </div>
+                        <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">${p.nome}</h4>
+                        <p class="text-stone-400 text-xs line-clamp-2 leading-relaxed mb-4">${p.descricao || 'Sem descrição cadastrada.'}</p>
+                        
+                        <div class="flex flex-wrap gap-1.5 text-[11px] mb-5 mt-auto">
+                            ${precosHtml}
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/10">
+                            <button type="button" onclick="openProductModal('${p.id}')" class="bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/30 flex items-center justify-center gap-1.5">
+                                <i class="ph-bold ph-pencil-simple text-sm"></i> Editar
+                            </button>
+                            <button type="button" onclick="deleteProduct('${p.id}')" class="bg-red-950/40 hover:bg-red-900 text-red-300 hover:text-white font-semibold text-xs py-2.5 px-3 rounded-xl transition-all border border-red-800/30 flex items-center justify-center gap-1.5">
+                                <i class="ph-bold ph-trash text-sm"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        // --- Modal Criar / Editar Produto (Aves) ---
+        const openProductModal = (productId = null) => {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('modalTitle');
+            const icon = document.getElementById('modalIcon');
+            const form = document.getElementById('productForm');
+            form.reset();
+
+            if (productId) {
+                const prod = products.find(p => p.id === productId);
+                if (!prod) return;
+
+                title.textContent = `Editar: ${prod.nome}`;
+                icon.className = 'ph-bold ph-pencil-simple';
+                document.getElementById('prodFormId').value = prod.id;
+                document.getElementById('prodFormNome').value = prod.nome || '';
+                document.getElementById('prodFormCategoria').value = prod.categoria || 'Orpington';
+                document.getElementById('prodFormDescricao').value = prod.descricao || '';
+
+                // Preços
+                document.getElementById('prodPriceMeia').value = (prod.precos && prod.precos.meiaDuzia) ? prod.precos.meiaDuzia : '';
+                document.getElementById('prodPriceUma').value = (prod.precos && prod.precos.umaDuzia) ? prod.precos.umaDuzia : '';
+                document.getElementById('prodPriceDuas').value = (prod.precos && prod.precos.duasDuzias) ? prod.precos.duasDuzias : '';
+                document.getElementById('prodPriceCombo').value = (prod.precos && prod.precos.combo15) ? prod.precos.combo15 : '';
+
+                // Ficha Técnica
+                if (prod.detalhes) {
+                    document.getElementById('prodFormPesoMachos').value = prod.detalhes.pesoMachos || '';
+                    document.getElementById('prodFormPesoFemeas').value = prod.detalhes.pesoFemeas || '';
+                    document.getElementById('prodFormPostura').value = prod.detalhes.postura || '';
+                    document.getElementById('prodFormOrnamentais').value = prod.detalhes.ornamentais || '';
+                }
+
+                modalPhotos = prod.fotos ? [...prod.fotos] : [];
+            } else {
+                title.textContent = 'Cadastrar Nova Ave / Produto';
+                icon.className = 'ph-bold ph-plus-circle';
+                document.getElementById('prodFormId').value = '';
+                document.getElementById('prodFormCategoria').value = 'Orpington';
+                document.getElementById('prodFormPesoMachos').value = '4 a 4,8 kg';
+                document.getElementById('prodFormPesoFemeas').value = '3 a 3,8 kg';
+                document.getElementById('prodFormPostura').value = 'Aproximadamente 150 a 200 ovos por ano';
+                modalPhotos = [];
+            }
+
+            renderModalPhotos();
+            modal.classList.remove('hidden');
+        };
+
+        const closeProductModal = () => {
+            document.getElementById('productModal').classList.add('hidden');
+            modalPhotos = [];
+        };
+
+        const renderModalPhotos = () => {
+            const container = document.getElementById('photosContainer');
+            const countEl = document.getElementById('prodFormPhotoCount');
+            countEl.textContent = modalPhotos.length;
+            container.innerHTML = '';
+
+            if (modalPhotos.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-stone-500 italic">Nenhuma foto adicionada ainda. Envie fotos abaixo!</div>`;
+                return;
+            }
+
+            modalPhotos.forEach((photoUrl, index) => {
+                const isCover = index === 0;
+                const photoCard = document.createElement('div');
+                photoCard.className = `relative rounded-xl overflow-hidden bg-black/60 border ${isCover ? 'border-rustic-gold ring-1 ring-rustic-gold' : 'border-stone-700'} group aspect-square flex items-center justify-center`;
+
+                photoCard.innerHTML = `
+                    <img src="${photoUrl}" alt="Foto ${index + 1}" class="w-full h-full object-cover">
+                    ${isCover ? '<span class="absolute top-1.5 left-1.5 bg-rustic-gold text-rustic-dark text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider z-10 shadow">Capa</span>' : ''}
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 p-2 z-20">
+                        ${!isCover ? `
+                            <button type="button" onclick="setPhotoAsCover(${index})" class="bg-rustic-gold hover:bg-yellow-400 text-rustic-dark p-2 rounded-lg text-xs font-bold" title="Definir como foto de capa">
+                                <i class="ph-bold ph-star text-sm"></i>
+                            </button>
+                        ` : ''}
+                        <button type="button" onclick="removePhotoFromModal(${index})" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg text-xs font-bold" title="Remover foto">
+                            <i class="ph-bold ph-trash text-sm"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(photoCard);
+            });
+        };
+
+        const setPhotoAsCover = (index) => {
+            if (index <= 0 || index >= modalPhotos.length) return;
+            const chosen = modalPhotos.splice(index, 1)[0];
+            modalPhotos.unshift(chosen);
+            renderModalPhotos();
+            showToast('Foto definida como principal de capa!', 'Capa Atualizada');
+        };
+
+        const removePhotoFromModal = (index) => {
+            modalPhotos.splice(index, 1);
+            renderModalPhotos();
+        };
+
+        // --- Upload de Novas Fotos de Aves ---
+        const handlePhotoUpload = async (e) => {
+            const files = Array.from(e.target.files);
+            if (!files || files.length === 0) return;
+
+            const spinner = document.getElementById('uploadSpinner');
+            spinner.classList.remove('hidden');
+
+            for (const file of files) {
+                try {
+                    const base64 = await readFileAsBase64(file);
+                    const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            base64: base64
+                        })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        modalPhotos.push(data.url);
+                        renderModalPhotos();
+                    } else {
+                        showToast(data.error || 'Erro ao enviar imagem.', 'Erro no Upload', true);
+                    }
+                } catch (err) {
+                    showToast('Erro ao processar imagem.', 'Erro', true);
+                }
+            }
+
+            spinner.classList.add('hidden');
+            e.target.value = '';
+            showToast(`${files.length} foto(s) carregada(s) com sucesso!`);
+        };
+
+        const readFileAsBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (err) => reject(err);
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // --- Salvar Formulário de Produto (Aves) ---
+        const saveProductForm = async (e) => {
+            e.preventDefault();
+            const idInput = document.getElementById('prodFormId').value.trim();
+            const nomeInput = document.getElementById('prodFormNome').value.trim();
+            const categoriaInput = document.getElementById('prodFormCategoria').value.trim();
+            const descricaoInput = document.getElementById('prodFormDescricao').value.trim();
+
+            const meiaPrice = parseFloat(document.getElementById('prodPriceMeia').value) || null;
+            const umaPrice = parseFloat(document.getElementById('prodPriceUma').value) || null;
+            const duasPrice = parseFloat(document.getElementById('prodPriceDuas').value) || null;
+            const comboPrice = parseFloat(document.getElementById('prodPriceCombo').value) || null;
+
+            const precos = {};
+            if (meiaPrice) precos.meiaDuzia = meiaPrice;
+            if (umaPrice) precos.umaDuzia = umaPrice;
+            if (duasPrice) precos.duasDuzias = duasPrice;
+            if (comboPrice) precos.combo15 = comboPrice;
+
+            if (Object.keys(precos).length === 0) {
+                precos.umaDuzia = 300;
+            }
+
+            const detalhes = {
+                pesoMachos: document.getElementById('prodFormPesoMachos').value.trim() || '4 a 4,8 kg',
+                pesoFemeas: document.getElementById('prodFormPesoFemeas').value.trim() || '3 a 3,8 kg',
+                postura: document.getElementById('prodFormPostura').value.trim() || 'Aproximadamente 150 a 200 ovos por ano',
+                ornamentais: document.getElementById('prodFormOrnamentais').value.trim() || 'Padrão genético selecionado no criatório.'
+            };
+
+            const btnSave = document.getElementById('btnSaveProduct');
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Salvando...`;
+
+            try {
+                let updatedProducts = [...products];
+
+                if (idInput) {
+                    const index = updatedProducts.findIndex(p => p.id === idInput);
+                    if (index !== -1) {
+                        updatedProducts[index] = {
+                            ...updatedProducts[index],
+                            nome: nomeInput,
+                            categoria: categoriaInput,
+                            descricao: descricaoInput,
+                            precos: precos,
+                            detalhes: detalhes,
+                            fotos: modalPhotos.length > 0 ? modalPhotos : updatedProducts[index].fotos
+                        };
+                    }
+                } else {
+                    const newId = nomeInput.toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '') || ('ave-' + Date.now());
+
+                    const newProduct = {
+                        id: newId,
+                        nome: nomeInput,
+                        categoria: categoriaInput,
+                        descricao: descricaoInput,
+                        precos: precos,
+                        detalhes: detalhes,
+                        fotos: modalPhotos.length > 0 ? modalPhotos : ['assets/images/combo-surpresa.jpg']
+                    };
+                    updatedProducts.push(newProduct);
+                }
+
+                const res = await fetch('/api/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedProducts)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    products = updatedProducts;
+                    updateStats();
+                    renderProductsGrid();
+                    closeProductModal();
+                    showToast('Produto gravado com sucesso no catálogo!', 'Salvo');
+                } else {
+                    showToast(data.error || 'Erro ao salvar produto.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro de comunicação com o servidor.', 'Erro', true);
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar Alterações</span>`;
+            }
+        };
+
+        // --- Excluir Produto (Ave) ---
+        const deleteProduct = async (productId) => {
+            const prod = products.find(p => p.id === productId);
+            if (!prod) return;
+
+            const confirmed = confirm(`Tem certeza que deseja excluir "${prod.nome}" do catálogo? Esta ação não pode ser desfeita.`);
+            if (!confirmed) return;
+
+            try {
+                const updatedProducts = products.filter(p => p.id !== productId);
+                const res = await fetch('/api/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedProducts)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    products = updatedProducts;
+                    updateStats();
+                    renderProductsGrid();
+                    showToast(`"${prod.nome}" foi removido com sucesso.`);
+                } else {
+                    showToast(data.error || 'Erro ao excluir.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro ao comunicar com a API.', 'Erro', true);
+            }
+        };
+
+        // ========================================================
+        // GERENCIAMENTO DE E-BOOKS
+        // ========================================================
+        const loadEbooks = async () => {
+            try {
+                const res = await fetch('/api/ebooks');
+                if (res.ok) {
+                    ebooks = await res.json();
+                    renderEbooksGrid();
+                } else {
+                    showToast('Falha ao carregar lista de e-books.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro ao comunicar com a API de e-books.', 'Erro', true);
+            }
+        };
+
+        const renderEbooksGrid = () => {
+            const grid = document.getElementById('ebooksGrid');
+            grid.innerHTML = '';
+
+            if (ebooks.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-[#22271e] rounded-3xl border border-white/5 p-8">
+                        <i class="ph-bold ph-book-open text-5xl text-stone-500 mb-3 inline-block"></i>
+                        <h4 class="font-serif text-lg font-bold text-white mb-2">Nenhum e-book cadastrado</h4>
+                        <p class="text-xs text-stone-400 mb-4">Clique no botão acima para adicionar o primeiro material digital.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            ebooks.forEach(eb => {
+                const card = document.createElement('div');
+                card.className = "bg-[#22271e] border border-stone-800 hover:border-rustic-gold/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden";
+
+                const coverImg = eb.foto || 'assets/images/ebook-orpington.png';
+                const tag = eb.tag || '33% OFF';
+                const subtitulo = eb.subtitulo || 'E-book Oficial';
+
+                card.innerHTML = `
+                    <div>
+                        <div class="relative shrink-0 flex justify-center mb-5 bg-stone-950/60 p-4 rounded-xl border border-white/5">
+                            <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow z-10">
+                                ${tag}
+                            </span>
+                            <img src="${coverImg}" alt="${eb.titulo}" class="h-52 object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <span class="text-[11px] font-bold text-rustic-gold uppercase tracking-wider block mb-1">${subtitulo}</span>
+                        <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">${eb.titulo}</h4>
+                        <p class="text-stone-300 text-xs leading-relaxed mb-4 line-clamp-3">${eb.descricao}</p>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 mt-auto">
+                        <div class="flex items-baseline gap-2 mb-4">
+                            ${eb.precoDe ? `<span class="text-stone-500 line-through text-xs">De ${formatMoney(eb.precoDe)}</span>` : ''}
+                            <span class="text-xl font-serif font-bold text-rustic-gold">Por ${formatMoney(eb.precoPor)}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="openEbookModal('${eb.id}')" class="bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/30 flex items-center justify-center gap-1.5">
+                                <i class="ph-bold ph-pencil-simple text-sm"></i> Editar
+                            </button>
+                            <button type="button" onclick="deleteEbook('${eb.id}')" class="bg-red-950/40 hover:bg-red-900 text-red-300 hover:text-white font-semibold text-xs py-2.5 px-3 rounded-xl transition-all border border-red-800/30 flex items-center justify-center gap-1.5">
+                                <i class="ph-bold ph-trash text-sm"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        const openEbookModal = (ebookId = null) => {
+            const modal = document.getElementById('ebookModal');
+            const title = document.getElementById('ebookModalTitle');
+            const form = document.getElementById('ebookForm');
+            form.reset();
+
+            if (ebookId) {
+                const eb = ebooks.find(e => e.id === ebookId);
+                if (!eb) return;
+
+                title.textContent = `Editar: ${eb.titulo}`;
+                document.getElementById('ebookFormId').value = eb.id;
+                document.getElementById('ebookFormTitulo').value = eb.titulo || '';
+                document.getElementById('ebookFormSubtitulo').value = eb.subtitulo || 'E-book Oficial';
+                document.getElementById('ebookFormTag').value = eb.tag || '33% OFF';
+                document.getElementById('ebookFormDescricao').value = eb.descricao || '';
+                document.getElementById('ebookFormLink').value = eb.link || `ebooks.html#${eb.id}`;
+                document.getElementById('ebookFormPrecoDe').value = eb.precoDe || '';
+                document.getElementById('ebookFormPrecoPor').value = eb.precoPor || '';
+                document.getElementById('ebookFormFoto').value = eb.foto || 'assets/images/ebook-orpington.png';
+                document.getElementById('ebookCoverPreview').src = eb.foto || 'assets/images/ebook-orpington.png';
+            } else {
+                title.textContent = 'Cadastrar Novo E-book';
+                document.getElementById('ebookFormId').value = '';
+                document.getElementById('ebookFormSubtitulo').value = 'E-book Oficial';
+                document.getElementById('ebookFormTag').value = 'Lançamento';
+                document.getElementById('ebookFormFoto').value = 'assets/images/ebook-orpington.png';
+                document.getElementById('ebookCoverPreview').src = 'assets/images/ebook-orpington.png';
+            }
+
+            modal.classList.remove('hidden');
+        };
+
+        const closeEbookModal = () => {
+            document.getElementById('ebookModal').classList.add('hidden');
+        };
+
+        // Upload de Capa do E-book
+        const handleEbookCoverUpload = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const spinner = document.getElementById('ebookUploadSpinner');
+            spinner.classList.remove('hidden');
+
+            try {
+                const base64 = await readFileAsBase64(file);
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        filename: file.name,
+                        base64: base64
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    document.getElementById('ebookFormFoto').value = data.url;
+                    document.getElementById('ebookCoverPreview').src = data.url;
+                    showToast('Capa do e-book carregada com sucesso!');
+                } else {
+                    showToast(data.error || 'Erro ao enviar imagem de capa.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro ao processar imagem de capa.', 'Erro', true);
+            } finally {
+                spinner.classList.add('hidden');
+                e.target.value = '';
+            }
+        };
+
+        // Salvar Formulário de E-book
+        const saveEbookForm = async (e) => {
+            e.preventDefault();
+            const idInput = document.getElementById('ebookFormId').value.trim();
+            const tituloInput = document.getElementById('ebookFormTitulo').value.trim();
+            const subtituloInput = document.getElementById('ebookFormSubtitulo').value.trim() || 'E-book Oficial';
+            const tagInput = document.getElementById('ebookFormTag').value.trim() || '33% OFF';
+            const descricaoInput = document.getElementById('ebookFormDescricao').value.trim();
+            const linkInput = document.getElementById('ebookFormLink').value.trim();
+            const precoDeInput = parseFloat(document.getElementById('ebookFormPrecoDe').value) || null;
+            const precoPorInput = parseFloat(document.getElementById('ebookFormPrecoPor').value) || 39.90;
+            const fotoInput = document.getElementById('ebookFormFoto').value.trim() || 'assets/images/ebook-orpington.png';
+
+            const btnSave = document.getElementById('btnSaveEbook');
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Salvando...`;
+
+            try {
+                let updatedEbooks = [...ebooks];
+
+                if (idInput) {
+                    const idx = updatedEbooks.findIndex(eb => eb.id === idInput);
+                    if (idx !== -1) {
+                        updatedEbooks[idx] = {
+                            ...updatedEbooks[idx],
+                            titulo: tituloInput,
+                            subtitulo: subtituloInput,
+                            tag: tagInput,
+                            descricao: descricaoInput,
+                            precoDe: precoDeInput,
+                            precoPor: precoPorInput,
+                            foto: fotoInput,
+                            link: linkInput || `ebooks.html#${idInput}`
+                        };
+                    }
+                } else {
+                    const newId = 'ebook-' + (tituloInput.toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '') || Date.now());
+
+                    const newEbook = {
+                        id: newId,
+                        titulo: tituloInput,
+                        subtitulo: subtituloInput,
+                        tag: tagInput,
+                        descricao: descricaoInput,
+                        precoDe: precoDeInput,
+                        precoPor: precoPorInput,
+                        foto: fotoInput,
+                        link: linkInput || `ebooks.html#${newId}`
+                    };
+                    updatedEbooks.push(newEbook);
+                }
+
+                const res = await fetch('/api/ebooks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedEbooks)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    ebooks = updatedEbooks;
+                    renderEbooksGrid();
+                    closeEbookModal();
+                    showToast('E-book salvo com sucesso!', 'Salvo');
+                } else {
+                    showToast(data.error || 'Erro ao salvar e-book.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro de comunicação com o servidor.', 'Erro', true);
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar E-book</span>`;
+            }
+        };
+
+        // Excluir E-book
+        const deleteEbook = async (ebookId) => {
+            const eb = ebooks.find(e => e.id === ebookId);
+            if (!eb) return;
+
+            const confirmed = confirm(`Tem certeza que deseja excluir o e-book "${eb.titulo}"? Esta ação não pode ser desfeita.`);
+            if (!confirmed) return;
+
+            try {
+                const updatedEbooks = ebooks.filter(e => e.id !== ebookId);
+                const res = await fetch('/api/ebooks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedEbooks)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    ebooks = updatedEbooks;
+                    renderEbooksGrid();
+                    showToast(`E-book "${eb.titulo}" excluído com sucesso.`);
+                } else {
+                    showToast(data.error || 'Erro ao excluir.', 'Erro', true);
+                }
+            } catch (err) {
+                showToast('Erro ao comunicar com a API.', 'Erro', true);
+            }
+        };
+
+        // --- Modal Alterar Senha ---
+        const openChangePasswordModal = () => {
+            document.getElementById('changePasswordForm').reset();
+            document.getElementById('passwordError').classList.add('hidden');
+            document.getElementById('passwordModal').classList.remove('hidden');
+        };
+
+        const closeChangePasswordModal = () => {
+            document.getElementById('passwordModal').classList.add('hidden');
+        };
+
+        const handleChangePassword = async (e) => {
+            e.preventDefault();
+            const currentPass = document.getElementById('currentPasswordInput').value.trim();
+            const newUsername = document.getElementById('newUsernameInput').value.trim();
+            const newPass = document.getElementById('newPasswordInput').value.trim();
+            const confirmPass = document.getElementById('confirmNewPasswordInput').value.trim();
+            const errBox = document.getElementById('passwordError');
+
+            if (newPass !== confirmPass) {
+                errBox.textContent = 'A confirmação de senha não confere.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('btnSavePassword');
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+
+            try {
+                const res = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword: currentPass,
+                        newUsername: newUsername,
+                        newPassword: newPass
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    closeChangePasswordModal();
+                    showToast('Senha de acesso atualizada com sucesso!', 'Segurança');
+                } else {
+                    errBox.textContent = data.error || 'Erro ao alterar senha.';
+                    errBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                errBox.textContent = 'Erro ao comunicar com o servidor.';
+                errBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Salvar Nova Senha';
+            }
+        };
+
+        // --- Inicialização Automática ---
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

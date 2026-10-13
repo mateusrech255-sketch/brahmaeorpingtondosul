@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ebook-orpington",
+    "titulo": "Guia da Raça Orpington",
+    "subtitulo": "E-book Oficial",
+    "tag": "33% OFF",
+    "descricao": "Padrão racial, variedades de cores, genética, reprodução, manejo e dicas para aprimorar a qualidade do plantel.",
+    "precoDe": 89.90,
+    "precoPor": 59.90,
+    "foto": "assets/images/ebook-orpington.png",
+    "link": "ebooks.html#ebook-orpington"
+  },
+  {
+    "id": "ebook-brahma",
+    "titulo": "Guia Completo sobre Brahma",
+    "subtitulo": "E-book Oficial",
+    "tag": "33% OFF",
+    "descricao": "Características da raça gigante, variedades de cores nobres, genética, reprodução e seleção de reprodutores de elite.",
+    "precoDe": 59.90,
+    "precoPor": 39.90,
+    "foto": "assets/images/ebook-brahma.png",
+    "link": "ebooks.html#ebook-brahma"
+  },
+  {
+    "id": "ebook-gsb",
+    "titulo": "Guia da Raça GSB (Sertaneja Balão)",
+    "subtitulo": "E-book Oficial",
+    "tag": "33% OFF",
+    "descricao": "Origem, conformação do balão, padrões raciais, manejo, nutrição, reprodução e cuidados para manter aves saudáveis.",
+    "precoDe": 59.90,
+    "precoPor": 39.90,
+    "foto": "assets/images/ebook-gsb.png",
+    "link": "ebooks.html#ebook-gsb"
+  }
+]
+

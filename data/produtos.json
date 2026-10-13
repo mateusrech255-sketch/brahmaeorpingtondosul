@@ -1,0 +1,327 @@
+[
+  {
+    "id": "combo-surpresa",
+    "nome": "Combo Surpresa - Ovos Férteis",
+    "categoria": "Combo Especial",
+    "descricao": "Surpreenda-se com essa combinação especial! São 15 ovos férteis de raças raras, lindas e produtivas do nosso criatório. Uma oportunidade exclusiva para adquirir aves de padrão genético superior por um valor imperdível.",
+    "detalhes": {
+      "pesoMachos": "4,5 a 6,5 kg (conforme raça)",
+      "pesoFemeas": "3,5 a 5,5 kg (conforme raça)",
+      "postura": "Aproximadamente 150 a 250 ovos por ano",
+      "ornamentais": "Possíveis raças e cores inclusas: Brahma Buff, Brahma Isabelli, GSB (Galinha Sertaneja Balão), Orpington Cuckoo, Orpington Negro e Orpington Mottled."
+    },
+    "fotos": [
+      "assets/images/combo-surpresa.jpg"
+    ],
+    "precos": {
+      "combo15": 299
+    }
+  },
+  {
+    "id": "brahma-buff",
+    "nome": "Brahma Buff",
+    "categoria": "Brahma",
+    "descricao": "A Brahma Buff é uma ave de grande porte, conhecida por sua imponência e beleza. Possui corpo robusto, peito largo, plumagem abundante e pernas completamente emplumadas. Sua coloração dourada, combinada com marcações pretas no pescoço e na cauda, proporciona uma aparência elegante.",
+    "detalhes": {
+      "pesoMachos": "4,5 a 5,5 kg",
+      "pesoFemeas": "3,5 a 4,5 kg",
+      "postura": "Aproximadamente 120 a 150 ovos por ano",
+      "ornamentais": "Destaca-se pelo porte imponente, pela plumagem volumosa e pela coloração característica. É muito apreciada na criação ornamental."
+    },
+    "fotos": [
+      "assets/images/brahma-buff-1.jpg",
+      "assets/images/brahma-buff-2.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 150,
+      "umaDuzia": 300,
+      "duasDuzias": 500
+    }
+  },
+  {
+    "id": "brahma-isabelli",
+    "nome": "Brahma Isabelli",
+    "categoria": "Brahma",
+    "descricao": "A Brahma Isabelli apresenta uma coloração diferenciada, com tonalidades claras e delicadas. É uma ave de grande porte, com corpo largo, estrutura robusta, plumagem abundante e pernas emplumadas, características marcantes da raça Brahma.",
+    "detalhes": {
+      "pesoMachos": "4,5 a 5,5 kg",
+      "pesoFemeas": "3,5 a 4,5 kg",
+      "postura": "Aproximadamente 120 a 150 ovos por ano",
+      "ornamentais": "Sua coloração diferenciada, aliada ao porte imponente e à elegância da plumagem, faz dela uma ave muito apreciada por criadores e admiradores."
+    },
+    "fotos": [
+      "assets/images/brahma-isabelli-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 150,
+      "umaDuzia": 300,
+      "duasDuzias": 500
+    }
+  },
+  {
+    "id": "gsb",
+    "nome": "Galinha Sertanejo Balão (GSB)",
+    "categoria": "Sertanejo Balão",
+    "descricao": "A Galinha Sertanejo Balão é uma ave de grande porte, com corpo robusto e aparência característica. Destaca-se pelo tamanho e pela presença marcante, sendo uma variedade apreciada por criadores que valorizam aves de origem nacional.",
+    "detalhes": {
+      "pesoMachos": "5,5 a 6,5 kg",
+      "pesoFemeas": "4,5 a 5,5 kg",
+      "postura": "Aproximadamente de 180 a 250 ovos por ano",
+      "ornamentais": "Seu porte avantajado e sua estrutura corporal robusta são características que chamam a atenção. É uma ave interessante para quem aprecia variedades brasileiras."
+    },
+    "fotos": [
+      "assets/images/gsb-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 175,
+      "umaDuzia": 350,
+      "duasDuzias": 600
+    }
+  },
+  {
+    "id": "polaco-balao",
+    "nome": "Polaco Balão",
+    "categoria": "Sertanejo Balão",
+    "descricao": "O Polaco Balão é uma ave rústica e imponente que une o porte avantajado da linhagem Balão com a rusticidade do pescoço pelado. Destaca-se pela carcaça pesada, peito amplo, excelente conversão alimentar e grande resistência.",
+    "detalhes": {
+      "pesoMachos": "5 a 6 kg",
+      "pesoFemeas": "4 a 5 kg",
+      "postura": "Aproximadamente 160 a 220 ovos por ano",
+      "ornamentais": "A coloração marcante e o pescoço pelado contrastando com a musculatura densa e o dorso largo típico do padrão Balão tornam esta variedade muito requisitada tanto para produção quanto para ornamentação rústica."
+    },
+    "fotos": [
+      "assets/images/polaco-balao-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 170,
+      "umaDuzia": 300,
+      "duasDuzias": 550
+    }
+  },
+  {
+    "id": "orpington-negro",
+    "nome": "Orpington Negro",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Negra é uma ave de grande porte, conhecida pelo corpo largo, arredondado e pela plumagem extremamente abundante. Sua coloração preta, frequentemente acompanhada de reflexos esverdeados, proporciona uma aparência elegante e imponente.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "Seu formato arredondado, sua plumagem volumosa e seu porte robusto fazem dela uma variedade muito apreciada na criação ornamental."
+    },
+    "fotos": [
+      "assets/images/orpington-negro-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 250,
+      "umaDuzia": 500,
+      "duasDuzias": 850
+    }
+  },
+  {
+    "id": "orpington-azul",
+    "nome": "Orpington Azul",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Azul é uma ave de grande porte, com corpo largo, arredondado e plumagem abundante. Sua coloração azul-acinzentada pode apresentar diferentes tonalidades, conferindo um visual elegante e diferenciado.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "Destaca-se pela combinação entre seu porte volumoso, sua plumagem macia e sua coloração azulada, sendo muito valorizada na criação ornamental."
+    },
+    "fotos": [
+      "assets/images/orpington-azul-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 250,
+      "umaDuzia": 500,
+      "duasDuzias": 850
+    }
+  },
+  {
+    "id": "orpington-cuckoo",
+    "nome": "Orpington Cuckoo (Barrado)",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Cuckoo é uma ave de grande porte, com corpo largo, formato arredondado e plumagem abundante. Seu principal destaque é a coloração barrada, formada por faixas claras e escuras distribuídas pelas penas.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A combinação do porte volumoso com a plumagem barrada torna essa variedade muito interessante para criadores e admiradores de aves ornamentais."
+    },
+    "fotos": [
+      "assets/images/orpington-cuckoo-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 280,
+      "umaDuzia": 560,
+      "duasDuzias": 920
+    }
+  },
+  {
+    "id": "orpington-mottled",
+    "nome": "Orpington Mottled",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Mottled é uma ave de grande porte, com corpo largo, arredondado e plumagem abundante. Sua característica mais marcante é a plumagem preta com manchas brancas nas extremidades das penas, formando um padrão contrastante e elegante.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A distribuição das manchas brancas sobre a plumagem escura, combinada com o corpo volumoso, proporciona uma aparência diferenciada e muito apreciada na criação ornamental."
+    },
+    "fotos": [
+      "assets/images/orpington-mottled-1.jpg",
+      "assets/images/orpington-mottled-2.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 300,
+      "umaDuzia": 600,
+      "duasDuzias": 1000
+    }
+  },
+  {
+    "id": "orpington-dourado-laceado-azul",
+    "nome": "Orpington Dourado Laceado de Azul",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Dourado Laceada de Azul é uma das variedades mais nobres e raras da raça. Possui corpo amplo e arredondado, peito profundo e penas douradas ricamente bordadas com tonalidade azul-acinzentada, proporcionando um contraste deslumbrante.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A exuberância do padrão laceado de borda azul sobre a plumagem dourada, combinada com a imponência e docilidade clássicas da raça Orpington, confere alto valor ornamental e genético."
+    },
+    "fotos": [
+      "assets/images/orpington-dourado-laceado-azul-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 350,
+      "umaDuzia": 650,
+      "duasDuzias": 1200
+    }
+  },
+  {
+    "id": "orpington-dourado-laceado-preto",
+    "nome": "Orpington Dourado Laceado de Preto",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Dourado Laceada de Preto é uma variedade nobre e de extrema beleza. Possui corpo amplo e arredondado, peito profundo e plumagem dourada com bordas laceadas em preto brilhante, criando um desenho marcante e exuberante.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "O contraste nítido do laceado negro sobre as penas douradas, associado à imponência, volume de penas e docilidade característica da raça Orpington, confere altíssimo valor genético e ornamental."
+    },
+    "fotos": [
+      "assets/images/orpington-dourado-laceado-preto-1.jpg",
+      "assets/images/orpington-dourado-laceado-preto-2.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 350,
+      "umaDuzia": 650,
+      "duasDuzias": 1200
+    }
+  },
+  {
+    "id": "orpington-prata-laceado",
+    "nome": "Orpington Prata Laceado",
+    "categoria": "Orpington",
+    "descricao": "O Orpington Prata Laceado é uma das variedades mais espetaculares e nobres da raça. Apresenta corpo amplo e arredondado, peito profundo e penas em branco-prateado brilhante contornadas com precisão por um laceado preto bem definido, criando um contraste visual deslumbrante.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A exuberância do padrão prata laceado de preto, combinada com a plumagem densa, porte imponente e temperamento extremamente dócil, confere altíssimo valor ornamental e padrão genético de elite."
+    },
+    "fotos": [
+      "assets/images/orpington-prata-laceado-1.jpg",
+      "assets/images/orpington-prata-laceado-2.jpg",
+      "assets/images/orpington-prata-laceado-3.jpg",
+      "assets/images/orpington-prata-laceado-4.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 450,
+      "umaDuzia": 850,
+      "duasDuzias": 1600
+    }
+  },
+  {
+    "id": "orpington-lavanda",
+    "nome": "Orpington Lavanda",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Lavanda é uma das variedades mais cobiçadas e sofisticadas da avicultura ornamental. Possui plumagem volumosa e uniforme em tom cinza-prateado suave (lavanda), sobre um corpo largo, arredondado e de temperamento extremamente dócil.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A coloração lavanda pura e sedosa, aliada ao formato compacto e majestoso da raça Orpington, faz desta variedade uma das mais admiradas e nobres para criadores exigentes."
+    },
+    "fotos": [
+      "assets/images/orpington-lavanda-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 300,
+      "umaDuzia": 550,
+      "duasDuzias": 1000
+    }
+  },
+  {
+    "id": "orpington-chocolate",
+    "nome": "Orpington Chocolate",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Chocolate é uma variedade nobre e rara, conhecida pela plumagem uniforme e aveludada em tom marrom-cacau profundo sobre um corpo volumoso, arredondado e de temperamento dócil.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A coloração chocolate sólida e brilhante, aliada à densidade da plumagem e à imponência do porte Orpington, confere grande valor genético e destaque na avicultura ornamental."
+    },
+    "fotos": [
+      "assets/images/orpington-chocolate-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 300,
+      "umaDuzia": 550,
+      "duasDuzias": 1000
+    }
+  },
+  {
+    "id": "orpington-chocolate-mottled",
+    "nome": "Orpington Chocolate Mottled",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Chocolate Mottled é uma variedade raríssima e exuberante, que combina a rica tonalidade chocolate (marrom-cacau profundo) com charmosas manchas e pontuações brancas nas pontas das penas. Possui corpo amplo, arredondado e plumagem excepcionalmente fofa e volumosa.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A raridade genética do padrão mosqueado (mottled) sobre a base chocolate, associada ao formato esférico clássico e docilidade dos Orpingtons, torna esta ave uma verdadeira joia da avicultura ornamental."
+    },
+    "fotos": [
+      "assets/images/orpington-chocolate-mottled-1.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 400,
+      "umaDuzia": 750,
+      "duasDuzias": 1400
+    }
+  },
+  {
+    "id": "orpington-cuckoo-lavanda",
+    "nome": "Orpington Cuckoo Lavanda",
+    "categoria": "Orpington",
+    "descricao": "A Orpington Cuckoo Lavanda é uma variedade de extrema raridade e beleza sutil. Combina o elegante tom cinza-prateado suave (lavanda) com o padrão barrado cuckoo, conferindo à plumagem uma textura visual delicada e única em um corpo amplo e volumoso.",
+    "detalhes": {
+      "pesoMachos": "4 a 4,8 kg",
+      "pesoFemeas": "3 a 3,8 kg",
+      "postura": "Aproximadamente 150 a 200 ovos por ano",
+      "ornamentais": "A raridade do padrão barrado cuckoo sobre a tonalidade lavanda, aliada à docilidade excepcional e ao padrão de plumagem extremamente volumosa, faz desta ave um exemplar de alto valor para colecionadores e criadores exigentes."
+    },
+    "fotos": [
+      "assets/images/orpington-cuckoo-lavanda-1.jpg",
+      "assets/images/orpington-cuckoo-lavanda-2.jpg"
+    ],
+    "precos": {
+      "meiaDuzia": 400,
+      "umaDuzia": 750,
+      "duasDuzias": 1400
+    }
+  }
+]
