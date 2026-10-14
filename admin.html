@@ -229,15 +229,20 @@
         <!-- Conteúdo Principal -->
         <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
             
-            <!-- Abas Principais: Aves vs E-books -->
-            <div class="flex items-center gap-3 mb-8 border-b border-white/10 pb-4">
-                <button type="button" id="tabBtnAves" onclick="switchMainTab('aves')" class="main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg">
+            <!-- Abas Principais: Aves vs E-books vs Pedidos -->
+            <div class="flex items-center gap-2 sm:gap-3 mb-8 border-b border-white/10 pb-4 overflow-x-auto hide-scrollbar">
+                <button type="button" id="tabBtnAves" onclick="switchMainTab('aves')" class="main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg shrink-0">
                     <i class="ph-bold ph-egg text-lg"></i>
                     <span>Aves & Ovos Férteis</span>
                 </button>
-                <button type="button" id="tabBtnEbooks" onclick="switchMainTab('ebooks')" class="main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5">
+                <button type="button" id="tabBtnEbooks" onclick="switchMainTab('ebooks')" class="main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0">
                     <i class="ph-bold ph-book-open text-lg text-rustic-gold"></i>
-                    <span>E-books & Manuais Digitais</span>
+                    <span>E-books & Manuais</span>
+                </button>
+                <button type="button" id="tabBtnPedidos" onclick="switchMainTab('pedidos')" class="main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0 relative">
+                    <i class="ph-bold ph-shopping-bag-open text-lg text-rustic-gold"></i>
+                    <span>Pedidos Recebidos</span>
+                    <span id="tabPedidosBadge" class="hidden bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow animate-pulse">0</span>
                 </button>
             </div>
 
@@ -363,6 +368,129 @@
                 <!-- Grade de E-books -->
                 <div id="ebooksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- ABA 3: PEDIDOS RECEBIDOS                       -->
+            <!-- ============================================== -->
+            <div id="tabContentPedidos" class="hidden space-y-8">
+                <!-- Cabeçalho da Seção de Pedidos -->
+                <div class="bg-[#22271e] border border-rustic-gold/20 rounded-2xl p-6 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-rustic-gold uppercase tracking-wider bg-rustic-gold/15 px-3 py-1 rounded-full mb-2 border border-rustic-gold/30">
+                            <i class="ph-bold ph-receipt"></i> Central de Encomendas & Vendas
+                        </span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white">Gerenciador de Pedidos</h3>
+                        <p class="text-xs text-stone-400">Acompanhe novos pedidos de ovos e e-books, dados do cliente, endereço no mapa e código de rastreio.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="loadOrders(true)" class="bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs py-3 px-4 rounded-xl transition-all border border-stone-700 flex items-center gap-2" title="Atualizar Lista">
+                            <i class="ph-bold ph-arrows-clockwise text-base text-rustic-gold"></i>
+                            <span class="hidden sm:inline">Atualizar</span>
+                        </button>
+                        <button type="button" onclick="downloadOrdersJson()" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-3 px-4 rounded-xl transition-all shadow-md flex items-center gap-2">
+                            <i class="ph-bold ph-download-simple text-base"></i>
+                            <span>Exportar Pedidos</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards de Métricas dos Pedidos -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <div class="bg-[#22271e] border border-rustic-gold/20 rounded-2xl p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl shrink-0">
+                            <i class="ph-bold ph-shopping-cart-simple"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-stone-400 uppercase font-semibold">Total de Pedidos</p>
+                            <p id="statOrdersTotal" class="font-serif text-xl sm:text-2xl font-bold text-white">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-amber-500/20 rounded-2xl p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 text-xl shrink-0">
+                            <i class="ph-bold ph-clock"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-amber-300 uppercase font-semibold">Pendentes (PIX)</p>
+                            <p id="statOrdersPendentes" class="font-serif text-xl sm:text-2xl font-bold text-amber-400">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-emerald-500/20 rounded-2xl p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl shrink-0">
+                            <i class="ph-bold ph-check-circle"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-emerald-300 uppercase font-semibold">Pagos / Preparo</p>
+                            <p id="statOrdersPagos" class="font-serif text-xl sm:text-2xl font-bold text-emerald-400">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-blue-500/20 rounded-2xl p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl shrink-0">
+                            <i class="ph-bold ph-truck"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-blue-300 uppercase font-semibold">Enviados</p>
+                            <p id="statOrdersEnviados" class="font-serif text-xl sm:text-2xl font-bold text-blue-400">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#22271e] border border-white/5 rounded-2xl p-4 flex items-center gap-3 col-span-2 sm:col-span-4 lg:col-span-1">
+                        <div class="w-10 h-10 rounded-xl bg-rustic-green/30 flex items-center justify-center text-rustic-gold text-xl shrink-0">
+                            <i class="ph-bold ph-currency-circle-dollar"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-stone-400 uppercase font-semibold">Faturamento Total</p>
+                            <p id="statOrdersFaturamento" class="font-serif text-lg sm:text-xl font-bold text-rustic-gold">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros e Barra de Busca -->
+                <div class="bg-[#22271e] border border-white/5 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <!-- Abas de Filtro por Status -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 hide-scrollbar">
+                        <button type="button" onclick="setOrderStatusFilter('todos')" class="order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-rustic-gold text-rustic-dark shrink-0" data-status="todos">
+                            Todos (<span id="filterCountTodos">0</span>)
+                        </button>
+                        <button type="button" onclick="setOrderStatusFilter('pendente')" class="order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-status="pendente">
+                            Pendentes (<span id="filterCountPendente">0</span>)
+                        </button>
+                        <button type="button" onclick="setOrderStatusFilter('pago')" class="order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-status="pago">
+                            Pagos (<span id="filterCountPago">0</span>)
+                        </button>
+                        <button type="button" onclick="setOrderStatusFilter('enviado')" class="order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-status="enviado">
+                            Enviados (<span id="filterCountEnviado">0</span>)
+                        </button>
+                        <button type="button" onclick="setOrderStatusFilter('concluido')" class="order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-status="concluido">
+                            Concluídos (<span id="filterCountConcluido">0</span>)
+                        </button>
+                        <button type="button" onclick="setOrderStatusFilter('cancelado')" class="order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0" data-status="cancelado">
+                            Cancelados (<span id="filterCountCancelado">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- Busca -->
+                    <div class="relative w-full md:w-72">
+                        <div class="input-icon-left text-stone-400">
+                            <i class="ph-bold ph-magnifying-glass"></i>
+                        </div>
+                        <input type="text" id="orderSearchInput" oninput="handleOrderSearch(this.value)" placeholder="Buscar pedido, cliente, CEP..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                    </div>
+                </div>
+
+                <!-- Lista de Pedidos -->
+                <div id="ordersListContainer" class="space-y-4">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+
+                <!-- Estado Vazio -->
+                <div id="ordersEmptyState" class="hidden bg-[#22271e] border border-dashed border-stone-800 rounded-3xl p-12 text-center">
+                    <div class="w-16 h-16 rounded-full bg-stone-800/80 text-stone-500 flex items-center justify-center text-3xl mx-auto mb-4">
+                        <i class="ph-bold ph-receipt-x"></i>
+                    </div>
+                    <h4 class="font-serif text-lg font-bold text-white mb-1">Nenhum pedido encontrado</h4>
+                    <p class="text-xs text-stone-400 max-w-sm mx-auto">Nenhum pedido corresponde aos filtros selecionados ou ainda não foram realizadas compras.</p>
                 </div>
             </div>
 
@@ -700,6 +828,26 @@
                             <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">ebooks.json</code></p>
                         </div>
                     </button>
+
+                    <button type="button" onclick="downloadOrdersJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Histórico de Pedidos</span>
+                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                            </div>
+                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">pedidos.json</code></p>
+                        </div>
+                    </button>
+
+                    <button type="button" onclick="downloadClientsJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Base de Clientes</span>
+                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                            </div>
+                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">clientes.json</code></p>
+                        </div>
+                    </button>
                 </div>
 
                 <div class="p-3.5 bg-black/40 border border-white/5 rounded-2xl text-[11px] text-stone-400 space-y-1">
@@ -777,6 +925,159 @@
     </div>
 
     <!-- ======================================================== -->
+    <!-- MODAL: DETALHES DO PEDIDO / COMPROVANTE                  -->
+    <!-- ======================================================== -->
+    <div id="orderDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-8 overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15]">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                        <i class="ph-bold ph-receipt"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 id="orderModalNumber" class="font-serif text-xl font-bold text-white">#BOS-0000</h3>
+                            <span id="orderModalStatusBadge" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Pendente</span>
+                        </div>
+                        <p class="text-xs text-stone-400" id="orderModalDate">Data do pedido: --/--/----</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="printOrderReceipt()" class="text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl px-3 py-2 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-white/10" title="Imprimir Comprovante">
+                        <i class="ph-bold ph-printer text-base text-rustic-gold"></i>
+                        <span class="hidden sm:inline">Imprimir</span>
+                    </button>
+                    <button type="button" onclick="closeOrderDetailModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                        <i class="ph-bold ph-x text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body (Conteúdo do Pedido) -->
+            <div id="orderModalPrintArea" class="overflow-y-auto p-6 sm:p-8 space-y-6 flex-1">
+                
+                <!-- Dados do Cliente e Contato -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-3">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-user text-base"></i> Dados do Cliente
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div>
+                            <span class="text-stone-400 block mb-0.5">Nome Completo:</span>
+                            <span class="font-bold text-white" id="orderModalClientName">--</span>
+                        </div>
+                        <div>
+                            <span class="text-stone-400 block mb-0.5">WhatsApp / Celular:</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-bold text-white" id="orderModalClientPhone">--</span>
+                                <a id="orderModalWhatsAppBtn" href="#" target="_blank" class="text-emerald-400 hover:text-emerald-300 transition-colors" title="Abrir conversa no WhatsApp">
+                                    <i class="ph-bold ph-whatsapp-logo text-base"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-stone-400 block mb-0.5">E-mail:</span>
+                            <span class="font-bold text-white break-all" id="orderModalClientEmail">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Endereço de Entrega & Frete -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                            <i class="ph-bold ph-map-pin text-base"></i> Endereço de Entrega (SEDEX)
+                        </h4>
+                        <a id="orderModalMapLink" href="#" target="_blank" class="text-[11px] text-rustic-gold hover:underline flex items-center gap-1 font-semibold">
+                            <i class="ph-bold ph-arrow-square-out"></i> Abrir no Mapa
+                        </a>
+                    </div>
+                    <div class="text-xs space-y-1 text-stone-200">
+                        <p id="orderModalStreet">--</p>
+                        <p class="text-stone-400 text-[11px]" id="orderModalCityCep">--</p>
+                    </div>
+                    <div class="bg-stone-900/80 p-3 rounded-xl border border-white/5 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <div class="flex items-center gap-2 text-stone-300">
+                            <i class="ph-bold ph-truck text-rustic-gold text-base"></i>
+                            <span>Frete: <b class="text-white" id="orderModalShippingType">SEDEX</b> (<span id="orderModalShippingDeadline">1 a 3 dias</span>)</span>
+                        </div>
+                        <span class="font-bold text-emerald-400" id="orderModalShippingCost">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Itens Comprados -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-3">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-egg text-base"></i> Itens do Pedido
+                    </h4>
+                    <div id="orderModalItemsList" class="space-y-2 text-xs divide-y divide-white/5">
+                        <!-- Injetado dinamicamente -->
+                    </div>
+                </div>
+
+                <!-- Gestão de Status e Rastreio -->
+                <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-4">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                        <i class="ph-bold ph-gear text-base"></i> Gerenciar Pedido
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Status do Pedido</label>
+                            <select id="orderModalStatusSelect" onchange="changeModalOrderStatus(this.value)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                <option value="pendente">🟡 Pendente (Aguardando PIX)</option>
+                                <option value="pago">🟢 Pago (Em Separação)</option>
+                                <option value="enviado">🔵 Enviado (Em Transporte)</option>
+                                <option value="concluido">🟣 Concluído / Entregue</option>
+                                <option value="cancelado">🔴 Cancelado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Código de Rastreio (Correios)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="orderModalTrackingInput" placeholder="Ex: QB123456789BR" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold uppercase">
+                                <button type="button" onclick="saveModalOrderTracking()" class="bg-rustic-green hover:bg-[#475c40] text-white font-bold px-3 py-2.5 rounded-xl text-xs transition-all shrink-0">
+                                    Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumo Financeiro -->
+                <div class="bg-[#242b1f] p-5 rounded-2xl border border-rustic-gold/30 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                    <div class="text-xs text-stone-300 space-y-1">
+                        <p>Subtotal dos Itens: <span class="font-semibold text-white" id="orderModalSubtotal">R$ 0,00</span></p>
+                        <p>Valor do Envio: <span class="font-semibold text-white" id="orderModalShippingVal">R$ 0,00</span></p>
+                        <p>Método: <span class="font-bold text-rustic-gold uppercase" id="orderModalPaymentMethod">PIX</span></p>
+                    </div>
+                    <div class="sm:text-right pt-2 sm:pt-0 border-t sm:border-t-0 border-white/10">
+                        <span class="text-[11px] text-stone-400 uppercase font-bold block">Total do Pedido</span>
+                        <span class="font-serif text-2xl sm:text-3xl font-bold text-rustic-gold" id="orderModalTotal">R$ 0,00</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer do Modal -->
+            <div class="p-4 border-t border-rustic-gold/20 flex flex-wrap items-center justify-between gap-3 bg-[#191d15]">
+                <button type="button" onclick="deleteOrderFromModal()" class="text-red-400 hover:text-red-300 font-semibold text-xs flex items-center gap-1.5 transition-colors">
+                    <i class="ph-bold ph-trash"></i> Excluir Pedido
+                </button>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="btnNotifyCustomerWhatsApp" onclick="notifyCustomerFromModal()" class="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all shadow flex items-center gap-1.5">
+                        <i class="ph-bold ph-whatsapp-logo text-base"></i> Notificar Cliente
+                    </button>
+                    <button type="button" onclick="closeOrderDetailModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold text-xs py-2.5 px-4 rounded-xl transition-all">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
     <!-- LOGICA JAVASCRIPT DO PAINEL ADMIN                        -->
     <!-- ======================================================== -->
     <script>
@@ -785,13 +1086,19 @@
         const STORAGE_CREDS_KEY = 'bos_admin_creds';
         const STORAGE_PRODUCTS_KEY = 'bos_custom_products';
         const STORAGE_EBOOKS_KEY = 'bos_custom_ebooks';
+        const STORAGE_ORDERS_KEY = 'bos_orders';
+        const STORAGE_CLIENTS_KEY = 'bos_clients';
 
         let authToken = localStorage.getItem(STORAGE_TOKEN_KEY) || null;
         let products = [];
         let ebooks = [];
-        let currentMainTab = 'aves'; // 'aves' | 'ebooks'
+        let orders = [];
+        let currentMainTab = 'aves'; // 'aves' | 'ebooks' | 'pedidos'
         let currentFilter = 'todas';
         let currentSearch = '';
+        let currentOrderFilter = 'todos';
+        let currentOrderSearch = '';
+        let currentViewingOrderId = null;
         let modalPhotos = []; // Fotos temporárias do produto em edição
         let isServerAvailable = false;
 
@@ -864,25 +1171,38 @@
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
         };
 
-        // --- Alternar Abas Principais (Aves vs E-books) ---
+        // --- Alternar Abas Principais (Aves vs E-books vs Pedidos) ---
         const switchMainTab = (tab) => {
             currentMainTab = tab;
             const btnAves = document.getElementById('tabBtnAves');
             const btnEbooks = document.getElementById('tabBtnEbooks');
+            const btnPedidos = document.getElementById('tabBtnPedidos');
             const secAves = document.getElementById('tabContentAves');
             const secEbooks = document.getElementById('tabContentEbooks');
+            const secPedidos = document.getElementById('tabContentPedidos');
+
+            const inactiveClass = 'main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0 relative';
+            const activeClass = 'main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg shrink-0 relative';
+
+            if (btnAves) btnAves.className = inactiveClass;
+            if (btnEbooks) btnEbooks.className = inactiveClass;
+            if (btnPedidos) btnPedidos.className = inactiveClass;
+
+            if (secAves) secAves.classList.add('hidden');
+            if (secEbooks) secEbooks.classList.add('hidden');
+            if (secPedidos) secPedidos.classList.add('hidden');
 
             if (tab === 'aves') {
-                btnAves.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg';
-                btnEbooks.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5';
-                secAves.classList.remove('hidden');
-                secEbooks.classList.add('hidden');
-            } else {
-                btnEbooks.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rustic-gold text-rustic-dark shadow-lg';
-                btnAves.className = 'main-tab-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5';
-                secAves.classList.add('hidden');
-                secEbooks.classList.remove('hidden');
+                if (btnAves) btnAves.className = activeClass;
+                if (secAves) secAves.classList.remove('hidden');
+            } else if (tab === 'ebooks') {
+                if (btnEbooks) btnEbooks.className = activeClass;
+                if (secEbooks) secEbooks.classList.remove('hidden');
                 loadEbooks();
+            } else if (tab === 'pedidos') {
+                if (btnPedidos) btnPedidos.className = activeClass;
+                if (secPedidos) secPedidos.classList.remove('hidden');
+                loadOrders();
             }
         };
 
@@ -899,6 +1219,7 @@
                 updateEnvironmentBadge();
                 loadProducts();
                 loadEbooks();
+                loadOrders();
                 return;
             }
 
@@ -913,6 +1234,7 @@
                     updateEnvironmentBadge();
                     loadProducts();
                     loadEbooks();
+                    loadOrders();
                     return;
                 }
             } catch (err) {}
@@ -922,6 +1244,7 @@
             updateEnvironmentBadge();
             loadProducts();
             loadEbooks();
+            loadOrders();
         };
 
         const showLoginView = () => {
@@ -1893,6 +2216,575 @@
                 showToast('Erro ao recarregar dados do repositório.', 'Erro', true);
             }
         };
+
+        // --- Gestão de Pedidos no Painel Admin ---
+        const loadOrders = async (showRefreshToast = false) => {
+            let loadedOrders = null;
+
+            // 1. Tenta API do servidor
+            if (isServerAvailable || authToken) {
+                try {
+                    const res = await fetch('/api/pedidos', {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    if (res.ok) {
+                        loadedOrders = await res.json();
+                    }
+                } catch (e) {}
+            }
+
+            // 2. Tenta do localStorage
+            if (!loadedOrders) {
+                try {
+                    const saved = localStorage.getItem(STORAGE_ORDERS_KEY);
+                    if (saved) loadedOrders = JSON.parse(saved);
+                } catch (e) {}
+            }
+
+            // 3. Fallback estático
+            if (!loadedOrders) {
+                try {
+                    const res = await fetch('data/pedidos.json');
+                    if (res.ok) loadedOrders = await res.json();
+                } catch (e) {}
+            }
+
+            if (Array.isArray(loadedOrders)) {
+                orders = loadedOrders;
+            } else {
+                orders = [];
+            }
+
+            updateOrdersStats();
+            renderOrdersList();
+            updateOrdersBadge();
+
+            if (showRefreshToast) {
+                showToast(`Lista de pedidos atualizada (${orders.length} encontrados).`);
+            }
+        };
+
+        const updateOrdersBadge = () => {
+            const badge = document.getElementById('tabPedidosBadge');
+            if (!badge) return;
+            const pendentesCount = orders.filter(o => o.status === 'pendente').length;
+            if (pendentesCount > 0) {
+                badge.textContent = pendentesCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        };
+
+        const updateOrdersStats = () => {
+            const total = orders.length;
+            const pendentes = orders.filter(o => o.status === 'pendente').length;
+            const pagos = orders.filter(o => o.status === 'pago').length;
+            const enviados = orders.filter(o => o.status === 'enviado').length;
+            const faturamento = orders
+                .filter(o => o.status === 'pago' || o.status === 'enviado' || o.status === 'concluido')
+                .reduce((acc, o) => acc + (Number(o.total) || 0), 0);
+
+            const elTotal = document.getElementById('statOrdersTotal');
+            const elPend = document.getElementById('statOrdersPendentes');
+            const elPagos = document.getElementById('statOrdersPagos');
+            const elEnv = document.getElementById('statOrdersEnviados');
+            const elFat = document.getElementById('statOrdersFaturamento');
+
+            if (elTotal) elTotal.textContent = total;
+            if (elPend) elPend.textContent = pendentes;
+            if (elPagos) elPagos.textContent = pagos;
+            if (elEnv) elEnv.textContent = enviados;
+            if (elFat) elFat.textContent = formatMoney(faturamento);
+
+            // Contadores dos botões de filtro
+            const countTodos = document.getElementById('filterCountTodos');
+            const countPendente = document.getElementById('filterCountPendente');
+            const countPago = document.getElementById('filterCountPago');
+            const countEnviado = document.getElementById('filterCountEnviado');
+            const countConcluido = document.getElementById('filterCountConcluido');
+            const countCancelado = document.getElementById('filterCountCancelado');
+
+            if (countTodos) countTodos.textContent = total;
+            if (countPendente) countPendente.textContent = pendentes;
+            if (countPago) countPago.textContent = pagos;
+            if (countEnviado) countEnviado.textContent = enviados;
+            if (countConcluido) countConcluido.textContent = orders.filter(o => o.status === 'concluido').length;
+            if (countCancelado) countCancelado.textContent = orders.filter(o => o.status === 'cancelado').length;
+        };
+
+        const setOrderStatusFilter = (status) => {
+            currentOrderFilter = status;
+            document.querySelectorAll('.order-filter-btn').forEach(btn => {
+                if (btn.dataset.status === status) {
+                    btn.className = 'order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-rustic-gold text-rustic-dark shrink-0';
+                } else {
+                    btn.className = 'order-filter-btn px-3 py-2 rounded-xl text-xs font-bold transition-all bg-stone-800 text-stone-300 hover:text-white shrink-0';
+                }
+            });
+            renderOrdersList();
+        };
+
+        const handleOrderSearch = (query) => {
+            currentOrderSearch = query.toLowerCase().trim();
+            renderOrdersList();
+        };
+
+        const getStatusBadgeConfig = (status) => {
+            switch(status) {
+                case 'pago':
+                    return { label: 'Pago (Confirmado)', class: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' };
+                case 'enviado':
+                    return { label: 'Enviado (Em Transporte)', class: 'bg-blue-500/20 text-blue-400 border border-blue-500/30' };
+                case 'concluido':
+                    return { label: 'Concluído / Entregue', class: 'bg-purple-500/20 text-purple-400 border border-purple-500/30' };
+                case 'cancelado':
+                    return { label: 'Cancelado', class: 'bg-red-500/20 text-red-400 border border-red-500/30' };
+                case 'pendente':
+                default:
+                    return { label: 'Pendente (Aguardando PIX)', class: 'bg-amber-500/20 text-amber-400 border border-amber-500/30' };
+            }
+        };
+
+        const renderOrdersList = () => {
+            const container = document.getElementById('ordersListContainer');
+            const emptyState = document.getElementById('ordersEmptyState');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const filtered = orders.filter(o => {
+                const matchStatus = currentOrderFilter === 'todos' || o.status === currentOrderFilter;
+                const matchSearch = !currentOrderSearch ||
+                    (o.id && o.id.toLowerCase().includes(currentOrderSearch)) ||
+                    (o.numero && o.numero.toLowerCase().includes(currentOrderSearch)) ||
+                    (o.cliente && o.cliente.nome && o.cliente.nome.toLowerCase().includes(currentOrderSearch)) ||
+                    (o.cliente && o.cliente.email && o.cliente.email.toLowerCase().includes(currentOrderSearch)) ||
+                    (o.cliente && o.cliente.whatsapp && o.cliente.whatsapp.includes(currentOrderSearch)) ||
+                    (o.cliente && o.cliente.endereco && o.cliente.endereco.cidade && o.cliente.endereco.cidade.toLowerCase().includes(currentOrderSearch)) ||
+                    (o.codigoRastreio && o.codigoRastreio.toLowerCase().includes(currentOrderSearch));
+                return matchStatus && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            filtered.forEach(o => {
+                const card = document.createElement('div');
+                card.className = "bg-[#22271e] border border-stone-800 hover:border-rustic-gold/40 rounded-2xl p-5 sm:p-6 shadow-lg transition-all duration-300 space-y-4";
+
+                const dateStr = o.data ? new Date(o.data).toLocaleString('pt-BR') : 'Data não informada';
+                const statusCfg = getStatusBadgeConfig(o.status);
+
+                const cleanPhone = (o.cliente && o.cliente.whatsapp) ? o.cliente.whatsapp.replace(/\D/g, '') : '';
+                const waLink = cleanPhone ? `https://wa.me/55${cleanPhone}` : '#';
+
+                const end = (o.cliente && o.cliente.endereco) || {};
+                const endLinha1 = `${end.logradouro || 'Endereço não informado'}, ${end.numero || 'S/N'}${end.complemento ? ' (' + end.complemento + ')' : ''}`;
+                const endLinha2 = `${end.bairro ? end.bairro + ' - ' : ''}${end.cidade || o.frete?.cidade || ''} / ${end.uf || o.frete?.uf || ''} • CEP: ${end.cep || o.frete?.cep || 'Não informado'}`;
+                const fullAddress = `${endLinha1}, ${endLinha2}`;
+                const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+
+                const itensHtml = (o.itens || []).map(it => `
+                    <div class="flex items-center justify-between text-xs py-1 border-b border-white/5 last:border-0">
+                        <div class="flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-md bg-rustic-gold/20 text-rustic-gold font-bold flex items-center justify-center text-[10px] shrink-0">
+                                ${it.quantidade}x
+                            </span>
+                            <span class="font-semibold text-white">${it.nome}</span>
+                            <span class="text-stone-400 text-[10px]">(${it.opcaoLabel || it.opcao})</span>
+                        </div>
+                        <span class="font-bold text-stone-200">${formatMoney(it.total || (it.precoUnitario * it.quantidade))}</span>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <!-- Topo do Card -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10">
+                        <div class="flex items-center gap-2.5">
+                            <span class="font-serif text-lg font-bold text-rustic-gold">${o.numero || o.id}</span>
+                            <span class="text-[11px] text-stone-400">${dateStr}</span>
+                            <span class="text-[10px] bg-stone-800 text-stone-300 px-2 py-0.5 rounded font-mono uppercase">${o.metodoPagamento || 'PIX'}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold px-3 py-1 rounded-full ${statusCfg.class}">
+                                ${statusCfg.label}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Informações -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <!-- Coluna 1: Cliente -->
+                        <div class="bg-black/20 p-3.5 rounded-xl border border-white/5 space-y-1.5">
+                            <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Cliente</span>
+                            <p class="font-bold text-white text-sm">${o.cliente?.nome || 'Anônimo'}</p>
+                            <p class="text-stone-300 flex items-center gap-1.5">
+                                <i class="ph-bold ph-whatsapp-logo text-emerald-400 text-sm"></i>
+                                <a href="${waLink}" target="_blank" class="hover:underline font-semibold text-emerald-400">${o.cliente?.whatsapp || 'Sem telefone'}</a>
+                            </p>
+                            <p class="text-stone-400 text-[11px] break-all">${o.cliente?.email || 'Sem e-mail'}</p>
+                        </div>
+
+                        <!-- Coluna 2: Endereço & Frete -->
+                        <div class="bg-black/20 p-3.5 rounded-xl border border-white/5 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Entrega</span>
+                                <a href="${mapsLink}" target="_blank" class="text-[10px] text-rustic-gold hover:underline flex items-center gap-0.5">
+                                    <i class="ph-bold ph-map-pin"></i> Mapa
+                                </a>
+                            </div>
+                            <p class="font-semibold text-stone-200 line-clamp-1">${endLinha1}</p>
+                            <p class="text-stone-400 text-[11px]">${endLinha2}</p>
+                            <div class="flex items-center justify-between pt-1 text-[11px]">
+                                <span class="text-stone-300">Frete (${o.frete?.tipo || 'SEDEX'}):</span>
+                                <span class="font-bold text-emerald-400">${formatMoney(o.frete?.valor || 0)}</span>
+                            </div>
+                        </div>
+
+                        <!-- Coluna 3: Resumo Financeiro & Itens -->
+                        <div class="bg-black/20 p-3.5 rounded-xl border border-white/5 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider block mb-1">Itens (${o.itens?.length || 0})</span>
+                                <div class="max-h-24 overflow-y-auto pr-1">
+                                    ${itensHtml}
+                                </div>
+                            </div>
+                            <div class="pt-2 border-t border-white/10 flex items-center justify-between mt-2">
+                                <span class="text-stone-300 font-bold">Total do Pedido:</span>
+                                <span class="font-serif text-base font-bold text-rustic-gold">${formatMoney(o.total)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barra de Ações do Administrador -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+                        <!-- Mudar Status Rápido -->
+                        <div class="flex items-center gap-2">
+                            <label class="text-[11px] text-stone-400 font-semibold">Status:</label>
+                            <select onchange="updateOrderStatus('${o.id}', this.value)" class="bg-stone-900 border border-stone-700 text-xs font-semibold text-white rounded-xl py-1.5 px-2.5 focus:border-rustic-gold focus:outline-none">
+                                <option value="pendente" ${o.status === 'pendente' ? 'selected' : ''}>🟡 Pendente (PIX)</option>
+                                <option value="pago" ${o.status === 'pago' ? 'selected' : ''}>🟢 Pago</option>
+                                <option value="enviado" ${o.status === 'enviado' ? 'selected' : ''}>🔵 Enviado (SEDEX)</option>
+                                <option value="concluido" ${o.status === 'concluido' ? 'selected' : ''}>🟣 Concluído</option>
+                                <option value="cancelado" ${o.status === 'cancelado' ? 'selected' : ''}>🔴 Cancelado</option>
+                            </select>
+                        </div>
+
+                        <!-- Código de Rastreio Rápido -->
+                        <div class="flex items-center gap-1.5">
+                            <input type="text" id="tracking-input-${o.id}" value="${o.codigoRastreio || ''}" placeholder="Cód. Rastreio (Correios)" class="bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-1.5 px-2.5 text-xs text-white placeholder-stone-500 uppercase w-36">
+                            <button type="button" onclick="saveOrderTracking('${o.id}')" class="bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-stone-700 transition-all" title="Salvar Rastreio">
+                                Salvar
+                            </button>
+                        </div>
+
+                        <!-- Botões de Ação -->
+                        <div class="flex items-center gap-2 ml-auto">
+                            <button type="button" onclick="sendWhatsAppNotification('${o.id}')" class="bg-[#25D366]/20 hover:bg-[#25D366] text-emerald-400 hover:text-white border border-[#25D366]/30 font-bold text-xs py-1.5 px-3 rounded-xl transition-all flex items-center gap-1.5" title="Enviar Notificação ao Cliente">
+                                <i class="ph-bold ph-whatsapp-logo text-sm"></i>
+                                <span class="hidden sm:inline">WhatsApp</span>
+                            </button>
+                            <button type="button" onclick="openOrderDetailModal('${o.id}')" class="bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark border border-rustic-gold/30 font-bold text-xs py-1.5 px-3 rounded-xl transition-all flex items-center gap-1.5">
+                                <i class="ph-bold ph-eye text-sm"></i> Detalhes
+                            </button>
+                            <button type="button" onclick="deleteOrder('${o.id}')" class="bg-red-950/40 hover:bg-red-900 text-red-400 hover:text-white border border-red-800/30 p-1.5 rounded-xl transition-all" title="Excluir Pedido">
+                                <i class="ph-bold ph-trash text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        };
+
+        const updateOrderStatus = async (orderId, newStatus) => {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            order.status = newStatus;
+
+            if (newStatus === 'enviado' && !order.codigoRastreio) {
+                const code = prompt(`Insira o código de rastreio dos Correios para o pedido ${order.numero || order.id} (opcional):`, '');
+                if (code) {
+                    order.codigoRastreio = code.trim().toUpperCase();
+                }
+            }
+
+            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+
+            if (isServerAvailable || authToken) {
+                try {
+                    await fetch(`/api/pedidos/${orderId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            status: order.status,
+                            codigoRastreio: order.codigoRastreio || ''
+                        })
+                    });
+                } catch (e) {}
+            }
+
+            updateOrdersStats();
+            renderOrdersList();
+            updateOrdersBadge();
+            showToast(`Status do pedido ${order.numero || order.id} alterado para "${newStatus}".`);
+        };
+
+        const saveOrderTracking = async (orderId) => {
+            const input = document.getElementById(`tracking-input-${orderId}`);
+            if (!input) return;
+            const code = input.value.trim().toUpperCase();
+
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            order.codigoRastreio = code;
+            if (code && order.status === 'pago') {
+                order.status = 'enviado';
+            }
+
+            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+
+            if (isServerAvailable || authToken) {
+                try {
+                    await fetch(`/api/pedidos/${orderId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            status: order.status,
+                            codigoRastreio: order.codigoRastreio
+                        })
+                    });
+                } catch (e) {}
+            }
+
+            updateOrdersStats();
+            renderOrdersList();
+            showToast(`Código de rastreio ${code ? '"' + code + '"' : ''} salvo com sucesso!`);
+        };
+
+        const deleteOrder = async (orderId) => {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const confirmDel = confirm(`Tem certeza que deseja excluir o pedido ${order.numero || order.id}?`);
+            if (!confirmDel) return;
+
+            orders = orders.filter(o => o.id !== orderId);
+            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+
+            if (isServerAvailable || authToken) {
+                try {
+                    await fetch(`/api/pedidos/${orderId}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                } catch (e) {}
+            }
+
+            updateOrdersStats();
+            renderOrdersList();
+            updateOrdersBadge();
+            showToast(`Pedido ${order.numero || order.id} excluído com sucesso.`);
+        };
+
+        const sendWhatsAppNotification = (orderId) => {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.cliente?.whatsapp) {
+                showToast('Cliente não possui WhatsApp cadastrado.', 'Aviso', true);
+                return;
+            }
+
+            const cleanPhone = order.cliente.whatsapp.replace(/\D/g, '');
+            const statusConfig = getStatusBadgeConfig(order.status);
+
+            let msg = `Olá, *${order.cliente.nome}*! Tudo bem? Aqui é do *Criatório Brahma e Orpington do Sul* 🐣%0A%0A`;
+            msg += `Passando para atualizar sobre o seu pedido *${order.numero || order.id}*:%0A`;
+            msg += `📌 *Status Atual:* ${statusConfig.label}%0A`;
+
+            if (order.codigoRastreio) {
+                msg += `📦 *Código de Rastreio dos Correios:* *${order.codigoRastreio}*%0A`;
+                msg += `Você pode rastrear a qualquer momento no site dos Correios ou no aplicativo!%0A`;
+            } else if (order.status === 'pendente') {
+                msg += `💰 Aguardamos o envio do comprovante PIX para separação dos ovos com segurança máxima.%0A`;
+            } else if (order.status === 'pago') {
+                msg += `✅ Pagamento confirmado! Seus ovos estão sendo colhidos frescos, higienizados e embalados na caixa térmica com isopor.%0A`;
+            }
+
+            msg += `%0AQualquer dúvida estamos sempre à disposição!`;
+
+            window.open(`https://wa.me/55${cleanPhone}?text=${msg}`, '_blank');
+        };
+
+        // --- Modal Detalhes do Pedido ---
+        const openOrderDetailModal = (orderId) => {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            currentViewingOrderId = orderId;
+
+            document.getElementById('orderModalNumber').textContent = order.numero || order.id;
+            const badgeEl = document.getElementById('orderModalStatusBadge');
+            const statusCfg = getStatusBadgeConfig(order.status);
+            badgeEl.textContent = statusCfg.label;
+            badgeEl.className = `text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${statusCfg.class}`;
+
+            document.getElementById('orderModalDate').textContent = `Data do pedido: ${order.data ? new Date(order.data).toLocaleString('pt-BR') : '--'}`;
+            document.getElementById('orderModalClientName').textContent = order.cliente?.nome || '--';
+            document.getElementById('orderModalClientPhone').textContent = order.cliente?.whatsapp || '--';
+            document.getElementById('orderModalClientEmail').textContent = order.cliente?.email || '--';
+
+            const cleanPhone = (order.cliente?.whatsapp || '').replace(/\D/g, '');
+            document.getElementById('orderModalWhatsAppBtn').href = cleanPhone ? `https://wa.me/55${cleanPhone}` : '#';
+
+            const end = order.cliente?.endereco || {};
+            const endLinha1 = `${end.logradouro || 'Endereço não informado'}, ${end.numero || 'S/N'}${end.complemento ? ' (' + end.complemento + ')' : ''}`;
+            const endLinha2 = `${end.bairro ? end.bairro + ' - ' : ''}${end.cidade || order.frete?.cidade || ''} / ${end.uf || order.frete?.uf || ''} • CEP: ${end.cep || order.frete?.cep || '--'}`;
+            document.getElementById('orderModalStreet').textContent = endLinha1;
+            document.getElementById('orderModalCityCep').textContent = endLinha2;
+
+            const fullAddress = `${endLinha1}, ${endLinha2}`;
+            document.getElementById('orderModalMapLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+
+            document.getElementById('orderModalShippingType').textContent = order.frete?.tipo || 'SEDEX';
+            document.getElementById('orderModalShippingDeadline').textContent = order.frete?.prazo || '1 a 3 dias úteis';
+            document.getElementById('orderModalShippingCost').textContent = formatMoney(order.frete?.valor || 0);
+
+            // Itens
+            const itemsContainer = document.getElementById('orderModalItemsList');
+            itemsContainer.innerHTML = (order.itens || []).map(it => `
+                <div class="flex items-center justify-between py-2">
+                    <div>
+                        <p class="font-bold text-white text-xs">${it.nome}</p>
+                        <p class="text-stone-400 text-[11px]">${it.opcaoLabel || it.opcao || ''} • ${it.quantidade} un. x ${formatMoney(it.precoUnitario)}</p>
+                    </div>
+                    <span class="font-bold text-rustic-gold text-xs">${formatMoney(it.total || (it.precoUnitario * it.quantidade))}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('orderModalStatusSelect').value = order.status || 'pendente';
+            document.getElementById('orderModalTrackingInput').value = order.codigoRastreio || '';
+
+            document.getElementById('orderModalSubtotal').textContent = formatMoney(order.subtotal || 0);
+            document.getElementById('orderModalShippingVal').textContent = formatMoney(order.frete?.valor || 0);
+            document.getElementById('orderModalPaymentMethod').textContent = (order.metodoPagamento || 'PIX').toUpperCase();
+            document.getElementById('orderModalTotal').textContent = formatMoney(order.total || 0);
+
+            document.getElementById('orderDetailModal').classList.remove('hidden');
+        };
+
+        const closeOrderDetailModal = () => {
+            document.getElementById('orderDetailModal').classList.add('hidden');
+            currentViewingOrderId = null;
+        };
+
+        const changeModalOrderStatus = (newStatus) => {
+            if (!currentViewingOrderId) return;
+            updateOrderStatus(currentViewingOrderId, newStatus);
+            openOrderDetailModal(currentViewingOrderId);
+        };
+
+        const saveModalOrderTracking = () => {
+            if (!currentViewingOrderId) return;
+            const input = document.getElementById('orderModalTrackingInput');
+            const code = input ? input.value.trim().toUpperCase() : '';
+            const order = orders.find(o => o.id === currentViewingOrderId);
+            if (!order) return;
+            order.codigoRastreio = code;
+            if (code && order.status === 'pago') order.status = 'enviado';
+            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+
+            if (isServerAvailable || authToken) {
+                fetch(`/api/pedidos/${currentViewingOrderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ status: order.status, codigoRastreio: order.codigoRastreio })
+                }).catch(() => {});
+            }
+            updateOrdersStats();
+            renderOrdersList();
+            openOrderDetailModal(currentViewingOrderId);
+            showToast(`Código de rastreio salvo!`);
+        };
+
+        const deleteOrderFromModal = () => {
+            if (!currentViewingOrderId) return;
+            const id = currentViewingOrderId;
+            closeOrderDetailModal();
+            deleteOrder(id);
+        };
+
+        const notifyCustomerFromModal = () => {
+            if (!currentViewingOrderId) return;
+            sendWhatsAppNotification(currentViewingOrderId);
+        };
+
+        const printOrderReceipt = () => {
+            const printContent = document.getElementById('orderModalPrintArea').innerHTML;
+            const printWin = window.open('', '', 'width=800,height=600');
+            printWin.document.write(`
+                <html>
+                <head>
+                    <title>Comprovante de Pedido - Brahma & Orpington do Sul</title>
+                    <style>
+                        body { font-family: sans-serif; padding: 20px; color: #222; }
+                        h1, h2, h3, h4 { margin-top: 0; }
+                        .border { border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; border-radius: 8px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { text-align: left; padding: 6px; border-bottom: 1px solid #eee; }
+                    </style>
+                </head>
+                <body>
+                    <h2>Criatório Brahma & Orpington do Sul</h2>
+                    <p><b>Comprovante de Encomenda</b></p>
+                    <hr>
+                    ${printContent}
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+            printWin.focus();
+            setTimeout(() => { printWin.print(); printWin.close(); }, 300);
+        };
+
+        const downloadOrdersJson = () => {
+            downloadJsonFile('pedidos.json', orders);
+        };
+
+        const downloadClientsJson = async () => {
+            let clients = [];
+            try {
+                const res = await fetch('data/clientes.json');
+                if (res.ok) clients = await res.json();
+            } catch (e) {}
+            if (!clients || clients.length === 0) {
+                try {
+                    const saved = localStorage.getItem(STORAGE_CLIENTS_KEY);
+                    if (saved) clients = JSON.parse(saved);
+                } catch (e) {}
+            }
+            downloadJsonFile('clientes.json', clients || []);
+        };
+
+        // Polling para checar novos pedidos a cada 20 segundos
+        setInterval(() => {
+            if (authToken) {
+                loadOrders(false);
+            }
+        }, 20000);
 
         // --- Inicialização Automática ---
         document.addEventListener('DOMContentLoaded', () => {

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "cli-1",
+    "nome": "Carlos Eduardo Silveira",
+    "email": "carlos.silveira@exemplo.com",
+    "whatsapp": "(54) 99823-4411",
+    "senhaHash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "endereco": {
+      "logradouro": "Avenida Brasil",
+      "numero": "1420",
+      "complemento": "Apto 302",
+      "bairro": "Centro",
+      "cidade": "Passo Fundo",
+      "uf": "RS",
+      "cep": "99010-000",
+      "coordenadas": {
+        "lat": -28.2625,
+        "lng": -52.4086
+      }
+    },
+    "criadoEm": "2026-10-14T12:00:00.000Z"
+  },
+  {
+    "id": "cli-1792008644029-896",
+    "nome": "Mariana Costa",
+    "email": "mariana.costa@teste.com",
+    "whatsapp": "(54) 99123-4567",
+    "senhaHash": "54ecc37406dd639fa1d382997102751820fec30b3570578646c508ba54a9f470",
+    "endereco": {
+      "logradouro": "Rua Morom",
+      "numero": "500",
+      "bairro": "Centro",
+      "cidade": "Passo Fundo",
+      "uf": "RS",
+      "cep": "99010-031",
+      "coordenadas": {
+        "lat": -28.2625,
+        "lng": -52.4086
+      }
+    },
+    "criadoEm": "2026-10-14T20:10:44.029Z"
+  }
+]

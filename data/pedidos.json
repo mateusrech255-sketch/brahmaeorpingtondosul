@@ -1,0 +1,109 @@
+[
+  {
+    "id": "BOS-5188",
+    "numero": "#BOS-5188",
+    "data": "2026-10-14T20:10:44.034Z",
+    "cliente": {
+      "nome": "Mariana Costa",
+      "email": "mariana.costa@teste.com",
+      "whatsapp": "(54) 99123-4567",
+      "endereco": {
+        "logradouro": "Rua Morom",
+        "numero": "500",
+        "bairro": "Centro",
+        "cidade": "Passo Fundo",
+        "uf": "RS",
+        "cep": "99010-031",
+        "coordenadas": {
+          "lat": -28.2625,
+          "lng": -52.4086
+        }
+      }
+    },
+    "itens": [
+      {
+        "id": "brahma-buff",
+        "nome": "Brahma Buff",
+        "opcao": "umaDuzia",
+        "opcaoLabel": "Uma Dúzia (12)",
+        "quantidade": 1,
+        "precoUnitario": 300,
+        "total": 300,
+        "isDigital": false
+      }
+    ],
+    "subtotal": 300,
+    "frete": {
+      "tipo": "SEDEX",
+      "valor": 36,
+      "prazo": "1 a 2 dias úteis",
+      "cidade": "Passo Fundo",
+      "uf": "RS",
+      "cep": "99010-031"
+    },
+    "total": 336,
+    "status": "pendente",
+    "codigoRastreio": "",
+    "metodoPagamento": "pix",
+    "observacoes": "Favor embalar com proteção extra."
+  },
+  {
+    "id": "BOS-1001",
+    "numero": "#BOS-1001",
+    "data": "2026-10-14T12:30:00.000Z",
+    "cliente": {
+      "nome": "Carlos Eduardo Silveira",
+      "email": "carlos.silveira@exemplo.com",
+      "whatsapp": "(54) 99823-4411",
+      "endereco": {
+        "logradouro": "Avenida Brasil",
+        "numero": "1420",
+        "complemento": "Apto 302",
+        "bairro": "Centro",
+        "cidade": "Passo Fundo",
+        "uf": "RS",
+        "cep": "99010-000",
+        "coordenadas": {
+          "lat": -28.2625,
+          "lng": -52.4086
+        }
+      }
+    },
+    "itens": [
+      {
+        "id": "orpington-negro",
+        "nome": "Orpington Negro",
+        "opcao": "umaDuzia",
+        "opcaoLabel": "Uma Dúzia (12)",
+        "quantidade": 1,
+        "precoUnitario": 400,
+        "total": 400,
+        "isDigital": false
+      },
+      {
+        "id": "ebook-orpington",
+        "nome": "Guia da Raça Orpington",
+        "opcao": "pdf",
+        "opcaoLabel": "Envio por PDF (Download Imediato)",
+        "quantidade": 1,
+        "precoUnitario": 59.9,
+        "total": 59.9,
+        "isDigital": true
+      }
+    ],
+    "subtotal": 459.9,
+    "frete": {
+      "tipo": "SEDEX",
+      "valor": 36,
+      "prazo": "1 a 2 dias úteis",
+      "cidade": "Passo Fundo",
+      "uf": "RS",
+      "cep": "99010-000"
+    },
+    "total": 495.9,
+    "status": "pago",
+    "codigoRastreio": "QB987654321BR",
+    "metodoPagamento": "pix",
+    "observacoes": "Cliente solicitou envio na próxima segunda-feira pela manhã."
+  }
+]

@@ -8,6 +8,8 @@ const PUBLIC_DIR = __dirname;
 const DATA_DIR = path.join(PUBLIC_DIR, 'data');
 const PRODUTOS_FILE = path.join(DATA_DIR, 'produtos.json');
 const EBOOKS_FILE = path.join(DATA_DIR, 'ebooks.json');
+const PEDIDOS_FILE = path.join(DATA_DIR, 'pedidos.json');
+const CLIENTES_FILE = path.join(DATA_DIR, 'clientes.json');
 const ADMIN_CONFIG_FILE = path.join(DATA_DIR, 'admin-config.json');
 const UPLOADS_DIR = path.join(PUBLIC_DIR, 'assets', 'images');
 
@@ -17,6 +19,14 @@ if (!fs.existsSync(DATA_DIR)) {
 }
 if (!fs.existsSync(UPLOADS_DIR)) {
     fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
+
+// Inicializa arquivos se não existirem
+if (!fs.existsSync(PEDIDOS_FILE)) {
+    fs.writeFileSync(PEDIDOS_FILE, '[]', 'utf8');
+}
+if (!fs.existsSync(CLIENTES_FILE)) {
+    fs.writeFileSync(CLIENTES_FILE, '[]', 'utf8');
 }
 
 // Configuração padrão de credenciais se não existir
@@ -68,6 +78,36 @@ const isAuthenticated = (req) => {
     const session = activeSessions.get(token);
     if (!session) return false;
     return session;
+};
+
+// Sessões ativas de clientes (token -> { clienteId, email, nome, createdAt })
+const activeClientSessions = new Map();
+
+const getClientAuthToken = (req) => {
+    const authHeader = req.headers['authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        return authHeader.substring(7).trim();
+    }
+    if (req.headers['x-client-token']) {
+        return req.headers['x-client-token'];
+    }
+    return null;
+};
+
+const isClientAuthenticated = (req) => {
+    const token = getClientAuthToken(req);
+    if (!token) return null;
+    const session = activeClientSessions.get(token);
+    if (!session) return null;
+    if (Date.now() - session.createdAt > SESSION_TTL_MS) {
+        activeClientSessions.delete(token);
+        return null;
+    }
+    return session;
+};
+
+const hashPassword = (password) => {
+    return crypto.createHash('sha256').update(String(password)).digest('hex');
 };
 
 const getAdminCredentials = () => {
@@ -383,6 +423,363 @@ const server = http.createServer(async (req, res) => {
     }
 
     // ==========================================
+    // ROTAS DE CLIENTES (CADASTRO E LOGIN)
+    // ==========================================
+
+    // 10. Cadastro de Cliente
+    if (pathname === '/api/clientes/cadastro' && method === 'POST') {
+        try {
+            const body = await parseJsonBody(req);
+            const { nome, email, whatsapp, senha, endereco } = body;
+
+            if (!nome || !email || !whatsapp || !senha) {
+                return sendJson(res, 400, { success: false, error: 'Todos os campos obrigatórios devem ser preenchidos.' });
+            }
+
+            const cleanEmail = email.trim().toLowerCase();
+            if (!cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+                return sendJson(res, 400, { success: false, error: 'E-mail informado é inválido.' });
+            }
+
+            if (String(senha).length < 6) {
+                return sendJson(res, 400, { success: false, error: 'A senha deve conter pelo menos 6 caracteres.' });
+            }
+
+            let clientes = [];
+            if (fs.existsSync(CLIENTES_FILE)) {
+                try {
+                    clientes = JSON.parse(fs.readFileSync(CLIENTES_FILE, 'utf8'));
+                } catch (e) { clientes = []; }
+            }
+
+            const existing = clientes.find(c => c.email && c.email.toLowerCase() === cleanEmail);
+            if (existing) {
+                return sendJson(res, 400, { success: false, error: 'Já existe uma conta cadastrada com este e-mail. Faça login.' });
+            }
+
+            const novoCliente = {
+                id: 'cli-' + Date.now() + '-' + Math.round(Math.random() * 1000),
+                nome: nome.trim(),
+                email: cleanEmail,
+                whatsapp: whatsapp.trim(),
+                senhaHash: hashPassword(senha),
+                endereco: endereco || {},
+                criadoEm: new Date().toISOString()
+            };
+
+            clientes.push(novoCliente);
+            fs.writeFileSync(CLIENTES_FILE, JSON.stringify(clientes, null, 2), 'utf8');
+
+            const token = crypto.randomBytes(32).toString('hex');
+            activeClientSessions.set(token, {
+                clienteId: novoCliente.id,
+                email: novoCliente.email,
+                nome: novoCliente.nome,
+                createdAt: Date.now()
+            });
+
+            console.log(`[CLIENTE] Novo cadastro realizado: ${novoCliente.nome} (${novoCliente.email})`);
+
+            const { senhaHash, ...clientePublico } = novoCliente;
+            return sendJson(res, 201, {
+                success: true,
+                token,
+                cliente: clientePublico,
+                message: 'Conta criada com sucesso!'
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // 11. Login de Cliente
+    if (pathname === '/api/clientes/login' && method === 'POST') {
+        try {
+            const body = await parseJsonBody(req);
+            const { email, senha } = body;
+
+            if (!email || !senha) {
+                return sendJson(res, 400, { success: false, error: 'Informe e-mail e senha.' });
+            }
+
+            const cleanEmail = email.trim().toLowerCase();
+            const senhaHash = hashPassword(senha);
+
+            let clientes = [];
+            if (fs.existsSync(CLIENTES_FILE)) {
+                try {
+                    clientes = JSON.parse(fs.readFileSync(CLIENTES_FILE, 'utf8'));
+                } catch (e) { clientes = []; }
+            }
+
+            const cliente = clientes.find(c => c.email && c.email.toLowerCase() === cleanEmail && c.senhaHash === senhaHash);
+            if (!cliente) {
+                return sendJson(res, 401, { success: false, error: 'E-mail ou senha incorretos.' });
+            }
+
+            const token = crypto.randomBytes(32).toString('hex');
+            activeClientSessions.set(token, {
+                clienteId: cliente.id,
+                email: cliente.email,
+                nome: cliente.nome,
+                createdAt: Date.now()
+            });
+
+            console.log(`[CLIENTE] Login realizado: ${cliente.nome} (${cliente.email})`);
+
+            const { senhaHash: _, ...clientePublico } = cliente;
+            return sendJson(res, 200, {
+                success: true,
+                token,
+                cliente: clientePublico,
+                message: 'Login realizado com sucesso!'
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // 12. Obter Dados do Cliente Atual
+    if (pathname === '/api/clientes/me' && method === 'GET') {
+        const session = isClientAuthenticated(req);
+        if (!session) {
+            return sendJson(res, 401, { success: false, error: 'Sessão expirada ou não autenticada.' });
+        }
+
+        let clientes = [];
+        if (fs.existsSync(CLIENTES_FILE)) {
+            try { clientes = JSON.parse(fs.readFileSync(CLIENTES_FILE, 'utf8')); } catch (e) { clientes = []; }
+        }
+
+        const cliente = clientes.find(c => c.id === session.clienteId);
+        if (!cliente) {
+            return sendJson(res, 404, { success: false, error: 'Cliente não encontrado.' });
+        }
+
+        const { senhaHash: _, ...clientePublico } = cliente;
+        return sendJson(res, 200, { success: true, cliente: clientePublico });
+    }
+
+    // 13. Atualizar Endereço / Dados do Cliente
+    if (pathname === '/api/clientes/me' && method === 'PUT') {
+        const session = isClientAuthenticated(req);
+        if (!session) {
+            return sendJson(res, 401, { success: false, error: 'Não autenticado.' });
+        }
+
+        try {
+            const body = await parseJsonBody(req);
+            let clientes = [];
+            if (fs.existsSync(CLIENTES_FILE)) {
+                try { clientes = JSON.parse(fs.readFileSync(CLIENTES_FILE, 'utf8')); } catch (e) { clientes = []; }
+            }
+
+            const idx = clientes.findIndex(c => c.id === session.clienteId);
+            if (idx === -1) {
+                return sendJson(res, 404, { success: false, error: 'Cliente não encontrado.' });
+            }
+
+            if (body.nome) clientes[idx].nome = body.nome.trim();
+            if (body.whatsapp) clientes[idx].whatsapp = body.whatsapp.trim();
+            if (body.endereco) {
+                clientes[idx].endereco = {
+                    ...clientes[idx].endereco,
+                    ...body.endereco
+                };
+            }
+            if (body.senha && String(body.senha).length >= 6) {
+                clientes[idx].senhaHash = hashPassword(body.senha);
+            }
+
+            fs.writeFileSync(CLIENTES_FILE, JSON.stringify(clientes, null, 2), 'utf8');
+
+            const { senhaHash: _, ...clientePublico } = clientes[idx];
+            return sendJson(res, 200, { success: true, cliente: clientePublico, message: 'Dados atualizados com sucesso!' });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // ==========================================
+    // ROTAS DE PEDIDOS
+    // ==========================================
+
+    // 14. Criar Pedido (Público / Cliente autenticado)
+    if (pathname === '/api/pedidos' && method === 'POST') {
+        try {
+            const body = await parseJsonBody(req);
+            const { cliente, itens, subtotal, frete, total, metodoPagamento, observacoes } = body;
+
+            if (!cliente || !cliente.nome || !cliente.whatsapp) {
+                return sendJson(res, 400, { success: false, error: 'Dados do cliente são obrigatórios.' });
+            }
+
+            if (!itens || !Array.isArray(itens) || itens.length === 0) {
+                return sendJson(res, 400, { success: false, error: 'O pedido deve conter pelo menos um item.' });
+            }
+
+            let pedidos = [];
+            if (fs.existsSync(PEDIDOS_FILE)) {
+                try { pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8')); } catch (e) { pedidos = []; }
+            }
+
+            const numRandom = Math.floor(1000 + Math.random() * 9000);
+            const orderId = `BOS-${numRandom}`;
+
+            const novoPedido = {
+                id: orderId,
+                numero: `#${orderId}`,
+                data: new Date().toISOString(),
+                cliente: {
+                    nome: cliente.nome,
+                    email: cliente.email || '',
+                    whatsapp: cliente.whatsapp,
+                    endereco: cliente.endereco || {}
+                },
+                itens,
+                subtotal: Number(subtotal) || 0,
+                frete: frete || { tipo: 'SEDEX', valor: 0, prazo: '1 a 3 dias úteis' },
+                total: Number(total) || 0,
+                status: 'pendente', // pendente, pago, enviado, concluido, cancelado
+                codigoRastreio: '',
+                metodoPagamento: metodoPagamento || 'pix',
+                observacoes: observacoes || ''
+            };
+
+            // Insere no topo da lista (mais recente primeiro)
+            pedidos.unshift(novoPedido);
+            fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+
+            console.log(`[PEDIDO] Novo pedido recebido: ${novoPedido.numero} por ${novoPedido.cliente.nome} (Total: R$ ${novoPedido.total.toFixed(2)})`);
+
+            return sendJson(res, 201, {
+                success: true,
+                pedido: novoPedido,
+                message: 'Pedido registrado com sucesso!'
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // 15. Listar Pedidos (Painel Admin - Requer Autenticação)
+    if (pathname === '/api/pedidos' && method === 'GET') {
+        const session = isAuthenticated(req);
+        if (!session) {
+            return sendJson(res, 401, { success: false, error: 'Acesso restrito ao administrador.' });
+        }
+
+        try {
+            if (fs.existsSync(PEDIDOS_FILE)) {
+                const data = fs.readFileSync(PEDIDOS_FILE, 'utf8');
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate'
+                });
+                res.end(data);
+                return;
+            } else {
+                return sendJson(res, 200, []);
+            }
+        } catch (err) {
+            return sendJson(res, 500, { success: false, error: 'Erro ao ler arquivo de pedidos.' });
+        }
+    }
+
+    // 16. Meus Pedidos (Cliente logado consulta seu histórico)
+    if (pathname === '/api/pedidos/meus' && method === 'GET') {
+        const clientSession = isClientAuthenticated(req);
+        const emailQuery = parsedUrl.searchParams.get('email');
+        const targetEmail = (clientSession && clientSession.email) || emailQuery;
+
+        if (!targetEmail) {
+            return sendJson(res, 400, { success: false, error: 'Identificação do cliente não informada.' });
+        }
+
+        try {
+            let pedidos = [];
+            if (fs.existsSync(PEDIDOS_FILE)) {
+                try { pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8')); } catch (e) { pedidos = []; }
+            }
+
+            const meusPedidos = pedidos.filter(p => 
+                p.cliente && p.cliente.email && p.cliente.email.toLowerCase() === targetEmail.toLowerCase()
+            );
+
+            return sendJson(res, 200, { success: true, pedidos: meusPedidos });
+        } catch (err) {
+            return sendJson(res, 500, { success: false, error: 'Erro ao buscar pedidos do cliente.' });
+        }
+    }
+
+    // 17. Atualizar Status / Rastreio do Pedido (Admin)
+    if (pathname.startsWith('/api/pedidos/') && method === 'PUT') {
+        const session = isAuthenticated(req);
+        if (!session) {
+            return sendJson(res, 401, { success: false, error: 'Acesso restrito ao administrador.' });
+        }
+
+        const orderId = pathname.replace('/api/pedidos/', '').trim();
+        try {
+            const body = await parseJsonBody(req);
+            let pedidos = [];
+            if (fs.existsSync(PEDIDOS_FILE)) {
+                try { pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8')); } catch (e) { pedidos = []; }
+            }
+
+            const idx = pedidos.findIndex(p => p.id === orderId || p.numero === orderId || p.numero === `#${orderId}`);
+            if (idx === -1) {
+                return sendJson(res, 404, { success: false, error: 'Pedido não encontrado.' });
+            }
+
+            if (body.status) pedidos[idx].status = body.status;
+            if (body.codigoRastreio !== undefined) pedidos[idx].codigoRastreio = body.codigoRastreio.trim();
+            if (body.observacoes !== undefined) pedidos[idx].observacoes = body.observacoes.trim();
+
+            fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+
+            console.log(`[ADMIN] Pedido ${pedidos[idx].numero} atualizado por ${session.username} (Status: ${pedidos[idx].status})`);
+
+            return sendJson(res, 200, {
+                success: true,
+                pedido: pedidos[idx],
+                message: 'Pedido atualizado com sucesso!'
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // 18. Excluir Pedido (Admin)
+    if (pathname.startsWith('/api/pedidos/') && method === 'DELETE') {
+        const session = isAuthenticated(req);
+        if (!session) {
+            return sendJson(res, 401, { success: false, error: 'Acesso restrito ao administrador.' });
+        }
+
+        const orderId = pathname.replace('/api/pedidos/', '').trim();
+        try {
+            let pedidos = [];
+            if (fs.existsSync(PEDIDOS_FILE)) {
+                try { pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8')); } catch (e) { pedidos = []; }
+            }
+
+            const initialLen = pedidos.length;
+            pedidos = pedidos.filter(p => p.id !== orderId && p.numero !== orderId && p.numero !== `#${orderId}`);
+
+            if (pedidos.length === initialLen) {
+                return sendJson(res, 404, { success: false, error: 'Pedido não encontrado.' });
+            }
+
+            fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+
+            console.log(`[ADMIN] Pedido ${orderId} excluído por ${session.username}`);
+
+            return sendJson(res, 200, { success: true, message: 'Pedido excluído com sucesso.' });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
     // STATIC FILE SERVING
     // ==========================================
     let reqUrl = pathname;
@@ -433,10 +830,24 @@ const server = http.createServer(async (req, res) => {
     });
 });
 
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        const currentPort = server.address() ? server.address().port : PORT;
+        const nextPort = Number(currentPort || PORT) + 1;
+        console.warn(`⚠️ Porta ${PORT} em uso. Tentando iniciar automaticamente na porta ${nextPort}...`);
+        setTimeout(() => {
+            server.listen(nextPort, '0.0.0.0');
+        }, 300);
+    } else {
+        console.error('Erro no servidor:', err);
+    }
+});
+
 server.listen(PORT, '0.0.0.0', () => {
+    const actualPort = server.address().port;
     console.log(`\n🚀 Servidor local iniciado com sucesso!`);
-    console.log(`📡 URL Local:      http://localhost:${PORT}`);
-    console.log(`🔒 Painel Admin:   http://localhost:${PORT}/admin`);
+    console.log(`📡 URL Local:      http://localhost:${actualPort}`);
+    console.log(`🔒 Painel Admin:   http://localhost:${actualPort}/admin`);
     console.log(`📂 Diretório:      ${PUBLIC_DIR}`);
     console.log(`Pressione Ctrl+C para encerrar o servidor.\n`);
 });

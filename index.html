@@ -13,6 +13,12 @@
     
     <!-- Folha de Estilos Estática Oficial (Tailwind CSS + Phosphor Icons 100% autônomos) -->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Mapbox GL JS & Leaflet Fallback (Cálculo de Frete e Seleção de Endereço) -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="bg-rustic-offwhite text-rustic-dark font-sans antialiased">
 
@@ -26,14 +32,19 @@
                         Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
                     </span>
                 </div>
-                <div class="flex items-center gap-3 sm:gap-4">
+                <div class="flex items-center gap-2 sm:gap-3">
                     <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10">
                         <i class="ph-bold ph-book-open text-rustic-gold"></i>
                         <span>E-books</span>
                     </a>
-                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors duration-200" title="Instagram">
+                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors duration-200 hidden sm:flex" title="Instagram">
                         <i class="ph ph-instagram-logo text-2xl sm:text-3xl"></i>
                     </a>
+                    <!-- Botão de Conta do Cliente / Login -->
+                    <button type="button" id="btnNavAuth" onclick="handleNavAuthClick()" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rustic-offwhite hover:text-rustic-gold transition-all py-1.5 px-3 sm:px-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 h-10 active:scale-95">
+                        <i id="navAuthIcon" class="ph-bold ph-user text-base text-rustic-gold"></i>
+                        <span id="navAuthLabel" class="max-w-[100px] truncate">Entrar</span>
+                    </button>
                     <button id="cartBtn" class="relative p-2 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-2 bg-rustic-green/30 rounded-full px-4 h-10">
                         <i class="ph ph-shopping-cart text-2xl"></i>
                         <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-transform">0</span>
@@ -549,6 +560,486 @@
     <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-rustic-dark text-white px-6 py-3 rounded-full shadow-xl z-[80] transition-all duration-300 translate-y-[150%] opacity-0 flex items-center gap-3 border border-rustic-gold/30">
         <i class="ph-fill ph-check-circle text-rustic-gold text-2xl"></i>
         <span id="toastMsg" class="font-medium"></span>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 1: AUTENTICAÇÃO DO CLIENTE (LOGIN / CADASTRO / PERFIL) -->
+    <!-- ======================================================== -->
+    <div id="clientAuthModal" class="hidden fixed inset-0 z-[85] overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-6 overflow-hidden text-stone-100">
+            
+            <!-- Modal Header -->
+            <div class="p-5 sm:p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15] shrink-0">
+                <div class="flex items-center gap-3">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-10 h-10 object-contain drop-shadow">
+                    <div>
+                        <h3 id="clientAuthModalTitle" class="font-serif text-lg sm:text-xl font-bold text-white">Conta do Cliente</h3>
+                        <p class="text-xs text-stone-400">Acesse seus pedidos e calcule o frete exato dos seus ovos</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeAuthModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Banner Alerta de Checkout Pendente (se acionado ao clicar em finalizar) -->
+            <div id="authCheckoutBanner" class="hidden bg-rustic-gold/20 border-b border-rustic-gold/40 px-5 py-3 flex items-center gap-2.5 text-xs text-rustic-gold font-semibold shrink-0">
+                <i class="ph-bold ph-info text-base shrink-0"></i>
+                <span>Para finalizar seu pedido e garantir o envio via SEDEX com rastreio, faça login ou cadastre-se abaixo.</span>
+            </div>
+
+            <!-- Navegação por Abas (Login / Cadastro / Perfil) -->
+            <div id="authTabsNav" class="flex border-b border-white/10 bg-black/20 shrink-0">
+                <button type="button" id="tabBtnLogin" onclick="switchAuthTab('login')" class="flex-1 py-3 text-xs sm:text-sm font-bold text-white border-b-2 border-rustic-gold transition-colors flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-sign-in"></i> Entrar
+                </button>
+                <button type="button" id="tabBtnRegister" onclick="switchAuthTab('register')" class="flex-1 py-3 text-xs sm:text-sm font-bold text-stone-400 hover:text-white border-b-2 border-transparent transition-colors flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-user-plus"></i> Cadastre-se
+                </button>
+            </div>
+
+            <!-- Conteúdo com Scroll -->
+            <div class="overflow-y-auto p-5 sm:p-7 flex-1 space-y-6">
+                
+                <!-- ABA 1: ENTRAR (LOGIN) -->
+                <form id="formClientLogin" onsubmit="handleClientLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Seu e-mail *</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-envelope text-base"></i></span>
+                            <input type="email" id="loginEmail" required placeholder="exemplo@email.com" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-1.5">Sua senha *</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-lock-key text-base"></i></span>
+                            <input type="password" id="loginSenha" required placeholder="Digite sua senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+
+                    <div id="loginErrorMsg" class="hidden p-3 bg-red-950/60 border border-red-800 text-red-300 rounded-xl text-xs flex items-center gap-2">
+                        <i class="ph-bold ph-warning-circle text-base shrink-0"></i>
+                        <span></span>
+                    </div>
+
+                    <button type="submit" id="btnLoginSubmit" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-sm">
+                        <i class="ph-bold ph-sign-in text-lg"></i>
+                        <span>Entrar na Minha Conta</span>
+                    </button>
+
+                    <div class="text-center pt-2">
+                        <p class="text-xs text-stone-400">
+                            Ainda não tem conta? 
+                            <button type="button" onclick="switchAuthTab('register')" class="text-rustic-gold font-bold hover:underline ml-1">
+                                Cadastre-se agora
+                            </button>
+                        </p>
+                    </div>
+                </form>
+
+                <!-- ABA 2: CADASTRE-SE (REGISTRO COM MAPBOX) -->
+                <form id="formClientRegister" onsubmit="handleClientRegister(event)" class="hidden space-y-5">
+                    
+                    <!-- Dados Pessoais Obrigatórios Solicitados -->
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                            <i class="ph-bold ph-user-circle text-base"></i> Dados Cadastrais
+                        </h4>
+
+                        <!-- 1. Nome Completo -->
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Nome Completo *</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-user text-base"></i></span>
+                                <input type="text" id="regNome" required placeholder="Digite seu nome completo" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+
+                        <!-- 2. Seu e-mail & 3. Whatsapp -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-300 mb-1.5">Seu e-mail *</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-envelope text-base"></i></span>
+                                    <input type="email" id="regEmail" required placeholder="seuemail@exemplo.com" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-300 mb-1.5">Whatsapp *</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-whatsapp-logo text-base"></i></span>
+                                    <input type="tel" id="regWhatsapp" required placeholder="(54) 99999-9999" maxlength="15" oninput="maskPhone(this)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Senha & 5. Confirmar senha -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-300 mb-1.5">Senha *</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-lock-key text-base"></i></span>
+                                    <input type="password" id="regSenha" required minlength="6" placeholder="Mínimo 6 dígitos" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-300 mb-1.5">Confirmar senha *</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-check-square-offset text-base"></i></span>
+                                    <input type="password" id="regConfirmarSenha" required minlength="6" placeholder="Repita a senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. MAPBOX PARA SELECIONAR A CIDADE E CALCULAR O FRETE -->
+                    <div class="bg-black/30 p-4 sm:p-5 rounded-2xl border border-rustic-gold/30 space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                                <i class="ph-bold ph-map-pin text-base"></i> Localização no Mapa & Cálculo de Frete SEDEX
+                            </h4>
+                            <span class="text-[10px] bg-rustic-gold/20 text-rustic-gold px-2 py-0.5 rounded-full font-bold">
+                                Mapbox
+                            </span>
+                        </div>
+                        <p class="text-xs text-stone-300 leading-relaxed">
+                            Use a barra de busca para encontrar exatamente o seu endereço ou clique/arraste o pino no mapa. A cidade, estado e o frete SEDEX serão calculados automaticamente!
+                        </p>
+
+                        <!-- Barra de Busca do Mapa -->
+                        <div class="relative">
+                            <div class="flex gap-2">
+                                <div class="relative flex-1">
+                                    <span class="absolute left-3 top-3 text-stone-400"><i class="ph-bold ph-magnifying-glass text-base"></i></span>
+                                    <input type="text" id="regMapSearchInput" autocomplete="off" placeholder="Buscar rua, bairro, cidade ou CEP..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-xs sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                </div>
+                                <button type="button" id="btnRegMapSearch" onclick="handleMapSearchAction()" class="bg-rustic-green hover:bg-rustic-gold hover:text-rustic-dark text-white px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5">
+                                    <i class="ph-bold ph-crosshair text-sm"></i>
+                                    <span class="hidden sm:inline">Buscar Local</span>
+                                </button>
+                            </div>
+
+                            <!-- Dropdown de Sugestões de Autocomplete -->
+                            <div id="regMapSuggestions" class="hidden absolute top-full left-0 right-0 z-40 bg-stone-900 border border-stone-700 rounded-xl mt-1 shadow-2xl max-h-56 overflow-y-auto divide-y divide-white/10">
+                                <!-- Sugestões injetadas via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Container do Mapa Mapbox (com fallback Leaflet) -->
+                        <div class="relative rounded-2xl overflow-hidden border border-stone-700 bg-stone-950 shadow-inner">
+                            <div id="regMapbox" class="w-full h-56 sm:h-64 z-10"></div>
+                            
+                            <!-- Indicador Flutuante no Topo do Mapa -->
+                            <div class="absolute top-2 left-2 z-20 bg-black/75 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg text-[10px] font-semibold border border-white/10 flex items-center gap-1.5 pointer-events-none">
+                                <i class="ph-bold ph-cursor-click text-rustic-gold"></i>
+                                <span>Clique no mapa ou arraste o marcador para ajustar o local</span>
+                            </div>
+                        </div>
+
+                        <!-- Campos Detalhados do Endereço (Preenchidos automaticamente) -->
+                        <div class="space-y-2.5 pt-1">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Rua / Logradouro *</label>
+                                    <input type="text" id="regLogradouro" required placeholder="Rua / Avenida" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Número *</label>
+                                    <input type="text" id="regNumero" required placeholder="Ex: 120" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Complemento</label>
+                                    <input type="text" id="regComplemento" placeholder="Apto, Casa, Bloco (opcional)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Bairro</label>
+                                    <input type="text" id="regBairro" placeholder="Bairro" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">CEP *</label>
+                                    <input type="text" id="regCep" required placeholder="00000-000" maxlength="9" oninput="this.value = formatCep(this.value); handleRegCepChange(this.value);" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                                <div class="col-span-2 sm:col-span-2">
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Cidade *</label>
+                                    <input type="text" id="regCidade" required placeholder="Cidade" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Estado (UF) *</label>
+                                    <input type="text" id="regUf" required maxlength="2" placeholder="UF" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white uppercase placeholder-stone-500 focus:outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card de Resultado do Frete SEDEX em Tempo Real -->
+                        <div id="regFreteResultCard" class="bg-rustic-green/10 border border-rustic-green/40 rounded-xl p-3.5 flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-rustic-green/20 text-emerald-400 flex items-center justify-center text-lg shrink-0">
+                                    <i class="ph-bold ph-airplane-takeoff"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-xs font-bold text-white">Frete Expresso SEDEX</span>
+                                        <span class="text-[9px] bg-rustic-gold/20 text-rustic-gold px-1.5 py-0.5 rounded font-bold">Origem: RS</span>
+                                    </div>
+                                    <p class="text-[11px] text-stone-300" id="regFretePrazo">1 a 3 dias úteis para entrega</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs text-stone-400 block text-[10px]">Valor do Frete</span>
+                                <span class="font-serif font-bold text-base text-emerald-400" id="regFreteValor">R$ 36,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="regErrorMsg" class="hidden p-3 bg-red-950/60 border border-red-800 text-red-300 rounded-xl text-xs flex items-center gap-2">
+                        <i class="ph-bold ph-warning-circle text-base shrink-0"></i>
+                        <span></span>
+                    </div>
+
+                    <button type="submit" id="btnRegisterSubmit" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-sm">
+                        <i class="ph-bold ph-check-circle text-lg"></i>
+                        <span>Criar Minha Conta e Continuar</span>
+                    </button>
+
+                    <div class="text-center pt-1">
+                        <p class="text-xs text-stone-400">
+                            Já possui cadastro? 
+                            <button type="button" onclick="switchAuthTab('login')" class="text-rustic-gold font-bold hover:underline ml-1">
+                                Fazer Login
+                            </button>
+                        </p>
+                    </div>
+                </form>
+
+                <!-- ABA 3: PERFIL DO CLIENTE (QUANDO JÁ LOGADO) -->
+                <div id="clientProfileView" class="hidden space-y-5">
+                    <div class="bg-black/20 p-5 rounded-2xl border border-white/5 space-y-3">
+                        <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+                            <div class="w-12 h-12 rounded-full bg-rustic-gold/20 text-rustic-gold flex items-center justify-center font-serif text-xl font-bold">
+                                <span id="profAvatarLetter">C</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base" id="profNome">Cliente</h4>
+                                <span class="text-xs text-emerald-400 flex items-center gap-1">
+                                    <i class="ph-bold ph-check-circle"></i> Conta Verificada
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5 text-xs text-stone-300">
+                            <p class="flex items-center gap-2"><i class="ph-bold ph-envelope text-rustic-gold"></i> <span id="profEmail">--</span></p>
+                            <p class="flex items-center gap-2"><i class="ph-bold ph-whatsapp-logo text-emerald-400"></i> <span id="profWhatsapp">--</span></p>
+                            <p class="flex items-start gap-2 pt-1 border-t border-white/5"><i class="ph-bold ph-map-pin text-rustic-gold mt-0.5"></i> <span id="profEndereco">--</span></p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button type="button" onclick="openClientOrdersModal()" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3 px-4 rounded-xl transition-all shadow flex items-center justify-center gap-2 text-xs">
+                            <i class="ph-bold ph-package text-base"></i>
+                            <span>Ver Meus Pedidos</span>
+                        </button>
+                        <button type="button" onclick="enableProfileEditAddress()" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-4 rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2 text-xs">
+                            <i class="ph-bold ph-pencil-simple text-base"></i>
+                            <span>Alterar Endereço / Mapa</span>
+                        </button>
+                    </div>
+
+                    <button type="button" onclick="handleClientLogout()" class="w-full bg-red-950/40 hover:bg-red-900 text-red-300 hover:text-white font-bold py-2.5 rounded-xl transition-all border border-red-900/40 flex items-center justify-center gap-2 text-xs">
+                        <i class="ph-bold ph-sign-out text-base"></i>
+                        <span>Sair da Conta (Logout)</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 2: CONFIRMAÇÃO DO PEDIDO (REVISÃO, PIX E WHATSAPP)   -->
+    <!-- ======================================================== -->
+    <div id="orderConfirmModal" class="hidden fixed inset-0 z-[90] overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-6 overflow-hidden text-stone-100">
+            
+            <!-- Header -->
+            <div class="p-5 sm:p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15] shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 text-rustic-gold flex items-center justify-center text-xl">
+                        <i class="ph-bold ph-shopping-bag-open"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-lg sm:text-xl font-bold text-white">Revisão do Pedido</h3>
+                        <p class="text-xs text-stone-400">Verifique os dados antes de finalizar o pedido</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeOrderConfirmModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="overflow-y-auto p-5 sm:p-7 flex-1 space-y-5">
+                
+                <!-- 1. Itens do Pedido -->
+                <div class="bg-black/25 p-4 rounded-2xl border border-white/5 space-y-3">
+                    <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center justify-between">
+                        <span class="flex items-center gap-1.5"><i class="ph-bold ph-egg text-base"></i> Itens Selecionados</span>
+                        <span id="orderConfirmItemCount" class="text-stone-400 font-normal">0 itens</span>
+                    </h4>
+                    <div id="orderConfirmItemsList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                        <!-- Injetado via JS -->
+                    </div>
+                </div>
+
+                <!-- 2. Dados do Comprador e Endereço de Entrega -->
+                <div class="bg-black/25 p-4 rounded-2xl border border-white/5 space-y-3 text-xs">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-1.5 text-[11px]">
+                            <i class="ph-bold ph-truck text-base"></i> Destinatário & Entrega SEDEX
+                        </h4>
+                        <button type="button" onclick="closeOrderConfirmModal(); openAuthModal('profile');" class="text-rustic-gold hover:underline text-[11px] font-semibold">
+                            Editar
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-stone-300">
+                        <div>
+                            <span class="text-stone-400 text-[10px] uppercase font-bold block">Comprador</span>
+                            <p class="font-bold text-white text-sm" id="orderConfirmClientName">--</p>
+                            <p class="text-stone-400" id="orderConfirmClientEmail">--</p>
+                            <p class="text-emerald-400 font-semibold" id="orderConfirmClientPhone">--</p>
+                        </div>
+                        <div>
+                            <span class="text-stone-400 text-[10px] uppercase font-bold block">Endereço de Entrega</span>
+                            <p class="text-stone-200 font-semibold" id="orderConfirmAddressLine1">--</p>
+                            <p class="text-stone-400" id="orderConfirmAddressLine2">--</p>
+                            <span class="inline-block mt-1 text-[10px] bg-rustic-green/20 text-emerald-400 px-2 py-0.5 rounded font-bold" id="orderConfirmShippingBadge">
+                                SEDEX Expresso (1 a 3 dias)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Totais -->
+                <div class="bg-black/35 p-4 rounded-2xl border border-rustic-gold/30 space-y-2 text-xs">
+                    <div class="flex justify-between text-stone-300">
+                        <span>Subtotal dos Ovos:</span>
+                        <span class="font-semibold text-white" id="orderConfirmSubtotal">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-stone-300">
+                        <span>Frete SEDEX Correios:</span>
+                        <span class="font-semibold text-emerald-400" id="orderConfirmShippingVal">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2.5 border-t border-white/10 text-sm">
+                        <span class="font-bold text-white">Valor Total do Pedido:</span>
+                        <span class="font-serif text-2xl font-bold text-rustic-gold" id="orderConfirmTotalVal">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- 4. Pagamento via PIX -->
+                <div class="bg-gradient-to-r from-emerald-950/40 via-stone-900 to-emerald-950/40 border border-emerald-500/30 p-4 rounded-2xl space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="ph-bold ph-qr-code text-base"></i> Pagamento via PIX
+                        </span>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">
+                            Chave Oficial
+                        </span>
+                    </div>
+                    <p class="text-xs text-stone-300 leading-relaxed">
+                        Ao confirmar, o pedido é registrado instantaneamente no nosso painel administrativo e a conversa no WhatsApp será aberta com todos os detalhes e chave PIX para envio do comprovante.
+                    </p>
+                    <div class="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-emerald-500/20">
+                        <span class="text-xs font-mono text-emerald-300 flex-1 truncate select-all" id="pixKeyText">contato@brahmaeorpingtondosul.com.br</span>
+                        <button type="button" onclick="copyPixKey()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-all shrink-0 flex items-center gap-1">
+                            <i class="ph-bold ph-copy"></i> Copiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5. Observações Opcionais -->
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 mb-1.5">Observações para o Criatório (Opcional)</label>
+                    <textarea id="orderNotesInput" rows="2" placeholder="Ex: instruções de entrega, preferência de cores, data de postagem..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold"></textarea>
+                </div>
+
+                <!-- Botão de Confirmação Final -->
+                <button type="button" id="btnConfirmOrderSubmit" onclick="confirmAndPlaceOrder()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-2xl transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2.5 text-base">
+                    <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
+                    <span>Confirmar Pedido & Abrir WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 3: MEUS PEDIDOS DO CLIENTE                         -->
+    <!-- ======================================================== -->
+    <div id="clientOrdersModal" class="hidden fixed inset-0 z-[90] overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-6 overflow-hidden text-stone-100">
+            
+            <!-- Header -->
+            <div class="p-5 sm:p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15] shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 text-rustic-gold flex items-center justify-center text-xl">
+                        <i class="ph-bold ph-package"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-lg sm:text-xl font-bold text-white">Meus Pedidos</h3>
+                        <p class="text-xs text-stone-400">Histórico de compras e rastreamento Correios</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeClientOrdersModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="overflow-y-auto p-5 sm:p-7 flex-1 space-y-4">
+                <div id="clientOrdersListContainer" class="space-y-4">
+                    <!-- Injetado via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 4: SUCESSO DO PEDIDO REGISTRADO                    -->
+    <!-- ======================================================== -->
+    <div id="orderSuccessModal" class="hidden fixed inset-0 z-[95] overflow-y-auto bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/40 rounded-3xl max-w-md w-full p-6 sm:p-8 text-center text-stone-100 shadow-2xl space-y-5">
+            <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-4xl mx-auto shadow-inner">
+                <i class="ph-bold ph-check"></i>
+            </div>
+
+            <div>
+                <span class="text-xs font-bold text-rustic-gold uppercase tracking-wider block mb-1">Pedido Registrado com Sucesso</span>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2" id="orderSuccessNumber">#BOS-XXXX</h3>
+                <p class="text-xs text-stone-300 leading-relaxed">
+                    Seu pedido foi registrado no sistema e encaminhado para o WhatsApp oficial do criatório. Acompanhe o envio e receba seu código de rastreio dos Correios!
+                </p>
+            </div>
+
+            <div class="space-y-2 pt-2">
+                <button type="button" id="btnOrderSuccessWa" onclick="openOrderSuccessWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
+                    <i class="ph-bold ph-whatsapp-logo text-xl"></i>
+                    <span>Conversar no WhatsApp</span>
+                </button>
+                <button type="button" onclick="closeOrderSuccessModal(); openClientOrdersModal();" class="w-full bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold py-3 px-4 rounded-xl transition-all border border-rustic-gold/30 text-xs">
+                    Ver Meus Pedidos
+                </button>
+                <button type="button" onclick="closeOrderSuccessModal()" class="w-full bg-transparent hover:bg-white/5 text-stone-400 hover:text-white py-2 text-xs">
+                    Continuar Navegando
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- JS Logic -->
@@ -1368,50 +1859,1198 @@
         document.getElementById('closeCartBtn').addEventListener('click', closeCart);
         cartOverlay.addEventListener('click', closeCart);
 
-        // --- WhatsApp Checkout Format ---
+        // ========================================================
+        // --- CLIENT AUTH, MAPBOX FRETE & PEDIDOS SYSTEM ---
+        // ========================================================
+        const STORAGE_CLIENT_TOKEN = 'bos_client_token';
+        const STORAGE_CLIENT_DATA = 'bos_client_data';
+        const STORAGE_CLIENTS_LOCAL = 'bos_registered_clients';
+        const STORAGE_ORDERS_LOCAL = 'bos_orders';
+
+        let currentClient = null;
+        let clientToken = localStorage.getItem(STORAGE_CLIENT_TOKEN) || '';
+        let pendingCheckoutAfterAuth = false;
+
+        // Mapbox & Leaflet State (OpenStreetMap / Mapbox)
+        const getCustomMapboxToken = () => {
+            return (typeof window !== 'undefined' && window.MAPBOX_ACCESS_TOKEN) || localStorage.getItem('bos_mapbox_token') || '';
+        };
+        let regMapInstance = null;
+        let regMarkerInstance = null;
+        let regMapEngine = null; // 'mapbox' or 'leaflet'
+        let currentRegCoords = { lat: -28.2625, lng: -52.4086 }; // Default: RS
+        let mapSearchTimeout = null;
+        let lastSelectedFreteQuote = null;
+
+        // Máscara de Telefone BR: (XX) XXXXX-XXXX
+        const maskPhone = (input) => {
+            let v = input.value.replace(/\D/g, '').slice(0, 11);
+            if (v.length > 10) {
+                v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+            } else if (v.length > 6) {
+                v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+            } else if (v.length > 2) {
+                v = v.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+            }
+            input.value = v;
+        };
+
+        // Verificação Inicial da Sessão do Cliente
+        const checkClientAuth = async () => {
+            const savedData = localStorage.getItem(STORAGE_CLIENT_DATA);
+            if (savedData) {
+                try {
+                    currentClient = JSON.parse(savedData);
+                } catch (e) {
+                    currentClient = null;
+                }
+            }
+
+            if (clientToken) {
+                try {
+                    const res = await fetch('/api/clientes/me', {
+                        headers: { 'Authorization': `Bearer ${clientToken}` }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.cliente) {
+                            currentClient = data.cliente;
+                            localStorage.setItem(STORAGE_CLIENT_DATA, JSON.stringify(currentClient));
+                        }
+                    } else if (res.status === 401 && !savedData) {
+                        currentClient = null;
+                        clientToken = '';
+                        localStorage.removeItem(STORAGE_CLIENT_TOKEN);
+                        localStorage.removeItem(STORAGE_CLIENT_DATA);
+                    }
+                } catch (err) {
+                    // Servidor offline ou hospedagem estática: mantém dados do localStorage
+                }
+            }
+
+            updateClientNavbarUI();
+
+            // Se o cliente possui CEP cadastrado, pré-configura no carrinho
+            if (currentClient && currentClient.endereco && currentClient.endereco.cep) {
+                const cartCepInput = document.getElementById('cartCepDestino');
+                if (cartCepInput && !cartCepInput.value) {
+                    cartCepInput.value = currentClient.endereco.cep;
+                    calcularCotacaoCorreios(currentClient.endereco.cep).then(cot => {
+                        cartFrete.cotacao = cot;
+                        cartFrete.cep = cot.cep;
+                        cartFrete.localidade = cot.localidade;
+                        cartFrete.uf = cot.uf;
+                        selecionarFreteCart();
+                    }).catch(() => {});
+                }
+            }
+        };
+
+        const updateClientNavbarUI = () => {
+            const labelEl = document.getElementById('navAuthLabel');
+            const iconEl = document.getElementById('navAuthIcon');
+            const btnEl = document.getElementById('btnNavAuth');
+
+            if (!btnEl || !labelEl || !iconEl) return;
+
+            if (currentClient && currentClient.nome) {
+                const firstName = currentClient.nome.trim().split(' ')[0];
+                labelEl.textContent = firstName;
+                iconEl.className = 'ph-bold ph-user-check text-base text-rustic-gold';
+                btnEl.title = `Conectado como ${currentClient.nome} - Clique para ver sua conta`;
+            } else {
+                labelEl.textContent = 'Entrar';
+                iconEl.className = 'ph-bold ph-user text-base text-rustic-gold';
+                btnEl.title = 'Entrar ou Cadastrar-se';
+            }
+        };
+
+        const handleNavAuthClick = () => {
+            if (currentClient) {
+                openAuthModal('profile');
+            } else {
+                openAuthModal('login');
+            }
+        };
+
+        // --- Modais de Autenticação ---
+        const openAuthModal = (tab = 'login') => {
+            const modal = document.getElementById('clientAuthModal');
+            if (!modal) return;
+
+            const banner = document.getElementById('authCheckoutBanner');
+            if (banner) {
+                if (pendingCheckoutAfterAuth) {
+                    banner.classList.remove('hidden');
+                } else {
+                    banner.classList.add('hidden');
+                }
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            switchAuthTab(tab);
+        };
+
+        const closeAuthModal = () => {
+            const modal = document.getElementById('clientAuthModal');
+            if (modal) modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            pendingCheckoutAfterAuth = false;
+        };
+
+        const switchAuthTab = (tab) => {
+            const tabLoginBtn = document.getElementById('tabBtnLogin');
+            const tabRegBtn = document.getElementById('tabBtnRegister');
+            const formLogin = document.getElementById('formClientLogin');
+            const formReg = document.getElementById('formClientRegister');
+            const profileView = document.getElementById('clientProfileView');
+            const tabsNav = document.getElementById('authTabsNav');
+
+            // Reset visual das abas
+            if (tabLoginBtn) {
+                tabLoginBtn.className = 'flex-1 py-3 text-xs sm:text-sm font-bold text-stone-400 hover:text-white border-b-2 border-transparent transition-colors flex items-center justify-center gap-2';
+            }
+            if (tabRegBtn) {
+                tabRegBtn.className = 'flex-1 py-3 text-xs sm:text-sm font-bold text-stone-400 hover:text-white border-b-2 border-transparent transition-colors flex items-center justify-center gap-2';
+            }
+
+            if (formLogin) formLogin.classList.add('hidden');
+            if (formReg) formReg.classList.add('hidden');
+            if (profileView) profileView.classList.add('hidden');
+
+            if (tab === 'profile' && currentClient) {
+                if (tabsNav) tabsNav.classList.add('hidden');
+                if (profileView) {
+                    profileView.classList.remove('hidden');
+                    document.getElementById('profNome').textContent = currentClient.nome;
+                    document.getElementById('profAvatarLetter').textContent = (currentClient.nome || 'C')[0].toUpperCase();
+                    document.getElementById('profEmail').textContent = currentClient.email;
+                    document.getElementById('profWhatsapp').textContent = currentClient.whatsapp;
+
+                    const end = currentClient.endereco || {};
+                    const endFormatado = end.logradouro ? `${end.logradouro}, ${end.numero || 'S/N'} ${end.complemento ? '(' + end.complemento + ')' : ''} - ${end.bairro || ''}, ${end.cidade || ''} - ${end.uf || ''} (CEP: ${end.cep || ''})` : 'Endereço ainda não informado';
+                    document.getElementById('profEndereco').textContent = endFormatado;
+                }
+            } else if (tab === 'register') {
+                if (tabsNav) tabsNav.classList.remove('hidden');
+                if (tabRegBtn) {
+                    tabRegBtn.className = 'flex-1 py-3 text-xs sm:text-sm font-bold text-white border-b-2 border-rustic-gold transition-colors flex items-center justify-center gap-2';
+                }
+                if (formReg) formReg.classList.remove('hidden');
+
+                // Inicializa o Mapbox após renderização do container
+                setTimeout(() => {
+                    initRegisterMap();
+                }, 150);
+            } else {
+                // 'login'
+                if (tabsNav) tabsNav.classList.remove('hidden');
+                if (tabLoginBtn) {
+                    tabLoginBtn.className = 'flex-1 py-3 text-xs sm:text-sm font-bold text-white border-b-2 border-rustic-gold transition-colors flex items-center justify-center gap-2';
+                }
+                if (formLogin) formLogin.classList.remove('hidden');
+            }
+        };
+
+        const enableProfileEditAddress = () => {
+            if (!currentClient) return;
+            switchAuthTab('register');
+            document.getElementById('regNome').value = currentClient.nome || '';
+            document.getElementById('regEmail').value = currentClient.email || '';
+            document.getElementById('regWhatsapp').value = currentClient.whatsapp || '';
+
+            const end = currentClient.endereco || {};
+            document.getElementById('regLogradouro').value = end.logradouro || '';
+            document.getElementById('regNumero').value = end.numero || '';
+            document.getElementById('regComplemento').value = end.complemento || '';
+            document.getElementById('regBairro').value = end.bairro || '';
+            document.getElementById('regCidade').value = end.cidade || '';
+            document.getElementById('regUf').value = end.uf || '';
+            document.getElementById('regCep').value = end.cep || '';
+
+            if (end.coordenadas && end.coordenadas.lat && end.coordenadas.lng) {
+                currentRegCoords = end.coordenadas;
+                setTimeout(() => {
+                    setMapCenterAndMarker(currentRegCoords.lat, currentRegCoords.lng);
+                    calculateFreightForLocation(end.uf, end.cidade, end.cep);
+                }, 200);
+            }
+        };
+
+        // --- MAPBOX & LEAFLET DUAL ENGINE ---
+        const initRegisterMap = () => {
+            const container = document.getElementById('regMapbox');
+            if (!container) return;
+
+            // Se o mapa já estiver inicializado, apenas redimensiona para o modal
+            if (regMapInstance) {
+                if (regMapEngine === 'mapbox' && typeof regMapInstance.resize === 'function') {
+                    regMapInstance.resize();
+                } else if (regMapEngine === 'leaflet' && typeof regMapInstance.invalidateSize === 'function') {
+                    regMapInstance.invalidateSize();
+                }
+                return;
+            }
+
+            // Tenta Mapbox GL JS se houver token configurado pelo usuário
+            let mapboxOk = false;
+            const customToken = getCustomMapboxToken();
+            if (customToken && typeof mapboxgl !== 'undefined' && mapboxgl.supported && mapboxgl.supported()) {
+                try {
+                    mapboxgl.accessToken = customToken;
+                    regMapInstance = new mapboxgl.Map({
+                        container: 'regMapbox',
+                        style: 'mapbox://styles/mapbox/streets-v12',
+                        center: [currentRegCoords.lng, currentRegCoords.lat],
+                        zoom: 12
+                    });
+                    regMapEngine = 'mapbox';
+
+                    regMapInstance.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
+
+                    regMarkerInstance = new mapboxgl.Marker({ draggable: true, color: '#C89D3C' })
+                        .setLngLat([currentRegCoords.lng, currentRegCoords.lat])
+                        .addTo(regMapInstance);
+
+                    regMarkerInstance.on('dragend', () => {
+                        const pos = regMarkerInstance.getLngLat();
+                        onMapLocationSelected(pos.lat, pos.lng);
+                    });
+
+                    regMapInstance.on('click', (e) => {
+                        regMarkerInstance.setLngLat(e.lngLat);
+                        onMapLocationSelected(e.lngLat.lat, e.lngLat.lng);
+                    });
+
+                    regMapInstance.on('error', () => {
+                        fallbackToLeafletMap();
+                    });
+
+                    mapboxOk = true;
+                } catch (e) {
+                    mapboxOk = false;
+                }
+            }
+
+            if (!mapboxOk) {
+                fallbackToLeafletMap();
+            }
+
+            setupMapSearchAutocomplete();
+
+            // Cálculo inicial de frete
+            const initialUf = document.getElementById('regUf')?.value || 'RS';
+            const initialCidade = document.getElementById('regCidade')?.value || 'Passo Fundo';
+            const initialCep = document.getElementById('regCep')?.value || '99010-000';
+            calculateFreightForLocation(initialUf, initialCidade, initialCep);
+        };
+
+        const fallbackToLeafletMap = () => {
+            if (regMapEngine === 'leaflet' && regMapInstance) return;
+            regMapEngine = 'leaflet';
+
+            const container = document.getElementById('regMapbox');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (typeof L !== 'undefined') {
+                try {
+                    regMapInstance = L.map('regMapbox').setView([currentRegCoords.lat, currentRegCoords.lng], 12);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; OpenStreetMap'
+                    }).addTo(regMapInstance);
+
+                    regMarkerInstance = L.marker([currentRegCoords.lat, currentRegCoords.lng], { draggable: true }).addTo(regMapInstance);
+
+                    regMarkerInstance.on('dragend', (e) => {
+                        const pos = e.target.getLatLng();
+                        onMapLocationSelected(pos.lat, pos.lng);
+                    });
+
+                    regMapInstance.on('click', (e) => {
+                        regMarkerInstance.setLatLng(e.latlng);
+                        onMapLocationSelected(e.latlng.lat, e.latlng.lng);
+                    });
+                } catch (err) {
+                    console.error("Erro ao inicializar mapa Leaflet:", err);
+                }
+            }
+        };
+
+        const setMapCenterAndMarker = (lat, lng) => {
+            currentRegCoords = { lat, lng };
+            if (regMapEngine === 'mapbox' && regMapInstance && regMarkerInstance) {
+                regMapInstance.flyTo({ center: [lng, lat], zoom: 15 });
+                regMarkerInstance.setLngLat([lng, lat]);
+            } else if (regMapEngine === 'leaflet' && regMapInstance && regMarkerInstance) {
+                regMapInstance.setView([lat, lng], 15);
+                regMarkerInstance.setLatLng([lat, lng]);
+            }
+        };
+
+        // Geocodificação Reversa (ao clicar ou arrastar o pino)
+        const onMapLocationSelected = async (lat, lng) => {
+            currentRegCoords = { lat, lng };
+            try {
+                const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data && data.address) {
+                        const addr = data.address;
+                        const road = addr.road || addr.street || addr.pedestrian || '';
+                        const suburb = addr.suburb || addr.neighbourhood || addr.city_district || '';
+                        const city = addr.city || addr.town || addr.municipality || addr.village || '';
+                        const state = addr.state || '';
+                        const postcode = addr.postcode || '';
+
+                        // Mapeia nome do estado para UF
+                        const uf = convertStateToUf(state);
+
+                        if (road) document.getElementById('regLogradouro').value = road;
+                        if (suburb) document.getElementById('regBairro').value = suburb;
+                        if (city) document.getElementById('regCidade').value = city;
+                        if (uf) document.getElementById('regUf').value = uf;
+                        if (postcode) {
+                            document.getElementById('regCep').value = formatCep(postcode);
+                        }
+
+                        calculateFreightForLocation(uf, city, postcode);
+                    }
+                }
+            } catch (e) {
+                console.error("Erro na geocodificação reversa:", e);
+            }
+        };
+
+        const convertStateToUf = (stateName) => {
+            const mapUf = {
+                'rio grande do sul': 'RS', 'santa catarina': 'SC', 'paraná': 'PR', 'parana': 'PR',
+                'são paulo': 'SP', 'sao paulo': 'SP', 'rio de janeiro': 'RJ', 'minas gerais': 'MG',
+                'espírito santo': 'ES', 'espirito santo': 'ES', 'bahia': 'BA', 'goiás': 'GO', 'goias': 'GO',
+                'distrito federal': 'DF', 'mato grosso do sul': 'MS', 'mato grosso': 'MT',
+                'pernambuco': 'PE', 'ceará': 'CE', 'ceara': 'CE', 'alagoas': 'AL', 'sergipe': 'SE',
+                'paraíba': 'PB', 'paraiba': 'PB', 'rio grande do norte': 'RN', 'piauí': 'PI', 'piaui': 'PI',
+                'maranhão': 'MA', 'maranhao': 'MA', 'tocantins': 'TO', 'pará': 'PA', 'para': 'PA',
+                'amazonas': 'AM', 'rondônia': 'RO', 'rondonia': 'RO', 'acre': 'AC', 'amapá': 'AP',
+                'amapa': 'AP', 'roraima': 'RR'
+            };
+            const clean = (stateName || '').toLowerCase().trim();
+            return mapUf[clean] || (stateName.length === 2 ? stateName.toUpperCase() : 'RS');
+        };
+
+        // Autocomplete da Barra de Busca do Mapa
+        const setupMapSearchAutocomplete = () => {
+            const searchInput = document.getElementById('regMapSearchInput');
+            const suggestionsBox = document.getElementById('regMapSuggestions');
+            if (!searchInput || !suggestionsBox) return;
+
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                clearTimeout(mapSearchTimeout);
+                if (query.length < 3) {
+                    suggestionsBox.classList.add('hidden');
+                    suggestionsBox.innerHTML = '';
+                    return;
+                }
+
+                mapSearchTimeout = setTimeout(() => {
+                    searchMapLocationQuery(query);
+                }, 350);
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleMapSearchAction();
+                }
+            });
+        };
+
+        const handleMapSearchAction = () => {
+            const searchInput = document.getElementById('regMapSearchInput');
+            const query = searchInput ? searchInput.value.trim() : '';
+            if (query.length >= 2) {
+                searchMapLocationQuery(query);
+            }
+        };
+
+        const searchMapLocationQuery = async (query) => {
+            const suggestionsBox = document.getElementById('regMapSuggestions');
+            if (!suggestionsBox) return;
+
+            suggestionsBox.innerHTML = `<div class="p-3 text-xs text-stone-400 flex items-center gap-2"><i class="ph-bold ph-spinner animate-spin text-rustic-gold"></i> Buscando endereços no Brasil...</div>`;
+            suggestionsBox.classList.remove('hidden');
+
+            try {
+                // Tenta via Photon Geocoder (rápido e sem bloqueios)
+                const photonUrl = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=pt`;
+                const res = await fetch(photonUrl);
+                const data = await res.json();
+
+                let results = [];
+                if (data && Array.isArray(data.features) && data.features.length > 0) {
+                    results = data.features.map(f => {
+                        const p = f.properties || {};
+                        const coords = f.geometry?.coordinates || [0, 0];
+                        return {
+                            lat: coords[1],
+                            lng: coords[0],
+                            name: p.name || p.street || p.city || query,
+                            details: [p.district, p.city, p.state, p.country].filter(Boolean).join(', '),
+                            city: p.city || p.name || '',
+                            state: p.state || '',
+                            postcode: p.postcode || '',
+                            street: p.street || (p.osm_key === 'highway' ? p.name : '')
+                        };
+                    });
+                }
+
+                // Fallback Nominatim se Photon não retornar
+                if (results.length === 0) {
+                    const nomUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=br&limit=5&addressdetails=1`;
+                    const nomRes = await fetch(nomUrl);
+                    const nomData = await nomRes.json();
+                    if (Array.isArray(nomData)) {
+                        results = nomData.map(item => {
+                            const addr = item.address || {};
+                            return {
+                                lat: parseFloat(item.lat),
+                                lng: parseFloat(item.lon),
+                                name: item.name || addr.road || addr.city || query,
+                                details: item.display_name,
+                                city: addr.city || addr.town || addr.municipality || '',
+                                state: addr.state || '',
+                                postcode: addr.postcode || '',
+                                street: addr.road || ''
+                            };
+                        });
+                    }
+                }
+
+                if (results.length === 0) {
+                    suggestionsBox.innerHTML = `<div class="p-3 text-xs text-stone-400">Nenhum endereço encontrado para "${query}". Tente o nome da cidade ou CEP.</div>`;
+                    return;
+                }
+
+                suggestionsBox.innerHTML = results.map((r, i) => `
+                    <button type="button" onclick="selectMapSearchResult(${r.lat}, ${r.lng}, '${encodeURIComponent(JSON.stringify(r))}')" class="w-full text-left p-2.5 hover:bg-stone-800 transition-colors flex items-start gap-2.5 text-xs text-stone-200">
+                        <i class="ph-bold ph-map-pin text-rustic-gold shrink-0 mt-0.5"></i>
+                        <div class="truncate">
+                            <strong class="text-white block truncate">${r.name}</strong>
+                            <span class="text-stone-400 text-[11px] truncate block">${r.details}</span>
+                        </div>
+                    </button>
+                `).join('');
+
+            } catch (err) {
+                suggestionsBox.innerHTML = `<div class="p-3 text-xs text-red-400">Erro ao buscar localidade. Você pode navegar diretamente pelo mapa.</div>`;
+            }
+        };
+
+        const selectMapSearchResult = (lat, lng, jsonEncoded) => {
+            const suggestionsBox = document.getElementById('regMapSuggestions');
+            if (suggestionsBox) suggestionsBox.classList.add('hidden');
+
+            let item = {};
+            try {
+                item = JSON.parse(decodeURIComponent(jsonEncoded));
+            } catch (e) {}
+
+            setMapCenterAndMarker(lat, lng);
+
+            if (item.street) document.getElementById('regLogradouro').value = item.street;
+            if (item.city) document.getElementById('regCidade').value = item.city;
+            if (item.state) {
+                const uf = convertStateToUf(item.state);
+                document.getElementById('regUf').value = uf;
+            }
+            if (item.postcode) {
+                document.getElementById('regCep').value = formatCep(item.postcode);
+            }
+
+            const uf = document.getElementById('regUf').value;
+            const city = document.getElementById('regCidade').value;
+            const cep = document.getElementById('regCep').value;
+
+            calculateFreightForLocation(uf, city, cep);
+            showToast(`Localização selecionada no mapa!`);
+        };
+
+        const handleRegCepChange = (cepVal) => {
+            const clean = (cepVal || '').replace(/\D/g, '');
+            if (clean.length === 8) {
+                calcularCotacaoCorreios(clean).then(cot => {
+                    document.getElementById('regCidade').value = cot.localidade;
+                    document.getElementById('regUf').value = cot.uf;
+                    calculateFreightForLocation(cot.uf, cot.localidade, cot.cep);
+                }).catch(() => {});
+            }
+        };
+
+        // Cálculo em Tempo Real do Frete SEDEX para o Cadastro
+        const calculateFreightForLocation = async (uf, cidade, cep = '') => {
+            const cleanCep = (cep || '').replace(/\D/g, '');
+            let cotacao = null;
+
+            if (cleanCep.length === 8) {
+                try {
+                    cotacao = await calcularCotacaoCorreios(cleanCep, 1);
+                } catch (e) {}
+            }
+
+            if (!cotacao) {
+                // Tabela de fallback baseada na UF
+                const cleanUf = (uf || 'RS').toUpperCase().trim();
+                const tabelas = {
+                    'RS': { sedex: 36.00, prazoSedex: '1 a 2 dias úteis' },
+                    'SC': { sedex: 42.00, prazoSedex: '1 a 3 dias úteis' },
+                    'PR': { sedex: 48.00, prazoSedex: '2 a 3 dias úteis' },
+                    'SP': { sedex: 64.00, prazoSedex: '2 a 3 dias úteis' },
+                    'RJ': { sedex: 72.00, prazoSedex: '2 a 4 dias úteis' },
+                    'MG': { sedex: 76.00, prazoSedex: '2 a 4 dias úteis' },
+                    'ES': { sedex: 82.00, prazoSedex: '3 a 5 dias úteis' },
+                    'MS': { sedex: 88.00, prazoSedex: '3 a 5 dias úteis' },
+                    'GO': { sedex: 92.00, prazoSedex: '3 a 5 dias úteis' },
+                    'DF': { sedex: 89.00, prazoSedex: '3 a 5 dias úteis' },
+                    'MT': { sedex: 98.00, prazoSedex: '3 a 6 dias úteis' },
+                    'BA': { sedex: 104.00, prazoSedex: '3 a 6 dias úteis' },
+                    'PE': { sedex: 118.00, prazoSedex: '4 a 6 dias úteis' },
+                    'CE': { sedex: 124.00, prazoSedex: '4 a 7 dias úteis' },
+                    'AL': { sedex: 120.00, prazoSedex: '4 a 6 dias úteis' },
+                    'SE': { sedex: 116.00, prazoSedex: '4 a 6 dias úteis' },
+                    'PB': { sedex: 122.00, prazoSedex: '4 a 7 dias úteis' },
+                    'RN': { sedex: 125.00, prazoSedex: '4 a 7 dias úteis' },
+                    'PI': { sedex: 126.00, prazoSedex: '4 a 7 dias úteis' },
+                    'MA': { sedex: 132.00, prazoSedex: '4 a 7 dias úteis' },
+                    'TO': { sedex: 122.00, prazoSedex: '4 a 6 dias úteis' },
+                    'PA': { sedex: 138.00, prazoSedex: '4 a 8 dias úteis' },
+                    'AM': { sedex: 155.00, prazoSedex: '5 a 8 dias úteis' },
+                    'RO': { sedex: 136.00, prazoSedex: '4 a 7 dias úteis' },
+                    'AC': { sedex: 168.00, prazoSedex: '5 a 9 dias úteis' },
+                    'AP': { sedex: 158.00, prazoSedex: '5 a 9 dias úteis' },
+                    'RR': { sedex: 172.00, prazoSedex: '5 a 9 dias úteis' }
+                };
+
+                const dados = tabelas[cleanUf] || { sedex: 48.00, prazoSedex: '2 a 4 dias úteis' };
+                cotacao = {
+                    cep: cep || 'A definir',
+                    localidade: cidade || 'Destino',
+                    uf: cleanUf,
+                    sedex: {
+                        valor: dados.sedex,
+                        prazo: dados.prazoSedex
+                    }
+                };
+            }
+
+            lastSelectedFreteQuote = cotacao;
+
+            const prazoEl = document.getElementById('regFretePrazo');
+            const valorEl = document.getElementById('regFreteValor');
+            if (prazoEl) prazoEl.textContent = `${cotacao.sedex.prazo} para ${cotacao.localidade} - ${cotacao.uf}`;
+            if (valorEl) valorEl.textContent = formatMoney(cotacao.sedex.valor);
+        };
+
+        // --- Submissão de Formulário: Login ---
+        const handleClientLogin = async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('loginEmail');
+            const senhaInput = document.getElementById('loginSenha');
+            const errBox = document.getElementById('loginErrorMsg');
+            const btnSubmit = document.getElementById('btnLoginSubmit');
+
+            errBox.classList.add('hidden');
+            const email = emailInput.value.trim().toLowerCase();
+            const senha = senhaInput.value;
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-lg"></i> <span>Entrando...</span>`;
+
+            let authenticated = false;
+
+            // 1. Tenta API do servidor local
+            try {
+                const res = await fetch('/api/clientes/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, senha })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    clientToken = data.token;
+                    currentClient = data.cliente;
+                    localStorage.setItem(STORAGE_CLIENT_TOKEN, clientToken);
+                    localStorage.setItem(STORAGE_CLIENT_DATA, JSON.stringify(currentClient));
+                    authenticated = true;
+                } else if (res.status === 401 || !data.success) {
+                    errBox.querySelector('span').textContent = data.error || 'E-mail ou senha incorretos.';
+                    errBox.classList.remove('hidden');
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = `<i class="ph-bold ph-sign-in text-lg"></i> <span>Entrar na Minha Conta</span>`;
+                    return;
+                }
+            } catch (err) {
+                // Servidor offline / estático
+            }
+
+            // 2. Fallback de autenticação local (para GitHub Pages / Cloudflare Pages)
+            if (!authenticated) {
+                const localClientsStr = localStorage.getItem(STORAGE_CLIENTS_LOCAL);
+                let localClients = [];
+                if (localClientsStr) {
+                    try { localClients = JSON.parse(localClientsStr); } catch (e) {}
+                }
+
+                const found = localClients.find(c => c.email && c.email.toLowerCase() === email);
+                if (found) {
+                    currentClient = found;
+                    clientToken = 'local-token-' + Date.now();
+                    localStorage.setItem(STORAGE_CLIENT_TOKEN, clientToken);
+                    localStorage.setItem(STORAGE_CLIENT_DATA, JSON.stringify(currentClient));
+                    authenticated = true;
+                }
+            }
+
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = `<i class="ph-bold ph-sign-in text-lg"></i> <span>Entrar na Minha Conta</span>`;
+
+            if (authenticated) {
+                updateClientNavbarUI();
+                closeAuthModal();
+
+                if (pendingCheckoutAfterAuth) {
+                    pendingCheckoutAfterAuth = false;
+                    openOrderConfirmModal();
+                } else {
+                    showToast(`Bem-vindo(a) de volta, ${currentClient.nome}!`);
+                }
+            } else {
+                errBox.querySelector('span').textContent = 'E-mail ou senha incorretos. Verifique suas credenciais.';
+                errBox.classList.remove('hidden');
+            }
+        };
+
+        // --- Submissão de Formulário: Cadastre-se ---
+        const handleClientRegister = async (e) => {
+            e.preventDefault();
+            const errBox = document.getElementById('regErrorMsg');
+            const btnSubmit = document.getElementById('btnRegisterSubmit');
+            errBox.classList.add('hidden');
+
+            const nome = document.getElementById('regNome').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const whatsapp = document.getElementById('regWhatsapp').value.trim();
+            const senha = document.getElementById('regSenha').value;
+            const confirmacaoSenha = document.getElementById('regConfirmarSenha').value;
+
+            const logradouro = document.getElementById('regLogradouro').value.trim();
+            const numero = document.getElementById('regNumero').value.trim();
+            const complemento = document.getElementById('regComplemento').value.trim();
+            const bairro = document.getElementById('regBairro').value.trim();
+            const cidade = document.getElementById('regCidade').value.trim();
+            const uf = document.getElementById('regUf').value.trim().toUpperCase();
+            const cep = document.getElementById('regCep').value.trim();
+
+            if (senha !== confirmacaoSenha) {
+                errBox.querySelector('span').textContent = 'As senhas digitadas não coincidem. Verifique a confirmação.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            if (!logradouro || !cidade || !uf) {
+                errBox.querySelector('span').textContent = 'Por favor, selecione seu endereço ou cidade no mapa para calcular o frete.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-lg"></i> <span>Criando conta...</span>`;
+
+            const payloadCliente = {
+                nome,
+                email,
+                whatsapp,
+                senha,
+                confirmacaoSenha,
+                endereco: {
+                    logradouro,
+                    numero,
+                    complemento,
+                    bairro,
+                    cidade,
+                    uf,
+                    cep,
+                    coordenadas: currentRegCoords
+                }
+            };
+
+            let registered = false;
+
+            // 1. Tenta API do servidor
+            try {
+                const res = await fetch('/api/clientes/cadastro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payloadCliente)
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    clientToken = data.token;
+                    currentClient = data.cliente;
+                    localStorage.setItem(STORAGE_CLIENT_TOKEN, clientToken);
+                    localStorage.setItem(STORAGE_CLIENT_DATA, JSON.stringify(currentClient));
+                    registered = true;
+                } else if (!data.success) {
+                    errBox.querySelector('span').textContent = data.error || 'Erro ao realizar cadastro.';
+                    errBox.classList.remove('hidden');
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = `<i class="ph-bold ph-check-circle text-lg"></i> <span>Criar Minha Conta e Continuar</span>`;
+                    return;
+                }
+            } catch (err) {
+                // Modo estático / offline
+            }
+
+            // 2. Fallback de cadastro local
+            if (!registered) {
+                const newClientObj = {
+                    id: 'cli-' + Date.now(),
+                    nome,
+                    email,
+                    whatsapp,
+                    endereco: payloadCliente.endereco,
+                    criadoEm: new Date().toISOString()
+                };
+
+                let localClients = [];
+                try {
+                    localClients = JSON.parse(localStorage.getItem(STORAGE_CLIENTS_LOCAL)) || [];
+                } catch (e) {}
+
+                localClients.push(newClientObj);
+                localStorage.setItem(STORAGE_CLIENTS_LOCAL, JSON.stringify(localClients));
+
+                currentClient = newClientObj;
+                clientToken = 'local-token-' + Date.now();
+                localStorage.setItem(STORAGE_CLIENT_TOKEN, clientToken);
+                localStorage.setItem(STORAGE_CLIENT_DATA, JSON.stringify(currentClient));
+                registered = true;
+            }
+
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = `<i class="ph-bold ph-check-circle text-lg"></i> <span>Criar Minha Conta e Continuar</span>`;
+
+            updateClientNavbarUI();
+            closeAuthModal();
+
+            if (pendingCheckoutAfterAuth) {
+                pendingCheckoutAfterAuth = false;
+                openOrderConfirmModal();
+            } else {
+                showToast(`Conta criada com sucesso! Bem-vindo(a), ${currentClient.nome}!`);
+            }
+        };
+
+        const handleClientLogout = () => {
+            const confirmLogout = confirm("Deseja realmente sair da sua conta?");
+            if (!confirmLogout) return;
+
+            if (clientToken && clientToken.length > 30) {
+                fetch('/api/logout', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${clientToken}` }
+                }).catch(() => {});
+            }
+
+            currentClient = null;
+            clientToken = '';
+            localStorage.removeItem(STORAGE_CLIENT_TOKEN);
+            localStorage.removeItem(STORAGE_CLIENT_DATA);
+
+            updateClientNavbarUI();
+            closeAuthModal();
+            showToast("Você saiu da sua conta.");
+        };
+
+        // ========================================================
+        // --- CHECKOUT & CONFIRMAÇÃO DE PEDIDOS ---
+        // ========================================================
         document.getElementById('checkoutBtn').addEventListener('click', () => {
-            if(cart.length === 0) return;
+            if (cart.length === 0) {
+                showToast("Seu carrinho está vazio. Adicione itens antes de finalizar.");
+                return;
+            }
+
+            // Se o usuário NÃO está logado: solicita login / cadastro
+            if (!currentClient) {
+                pendingCheckoutAfterAuth = true;
+                closeCart();
+                openAuthModal('login');
+                showToast("Por favor, faça login ou cadastre-se para confirmar o pedido.");
+                return;
+            }
+
+            // Se já está logado: abre modal de confirmação do pedido
+            closeCart();
+            openOrderConfirmModal();
+        });
+
+        const openOrderConfirmModal = () => {
+            const modal = document.getElementById('orderConfirmModal');
+            if (!modal || !currentClient) return;
 
             const hasPhysicalItems = cart.some(item => !item.isDigital);
             const isAllDigital = cart.length > 0 && !hasPhysicalItems;
 
-            let text = "Olá! Gostaria de fazer um pedido no *Criatório Brahma e Orpington do Sul*. 🐣📖%0A%0A";
-            text += "*RESUMO DOS ITENS:*%0A";
-            
-            let total = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                const label = item.isDigital ? "Envio por PDF" : (optionLabels[item.option] || item.option);
-                text += `▪ ${item.quantity}x ${item.name} (${label}) -> ${formatMoney(itemTotal)}%0A`;
-            });
+            // 1. Preenche lista de itens
+            const itemsListEl = document.getElementById('orderConfirmItemsList');
+            const itemCountEl = document.getElementById('orderConfirmItemCount');
+            const totalQty = cart.reduce((sum, i) => sum + i.quantity, 0);
+            itemCountEl.textContent = `${totalQty} ${totalQty === 1 ? 'item' : 'itens'}`;
 
-            text += `%0A*Subtotal:* ${formatMoney(total)}%0A`;
-            
+            let subtotal = 0;
+            itemsListEl.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                const label = item.isDigital ? "Envio por PDF" : (optionLabels[item.option] || item.option);
+                return `
+                    <div class="flex items-center justify-between p-2.5 bg-black/20 rounded-xl border border-white/5 text-xs">
+                        <div class="flex items-center gap-2.5 truncate">
+                            <img src="${item.photo}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}'" class="w-9 h-9 rounded-lg object-contain bg-stone-900 border border-stone-700 shrink-0">
+                            <div class="truncate">
+                                <span class="font-bold text-white block truncate">${item.quantity}x ${item.name}</span>
+                                <span class="text-[10px] text-stone-400">${label}</span>
+                            </div>
+                        </div>
+                        <span class="font-bold text-stone-200 shrink-0 ml-2">${formatMoney(itemTotal)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // 2. Preenche dados do comprador e endereço
+            document.getElementById('orderConfirmClientName').textContent = currentClient.nome;
+            document.getElementById('orderConfirmClientEmail').textContent = currentClient.email;
+            document.getElementById('orderConfirmClientPhone').textContent = currentClient.whatsapp;
+
+            const end = currentClient.endereco || {};
+            const linha1 = end.logradouro ? `${end.logradouro}, ${end.numero || 'S/N'} ${end.complemento ? '(' + end.complemento + ')' : ''}` : 'Endereço a combinar';
+            const linha2 = `${end.bairro ? end.bairro + ' - ' : ''}${end.cidade || ''} / ${end.uf || ''} (CEP: ${end.cep || ''})`;
+            document.getElementById('orderConfirmAddressLine1').textContent = linha1;
+            document.getElementById('orderConfirmAddressLine2').textContent = linha2;
+
+            // 3. Frete SEDEX
+            let freteValor = 0;
+            let fretePrazo = '1 a 3 dias úteis';
+
             if (isAllDigital) {
-                text += `*Entrega:* Envio imediato em formato PDF via WhatsApp / E-mail (Frete Grátis)%0A%0A`;
-                text += `*VALOR TOTAL:* ${formatMoney(total)}%0A%0A`;
-                text += "Por favor, me informe a chave PIX para envio do material!";
-            } else if (cartFrete.calculado) {
-                text += `*Frete (${cartFrete.tipo.toUpperCase()}):* ${formatMoney(cartFrete.valor)} (Prazo: ${cartFrete.prazo})%0A`;
-                text += `*Origem da Postagem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
-                text += `*Destino da Entrega:* ${cartFrete.localidade} - ${cartFrete.uf} (CEP: ${cartFrete.cep})%0A%0A`;
-                text += `*VALOR TOTAL DO PEDIDO:* ${formatMoney(total + cartFrete.valor)}%0A%0A`;
-                text += "Por favor, confirme a disponibilidade e a chave PIX!";
+                freteValor = 0;
+                fretePrazo = 'Envio Digital Imediato';
+                document.getElementById('orderConfirmShippingBadge').textContent = 'Frete Grátis • Envio em PDF';
+                document.getElementById('orderConfirmShippingVal').textContent = 'Grátis';
             } else {
-                text += `*Origem da Postagem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
-                const cepInformado = document.getElementById('cartCepDestino')?.value || '';
-                if (cepInformado) {
-                    text += `*Meu CEP de Entrega:* ${cepInformado}%0A%0A`;
-                } else {
-                    text += `*Meu CEP de Entrega:* _(a informar no chat)_%0A%0A`;
-                }
-                text += "Por favor, me informe o valor do frete e os dados para pagamento!";
+                freteValor = (cartFrete && cartFrete.calculado) ? cartFrete.valor : (lastSelectedFreteQuote ? lastSelectedFreteQuote.sedex.valor : 36.00);
+                fretePrazo = (cartFrete && cartFrete.calculado) ? cartFrete.prazo : (lastSelectedFreteQuote ? lastSelectedFreteQuote.sedex.prazo : '1 a 3 dias úteis');
+                document.getElementById('orderConfirmShippingBadge').textContent = `SEDEX Expresso (${fretePrazo})`;
+                document.getElementById('orderConfirmShippingVal').textContent = formatMoney(freteValor);
             }
 
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
-            window.open(url, '_blank');
-        });
+            // 4. Totais
+            const totalGeral = subtotal + freteValor;
+            document.getElementById('orderConfirmSubtotal').textContent = formatMoney(subtotal);
+            document.getElementById('orderConfirmTotalVal').textContent = formatMoney(totalGeral);
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeOrderConfirmModal = () => {
+            const modal = document.getElementById('orderConfirmModal');
+            if (modal) modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        const copyPixKey = () => {
+            const key = document.getElementById('pixKeyText')?.textContent || 'contato@brahmaeorpingtondosul.com.br';
+            navigator.clipboard.writeText(key).then(() => {
+                showToast("Chave PIX copiada para a área de transferência!");
+            }).catch(() => {
+                showToast("Chave PIX: contato@brahmaeorpingtondosul.com.br");
+            });
+        };
+
+        // Confirmação Final do Pedido (Registra no Servidor / Admin e abre WhatsApp)
+        let lastCreatedOrder = null;
+        let lastCreatedOrderWaUrl = '';
+
+        const confirmAndPlaceOrder = async () => {
+            if (cart.length === 0 || !currentClient) return;
+
+            const btnConfirm = document.getElementById('btnConfirmOrderSubmit');
+            btnConfirm.disabled = true;
+            btnConfirm.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-xl"></i> <span>Registrando Pedido...</span>`;
+
+            const hasPhysicalItems = cart.some(item => !item.isDigital);
+            const isAllDigital = cart.length > 0 && !hasPhysicalItems;
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const freteValor = isAllDigital ? 0 : ((cartFrete && cartFrete.calculado) ? cartFrete.valor : (lastSelectedFreteQuote ? lastSelectedFreteQuote.sedex.valor : 36.00));
+            const fretePrazo = isAllDigital ? 'Envio Imediato' : ((cartFrete && cartFrete.calculado) ? cartFrete.prazo : (lastSelectedFreteQuote ? lastSelectedFreteQuote.sedex.prazo : '1 a 3 dias úteis'));
+            const totalGeral = subtotal + freteValor;
+
+            const observacoes = document.getElementById('orderNotesInput')?.value.trim() || '';
+
+            const numRandom = Math.floor(1000 + Math.random() * 9000);
+            const orderId = `BOS-${numRandom}`;
+
+            const orderPayload = {
+                id: orderId,
+                numero: `#${orderId}`,
+                data: new Date().toISOString(),
+                cliente: {
+                    nome: currentClient.nome,
+                    email: currentClient.email || '',
+                    whatsapp: currentClient.whatsapp,
+                    endereco: currentClient.endereco || {}
+                },
+                itens: cart.map(i => ({
+                    id: i.id,
+                    nome: i.name,
+                    opcao: i.option,
+                    opcaoLabel: i.isDigital ? "Envio por PDF" : (optionLabels[i.option] || i.option),
+                    quantidade: i.quantity,
+                    precoUnitario: i.price,
+                    total: i.price * i.quantity,
+                    isDigital: !!i.isDigital
+                })),
+                subtotal: subtotal,
+                frete: {
+                    tipo: isAllDigital ? 'DIGITAL' : 'SEDEX',
+                    valor: freteValor,
+                    prazo: fretePrazo,
+                    cidade: currentClient.endereco?.cidade || cartFrete.localidade || 'Passo Fundo',
+                    uf: currentClient.endereco?.uf || cartFrete.uf || 'RS',
+                    cep: currentClient.endereco?.cep || cartFrete.cep || '99010-000'
+                },
+                total: totalGeral,
+                status: 'pendente',
+                codigoRastreio: '',
+                metodoPagamento: 'pix',
+                observacoes: observacoes
+            };
+
+            // 1. Tenta enviar para o servidor Node.js
+            try {
+                await fetch('/api/pedidos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderPayload)
+                });
+            } catch (err) {
+                // Modo estático
+            }
+
+            // 2. Salva no localStorage para sincronização com o painel admin (modo offline / Cloudflare)
+            let localOrders = [];
+            try {
+                localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
+            } catch (e) {
+                localOrders = [];
+            }
+            localOrders.unshift(orderPayload);
+            localStorage.setItem(STORAGE_ORDERS_LOCAL, JSON.stringify(localOrders));
+
+            lastCreatedOrder = orderPayload;
+
+            // 3. Monta Mensagem Formatada para WhatsApp
+            let text = `🐣 *PEDIDO CONFIRMADO: ${orderPayload.numero}* 🐣%0A%0A`;
+            text += `*CLIENTE:*%0A`;
+            text += `• Nome: ${orderPayload.cliente.nome}%0A`;
+            text += `• WhatsApp: ${orderPayload.cliente.whatsapp}%0A`;
+            text += `• E-mail: ${orderPayload.cliente.email}%0A%0A`;
+
+            text += `*RESUMO DOS ITENS:*%0A`;
+            orderPayload.itens.forEach(it => {
+                text += `▪ ${it.quantidade}x ${it.nome} (${it.opcaoLabel}) -> ${formatMoney(it.total)}%0A`;
+            });
+
+            text += `%0A*Subtotal:* ${formatMoney(orderPayload.subtotal)}%0A`;
+
+            if (isAllDigital) {
+                text += `*Entrega:* Envio digital em PDF via WhatsApp / E-mail (Frete Grátis)%0A`;
+            } else {
+                const end = orderPayload.cliente.endereco || {};
+                text += `*Frete (SEDEX):* ${formatMoney(orderPayload.frete.valor)} (Prazo: ${orderPayload.frete.prazo})%0A`;
+                text += `*Origem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
+                text += `*Destino:* ${end.logradouro || ''}, ${end.numero || 'S/N'} - ${end.bairro || ''}, ${end.cidade || ''} / ${end.uf || ''} (CEP: ${end.cep || ''})%0A`;
+            }
+
+            text += `%0A*VALOR TOTAL:* ${formatMoney(orderPayload.total)}%0A`;
+            text += `*Forma de Pagamento:* PIX (Chave: contato@brahmaeorpingtondosul.com.br)%0A`;
+
+            if (observacoes) {
+                text += `%0A*Observações:* ${encodeURIComponent(observacoes)}%0A`;
+            }
+
+            text += `%0AOlá! Acabei de registrar meu pedido no site. Segue acima o comprovante para envio e confirmação!`;
+
+            lastCreatedOrderWaUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+
+            // 4. Limpa Carrinho
+            cart = [];
+            saveCart();
+            updateCartUI();
+
+            btnConfirm.disabled = false;
+            btnConfirm.innerHTML = `<i class="ph-bold ph-whatsapp-logo text-2xl"></i> <span>Confirmar Pedido & Abrir WhatsApp</span>`;
+
+            closeOrderConfirmModal();
+
+            // 5. Abre Modal de Sucesso
+            document.getElementById('orderSuccessNumber').textContent = orderPayload.numero;
+            document.getElementById('orderSuccessModal').classList.remove('hidden');
+
+            // Abre WhatsApp em nova aba
+            window.open(lastCreatedOrderWaUrl, '_blank');
+        };
+
+        const openOrderSuccessWhatsApp = () => {
+            if (lastCreatedOrderWaUrl) {
+                window.open(lastCreatedOrderWaUrl, '_blank');
+            }
+        };
+
+        const closeOrderSuccessModal = () => {
+            document.getElementById('orderSuccessModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        // --- MODAL: MEUS PEDIDOS (CLIENTE LOGADO) ---
+        const openClientOrdersModal = async () => {
+            if (!currentClient) {
+                openAuthModal('login');
+                return;
+            }
+
+            const modal = document.getElementById('clientOrdersModal');
+            const container = document.getElementById('clientOrdersListContainer');
+            if (!modal || !container) return;
+
+            container.innerHTML = `<div class="p-8 text-center text-stone-400 text-xs flex items-center justify-center gap-2"><i class="ph-bold ph-spinner animate-spin text-rustic-gold text-lg"></i> Carregando seus pedidos...</div>`;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            let clientOrders = [];
+
+            // 1. Tenta API do servidor
+            try {
+                const res = await fetch(`/api/pedidos/meus?email=${encodeURIComponent(currentClient.email)}`, {
+                    headers: clientToken ? { 'Authorization': `Bearer ${clientToken}` } : {}
+                });
+                if (res.ok) {
+                    clientOrders = await res.json();
+                }
+            } catch (err) {}
+
+            // 2. Mescla com pedidos do localStorage
+            let localOrders = [];
+            try {
+                localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
+            } catch (e) {}
+
+            const localForClient = localOrders.filter(o => o.cliente && o.cliente.email && o.cliente.email.toLowerCase() === currentClient.email.toLowerCase());
+            
+            // Unifica sem duplicidades por ID
+            const allOrders = [...clientOrders];
+            localForClient.forEach(lo => {
+                if (!allOrders.some(o => o.id === lo.id)) {
+                    allOrders.push(lo);
+                }
+            });
+
+            // Ordena pelo mais recente
+            allOrders.sort((a, b) => new Date(b.data || 0) - new Date(a.data || 0));
+
+            if (allOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center bg-black/20 rounded-2xl border border-white/5 space-y-3">
+                        <i class="ph-thin ph-receipt text-5xl text-stone-500 mx-auto"></i>
+                        <p class="text-sm font-semibold text-stone-300">Nenhum pedido encontrado ainda.</p>
+                        <p class="text-xs text-stone-400">Escolha seus ovos no catálogo para realizar seu primeiro pedido!</p>
+                        <a href="#catalogo" onclick="closeClientOrdersModal()" class="inline-block bg-rustic-gold text-rustic-dark font-bold text-xs px-4 py-2 rounded-xl mt-2">
+                            Ver Catálogo de Ovos
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = allOrders.map(o => {
+                const statusMap = {
+                    'pendente': { label: 'Pendente (PIX)', class: 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' },
+                    'pago': { label: 'Pago', class: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' },
+                    'enviado': { label: 'Enviado (SEDEX)', class: 'bg-blue-500/20 text-blue-300 border border-blue-500/30' },
+                    'concluido': { label: 'Concluído', class: 'bg-purple-500/20 text-purple-300 border border-purple-500/30' },
+                    'cancelado': { label: 'Cancelado', class: 'bg-red-500/20 text-red-300 border border-red-500/30' }
+                };
+                const st = statusMap[o.status] || statusMap['pendente'];
+                const dataFormatada = new Date(o.data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+                return `
+                    <div class="bg-black/25 p-4 rounded-2xl border border-white/5 space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="font-serif font-bold text-white text-sm">${o.numero || o.id}</span>
+                                <span class="text-[10px] text-stone-400">${dataFormatada}</span>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${st.class}">
+                                ${st.label}
+                            </span>
+                        </div>
+
+                        <!-- Itens -->
+                        <div class="space-y-1.5 text-xs text-stone-300">
+                            ${(o.itens || []).map(it => `
+                                <div class="flex justify-between items-center text-[11px]">
+                                    <span>${it.quantidade}x ${it.nome} <span class="text-stone-400">(${it.opcaoLabel || it.opcao})</span></span>
+                                    <span class="font-semibold text-stone-200">${formatMoney(it.total || (it.precoUnitario * it.quantidade))}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Rastreio Correios se houver -->
+                        ${o.codigoRastreio ? `
+                            <div class="bg-blue-950/30 border border-blue-500/30 p-2.5 rounded-xl flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-2 text-blue-300">
+                                    <i class="ph-bold ph-truck text-base"></i>
+                                    <span>Rastreio: <strong class="font-mono text-white">${o.codigoRastreio}</strong></span>
+                                </div>
+                                <a href="https://rastreamento.correios.com.br/app/index.php?codigo=${o.codigoRastreio}" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
+                                    Rastrear <i class="ph-bold ph-arrow-square-out text-xs"></i>
+                                </a>
+                            </div>
+                        ` : ''}
+
+                        <!-- Total -->
+                        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-xs">
+                            <span class="text-stone-400">Frete (${o.frete?.tipo || 'SEDEX'}): ${formatMoney(o.frete?.valor || 0)}</span>
+                            <div>
+                                <span class="text-stone-400 mr-1">Total:</span>
+                                <span class="font-serif font-bold text-base text-rustic-gold">${formatMoney(o.total)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        const closeClientOrdersModal = () => {
+            const modal = document.getElementById('clientOrdersModal');
+            if (modal) modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
 
         // --- Handlers de Cálculo de Frete ---
         // 1. Calculadora da Landing Page
@@ -1649,6 +3288,7 @@
             renderProducts();
             carregarProdutosDaApi();
             carregarEbooksDaApi();
+            checkClientAuth();
             updateCartUI();
             setupPageFrete();
             setupCartFrete();
