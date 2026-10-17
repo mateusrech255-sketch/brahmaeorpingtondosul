@@ -24,31 +24,40 @@
 
     <!-- Navbar -->
     <nav class="fixed w-full z-50 bg-rustic-dark/95 backdrop-blur-sm text-rustic-offwhite shadow-lg transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20 transition-all duration-300">
-                <div class="flex-shrink-0 flex items-center gap-3">
-                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-12 h-12 object-contain drop-shadow-md">
-                    <span class="font-serif text-xl md:text-2xl font-bold tracking-wide leading-tight">
-                        Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20 transition-all duration-300">
+                <!-- Brand / Logo -->
+                <a href="#inicio" class="flex-shrink-0 flex items-center gap-2 sm:gap-3 min-w-0 group">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain drop-shadow-md shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="font-serif text-sm sm:text-lg md:text-2xl font-bold tracking-tight sm:tracking-wide leading-tight truncate">
+                        Brahma & Orpington<br><span class="text-rustic-gold text-[10px] sm:text-xs md:text-sm font-normal">do Sul</span>
                     </span>
-                </div>
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10">
-                        <i class="ph-bold ph-book-open text-rustic-gold"></i>
-                        <span>E-books</span>
+                </a>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+                    <!-- E-books Link (Pill com ícone + texto sem quebra) -->
+                    <a href="ebooks.html" class="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 whitespace-nowrap" title="E-books Oficiais">
+                        <i class="ph-bold ph-book-open text-sm sm:text-base text-rustic-gold"></i>
+                        <span class="hidden sm:inline">E-books</span>
                     </a>
-                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors duration-200 hidden sm:flex" title="Instagram">
-                        <i class="ph ph-instagram-logo text-2xl sm:text-3xl"></i>
+
+                    <!-- Instagram (Apenas telas médias/grandes para economizar espaço no celular) -->
+                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors duration-200 hidden md:flex p-2" title="Instagram">
+                        <i class="ph ph-instagram-logo text-2xl"></i>
                     </a>
+
                     <!-- Botão de Conta do Cliente / Login -->
-                    <button type="button" id="btnNavAuth" onclick="handleNavAuthClick()" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rustic-offwhite hover:text-rustic-gold transition-all py-1.5 px-3 sm:px-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 h-10 active:scale-95">
-                        <i id="navAuthIcon" class="ph-bold ph-user text-base text-rustic-gold"></i>
-                        <span id="navAuthLabel" class="max-w-[100px] truncate">Entrar</span>
+                    <button type="button" id="btnNavAuth" onclick="handleNavAuthClick()" class="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-rustic-offwhite hover:text-rustic-gold transition-all py-1.5 px-2.5 sm:px-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 h-9 sm:h-10 active:scale-95 whitespace-nowrap" title="Minha Conta">
+                        <i id="navAuthIcon" class="ph-bold ph-user text-sm sm:text-base text-rustic-gold"></i>
+                        <span id="navAuthLabel" class="hidden sm:inline max-w-[85px] truncate">Entrar</span>
                     </button>
-                    <button id="cartBtn" class="relative p-2 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-2 bg-rustic-green/30 rounded-full px-4 h-10">
-                        <i class="ph ph-shopping-cart text-2xl"></i>
-                        <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-transform">0</span>
-                        <span class="hidden md:inline font-medium">Carrinho</span>
+
+                    <!-- Carrinho com Contador Badge Oficial -->
+                    <button id="cartBtn" class="relative p-2 sm:px-3.5 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-1.5 bg-rustic-green/40 hover:bg-rustic-green/60 rounded-full h-9 sm:h-10 border border-rustic-gold/30 shrink-0 active:scale-95" title="Ver Carrinho">
+                        <i class="ph ph-shopping-cart text-xl sm:text-2xl"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-[10px] sm:text-xs font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center transition-transform shadow">0</span>
+                        <span class="hidden md:inline font-medium text-xs sm:text-sm">Carrinho</span>
                     </button>
                 </div>
             </div>
@@ -56,22 +65,27 @@
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative pt-20 pb-32 flex content-center items-center justify-center min-h-[80vh]">
-        <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1548550023-2bf3c498ce64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
-            <span class="w-full h-full absolute opacity-70 bg-rustic-dark"></span>
+    <header id="inicio" class="relative pt-24 pb-16 sm:pt-28 sm:pb-32 flex content-center items-center justify-center min-h-[75vh] sm:min-h-[85vh] overflow-hidden">
+        <div class="absolute inset-0 w-full h-full bg-center bg-cover bg-no-repeat" style="background-image: url('assets/images/combo-surpresa.jpg');">
+            <!-- Camadas de degradê rústico escuro e vinheta dourada para contraste e legibilidade perfeita -->
+            <div class="absolute inset-0 bg-gradient-to-b from-rustic-dark/95 via-rustic-dark/80 to-rustic-dark/95"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-rustic-gold/15 via-transparent to-transparent"></div>
         </div>
-        <div class="container relative mx-auto px-4">
+        <div class="container relative mx-auto px-4 z-10">
             <div class="items-center flex flex-wrap">
-                <div class="w-full lg:w-8/12 px-4 ml-auto mr-auto text-center">
-                    <h1 class="text-white font-serif font-bold text-4xl sm:text-5xl md:text-6xl leading-tight mb-6 drop-shadow-lg">
+                <div class="w-full lg:w-9/12 px-2 sm:px-4 ml-auto mr-auto text-center">
+                    <span class="inline-block bg-rustic-gold/20 text-rustic-gold text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-rustic-gold/30 mb-3 sm:mb-4">
+                        Maximiliano de Almeida - RS • Envio para todo o Brasil
+                    </span>
+                    <h1 class="text-white font-serif font-bold text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-snug sm:leading-tight mb-4 sm:mb-6 drop-shadow-lg">
                         Genética de Excelência em <span class="text-rustic-gold">Aves Puras</span>
                     </h1>
-                    <p class="mt-4 text-lg text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
-                        Ovos férteis (galados) de raças gigantes e nobres. Seleção rigorosa para criadores exigentes.<br> <strong>Brahma, Orpington e GSB.</strong>
+                    <p class="text-xs sm:text-base md:text-lg text-gray-200 mb-6 sm:mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                        Ovos férteis (galados) de raças gigantes e nobres. Seleção rigorosa para criadores exigentes.<br class="hidden sm:inline"> <strong>Brahma, Orpington e GSB.</strong>
                     </p>
-                    <a href="#catalogo" class="inline-flex items-center gap-3 bg-rustic-gold text-rustic-dark font-bold uppercase text-sm px-8 py-4 rounded-full shadow-lg hover:bg-yellow-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        Ver Catálogo
-                        <i class="ph-bold ph-arrow-down text-lg"></i>
+                    <a href="#catalogo" class="inline-flex items-center gap-2 sm:gap-3 bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold uppercase text-xs sm:text-sm px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform active:scale-95">
+                        Ver Catálogo de Ovos
+                        <i class="ph-bold ph-arrow-down text-base sm:text-lg"></i>
                     </a>
                 </div>
             </div>
@@ -304,7 +318,7 @@
                         <label for="pageCepDestino" class="block text-xs font-semibold text-gray-300 mb-1.5 flex items-center gap-1.5">
                             <i class="ph-bold ph-house-line text-rustic-gold"></i> Digite seu CEP de Destino:
                         </label>
-                        <input type="text" id="pageCepDestino" maxlength="9" placeholder="00000-000" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-rustic-gold focus:ring-1 focus:ring-rustic-gold font-medium transition-all">
+                        <input type="text" id="pageCepDestino" maxlength="9" placeholder="00000-000" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-base sm:text-sm text-white placeholder-gray-400 focus:outline-none focus:border-rustic-gold focus:ring-1 focus:ring-rustic-gold font-medium transition-all">
                     </div>
 
                     <!-- Botão Calcular -->
@@ -442,14 +456,14 @@
     <div id="cartOverlay" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity duration-300 opacity-0 cursor-pointer"></div>
 
     <!-- Shopping Cart Sidebar -->
-    <div id="cartSidebar" class="fixed top-0 right-0 w-full md:w-[450px] h-full bg-rustic-offwhite z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full sm:w-[420px] md:w-[450px] h-[100dvh] bg-rustic-offwhite z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
         <!-- Header -->
-        <div class="bg-rustic-dark text-rustic-offwhite p-5 flex justify-between items-center shadow-md z-10">
-            <h2 class="font-serif text-xl font-bold flex items-center gap-3">
-                <i class="ph ph-shopping-bag text-rustic-gold text-2xl"></i> Meu Pedido
+        <div class="bg-rustic-dark text-rustic-offwhite p-4 sm:p-5 flex justify-between items-center shadow-md z-10 shrink-0">
+            <h2 class="font-serif text-lg sm:text-xl font-bold flex items-center gap-2.5 sm:gap-3">
+                <i class="ph ph-shopping-bag text-rustic-gold text-xl sm:text-2xl"></i> Meu Pedido
             </h2>
-            <button id="closeCartBtn" class="text-gray-400 hover:text-white transition-colors bg-white/10 rounded-full p-2">
-                <i class="ph ph-x text-xl"></i>
+            <button id="closeCartBtn" class="text-gray-400 hover:text-white transition-colors bg-white/10 rounded-full p-2" title="Fechar Carrinho">
+                <i class="ph ph-x text-lg sm:text-xl"></i>
             </button>
         </div>
 
@@ -496,7 +510,7 @@
                     <!-- CEP Destino -->
                     <div>
                         <div class="flex gap-2">
-                            <input type="text" id="cartCepDestino" maxlength="9" placeholder="Digite seu CEP" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-rustic-dark focus:outline-none focus:border-rustic-green focus:ring-1 focus:ring-rustic-green font-medium">
+                            <input type="text" id="cartCepDestino" maxlength="9" placeholder="Digite seu CEP" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-base sm:text-xs text-rustic-dark focus:outline-none focus:border-rustic-green focus:ring-1 focus:ring-rustic-green font-medium">
                             <button type="button" id="btnCartCalcularFrete" class="bg-rustic-green hover:bg-rustic-dark text-white px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shrink-0 active:scale-95">
                                 <span id="btnCartCalcularTxt">Calcular</span>
                                 <i class="ph-bold ph-arrow-right text-xs"></i>
@@ -607,7 +621,7 @@
                         <label class="block text-xs font-semibold text-stone-300 mb-1.5">Seu e-mail *</label>
                         <div class="relative flex items-center">
                             <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-envelope text-base"></i></span>
-                            <input type="email" id="loginEmail" required placeholder="exemplo@email.com" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            <input type="email" id="loginEmail" required placeholder="exemplo@email.com" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                         </div>
                     </div>
 
@@ -615,7 +629,7 @@
                         <label class="block text-xs font-semibold text-stone-300 mb-1.5">Sua senha *</label>
                         <div class="relative flex items-center">
                             <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-lock-key text-base"></i></span>
-                            <input type="password" id="loginSenha" required placeholder="Digite sua senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            <input type="password" id="loginSenha" required placeholder="Digite sua senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                         </div>
                     </div>
 
@@ -653,7 +667,7 @@
                             <label class="block text-xs font-semibold text-stone-300 mb-1.5">Nome Completo *</label>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-user text-base"></i></span>
-                                <input type="text" id="regNome" required placeholder="Digite seu nome completo" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                <input type="text" id="regNome" required placeholder="Digite seu nome completo" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                             </div>
                         </div>
 
@@ -663,14 +677,14 @@
                                 <label class="block text-xs font-semibold text-stone-300 mb-1.5">Seu e-mail *</label>
                                 <div class="relative flex items-center">
                                     <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-envelope text-base"></i></span>
-                                    <input type="email" id="regEmail" required placeholder="seuemail@exemplo.com" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                    <input type="email" id="regEmail" required placeholder="seuemail@exemplo.com" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-stone-300 mb-1.5">Whatsapp *</label>
                                 <div class="relative flex items-center">
                                     <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-whatsapp-logo text-base"></i></span>
-                                    <input type="tel" id="regWhatsapp" required placeholder="(54) 99999-9999" maxlength="15" oninput="maskPhone(this)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                    <input type="tel" id="regWhatsapp" required placeholder="(54) 99999-9999" maxlength="15" oninput="maskPhone(this)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                                 </div>
                             </div>
                         </div>
@@ -681,14 +695,14 @@
                                 <label class="block text-xs font-semibold text-stone-300 mb-1.5">Senha *</label>
                                 <div class="relative flex items-center">
                                     <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-lock-key text-base"></i></span>
-                                    <input type="password" id="regSenha" required minlength="6" placeholder="Mínimo 6 dígitos" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                    <input type="password" id="regSenha" required minlength="6" placeholder="Mínimo 6 dígitos" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-stone-300 mb-1.5">Confirmar senha *</label>
                                 <div class="relative flex items-center">
                                     <span class="absolute left-3.5 text-stone-400"><i class="ph-bold ph-check-square-offset text-base"></i></span>
-                                    <input type="password" id="regConfirmarSenha" required minlength="6" placeholder="Repita a senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                    <input type="password" id="regConfirmarSenha" required minlength="6" placeholder="Repita a senha" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                                 </div>
                             </div>
                         </div>
@@ -713,7 +727,7 @@
                             <div class="flex gap-2">
                                 <div class="relative flex-1">
                                     <span class="absolute left-3 top-3 text-stone-400"><i class="ph-bold ph-magnifying-glass text-base"></i></span>
-                                    <input type="text" id="regMapSearchInput" autocomplete="off" placeholder="Buscar rua, bairro, cidade ou CEP..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-xs sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                                    <input type="text" id="regMapSearchInput" autocomplete="off" placeholder="Buscar rua, bairro, cidade ou CEP..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-base sm:text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                                 </div>
                                 <button type="button" id="btnRegMapSearch" onclick="handleMapSearchAction()" class="bg-rustic-green hover:bg-rustic-gold hover:text-rustic-dark text-white px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5">
                                     <i class="ph-bold ph-crosshair text-sm"></i>
@@ -743,37 +757,37 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                                 <div class="sm:col-span-2">
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">Rua / Logradouro *</label>
-                                    <input type="text" id="regLogradouro" required placeholder="Rua / Avenida" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regLogradouro" required placeholder="Rua / Avenida" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">Número *</label>
-                                    <input type="text" id="regNumero" required placeholder="Ex: 120" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regNumero" required placeholder="Ex: 120" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none">
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                                 <div>
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">Complemento</label>
-                                    <input type="text" id="regComplemento" placeholder="Apto, Casa, Bloco (opcional)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regComplemento" placeholder="Apto, Casa, Bloco (opcional)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">Bairro</label>
-                                    <input type="text" id="regBairro" placeholder="Bairro" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regBairro" placeholder="Bairro" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">CEP *</label>
-                                    <input type="text" id="regCep" required placeholder="00000-000" maxlength="9" oninput="this.value = formatCep(this.value); handleRegCepChange(this.value);" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regCep" required placeholder="00000-000" maxlength="9" oninput="this.value = formatCep(this.value); handleRegCepChange(this.value);" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none">
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                                 <div class="col-span-2 sm:col-span-2">
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">Cidade *</label>
-                                    <input type="text" id="regCidade" required placeholder="Cidade" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regCidade" required placeholder="Cidade" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-semibold text-stone-300 mb-1">Estado (UF) *</label>
-                                    <input type="text" id="regUf" required maxlength="2" placeholder="UF" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-xs text-white uppercase placeholder-stone-500 focus:outline-none">
+                                    <input type="text" id="regUf" required maxlength="2" placeholder="UF" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2 px-3 text-base sm:text-xs text-white uppercase placeholder-stone-500 focus:outline-none">
                                 </div>
                             </div>
                         </div>
@@ -1330,7 +1344,7 @@
                 let fotosHtml = '';
                 if(prod.fotos.length > 1) {
                     fotosHtml = `
-                        <div class="relative w-full h-80 sm:h-96 overflow-hidden bg-stone-900">
+                        <div class="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden bg-stone-900">
                             <div id="carousel-${prod.id}" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar w-full h-full" style="scroll-behavior: smooth;">
                                 ${prod.fotos.map(f => `
                                     <div class="relative w-full h-full flex-shrink-0 snap-center flex items-center justify-center overflow-hidden bg-stone-950">
@@ -1352,7 +1366,7 @@
                     `;
                 } else {
                     fotosHtml = `
-                        <div class="relative w-full h-80 sm:h-96 overflow-hidden bg-stone-950 flex items-center justify-center">
+                        <div class="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden bg-stone-950 flex items-center justify-center">
                             <img src="${prod.fotos[0]}" alt="" class="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-125 pointer-events-none" aria-hidden="true">
                             <img src="${prod.fotos[0]}" alt="${prod.nome}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}'" class="relative z-0 max-w-full max-h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105">
                         </div>
@@ -1379,11 +1393,11 @@
 
                 card.innerHTML = `
                     ${fotosHtml}
-                    <div class="p-6 flex flex-col flex-1">
+                    <div class="p-4 sm:p-6 flex flex-col flex-1">
                         <div class="mb-2">
                             <span class="inline-block bg-rustic-gold text-rustic-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${prod.categoria}</span>
                         </div>
-                        <h3 class="font-serif text-2xl font-bold text-rustic-dark mb-2">${prod.nome}</h3>
+                        <h3 class="font-serif text-xl sm:text-2xl font-bold text-rustic-dark mb-2">${prod.nome}</h3>
                         <div class="mb-4">
                             <p id="desc-${prod.id}" class="text-gray-600 text-sm leading-relaxed line-clamp-2 transition-all">
                                 ${prod.descricao}
@@ -3295,12 +3309,11 @@
             
             // Navbar Glass Effect on Scroll
             const navbar = document.getElementById('navbar');
-            const navInner = navbar.querySelector('div.flex');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 10) {
-                    navInner.classList.replace('h-20', 'h-16');
+                    navbar.classList.add('shadow-2xl', 'bg-rustic-dark/98');
                 } else {
-                    navInner.classList.replace('h-16', 'h-20');
+                    navbar.classList.remove('shadow-2xl', 'bg-rustic-dark/98');
                 }
             });
         });

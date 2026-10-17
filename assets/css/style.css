@@ -11,3 +11,13 @@
 .inset-y-0{top:0!important;bottom:0!important}
 .top-1\/2{top:50%!important}
 .-translate-y-1\/2{transform:translateY(-50%)!important;-webkit-transform:translateY(-50%)!important}
+
+/* Utilitários Responsivos para Mobile */
+.h-64{height:16rem!important}
+.h-\[100dvh\]{height:100dvh!important;height:100vh}
+@media (min-width: 640px){
+  .sm\:h-80{height:20rem!important}
+}
+@media (min-width: 768px){
+  .md\:h-96{height:24rem!important}
+}

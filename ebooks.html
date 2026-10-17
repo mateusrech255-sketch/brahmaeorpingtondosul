@@ -19,36 +19,36 @@
 
     <!-- Navbar -->
     <nav class="fixed w-full z-50 bg-rustic-dark/95 backdrop-blur-sm text-rustic-offwhite shadow-lg transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20 transition-all duration-300">
-                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 group">
-                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-12 h-12 object-contain drop-shadow-md group-hover:scale-105 transition-transform">
-                    <span class="font-serif text-xl md:text-2xl font-bold tracking-wide leading-tight">
-                        Brahma & Orpington<br><span class="text-rustic-gold text-sm md:text-base font-normal">do Sul</span>
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20 transition-all duration-300">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 sm:gap-3 min-w-0 group">
+                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain drop-shadow-md shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="font-serif text-sm sm:text-lg md:text-2xl font-bold tracking-tight sm:tracking-wide leading-tight truncate">
+                        Brahma & Orpington<br><span class="text-rustic-gold text-[10px] sm:text-xs md:text-sm font-normal">do Sul</span>
                     </span>
                 </a>
 
                 <!-- Navigation Links -->
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <a href="index.html#catalogo" class="hidden sm:inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold hover:text-rustic-gold transition-colors py-2 px-3 rounded-full hover:bg-white/10">
-                        <i class="ph-bold ph-egg text-rustic-gold"></i>
-                        <span>Ovos Férteis</span>
+                <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+                    <a href="index.html#catalogo" class="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold hover:text-rustic-gold transition-colors py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 whitespace-nowrap" title="Ovos Férteis">
+                        <i class="ph-bold ph-egg text-sm sm:text-base text-rustic-gold"></i>
+                        <span class="hidden sm:inline">Ovos Férteis</span>
                     </a>
 
-                    <a href="ebooks.html" class="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold text-rustic-gold bg-white/10 py-2 px-3 rounded-full border border-rustic-gold/30">
-                        <i class="ph-bold ph-book-open"></i>
-                        <span>E-books</span>
+                    <a href="ebooks.html" class="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-rustic-gold bg-white/15 py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-full border border-rustic-gold/40 whitespace-nowrap" title="Biblioteca de E-books">
+                        <i class="ph-bold ph-book-open text-sm sm:text-base"></i>
+                        <span class="hidden sm:inline">E-books</span>
                     </a>
 
-                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors p-2" title="Instagram">
-                        <i class="ph ph-instagram-logo text-2xl md:text-3xl"></i>
+                    <a href="https://www.instagram.com/brahma_e_orpington_do_sul_" target="_blank" class="hover:text-rustic-gold transition-colors duration-200 hidden md:flex p-2" title="Instagram">
+                        <i class="ph ph-instagram-logo text-2xl"></i>
                     </a>
 
                     <!-- Cart Button with Counter -->
-                    <button id="cartBtn" class="relative p-2 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-2 bg-rustic-green/30 rounded-full px-4 h-10 border border-white/10">
-                        <i class="ph ph-shopping-cart text-2xl"></i>
-                        <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-transform">0</span>
-                        <span class="hidden md:inline font-medium text-sm">Carrinho</span>
+                    <button id="cartBtn" class="relative p-2 sm:px-3.5 hover:text-rustic-gold transition-colors duration-200 flex items-center gap-1.5 bg-rustic-green/40 hover:bg-rustic-green/60 rounded-full h-9 sm:h-10 border border-rustic-gold/30 shrink-0 active:scale-95" title="Ver Carrinho">
+                        <i class="ph ph-shopping-cart text-xl sm:text-2xl"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-rustic-gold text-rustic-dark text-[10px] sm:text-xs font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center transition-transform shadow">0</span>
+                        <span class="hidden md:inline font-medium text-xs sm:text-sm">Carrinho</span>
                     </button>
                 </div>
             </div>
@@ -765,14 +765,14 @@
     <div id="cartOverlay" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity duration-300 opacity-0 cursor-pointer"></div>
 
     <!-- Shopping Cart Sidebar -->
-    <div id="cartSidebar" class="fixed top-0 right-0 w-full md:w-[450px] h-full bg-rustic-offwhite z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full sm:w-[420px] md:w-[450px] h-[100dvh] bg-rustic-offwhite z-[70] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
         <!-- Header -->
-        <div class="bg-rustic-dark text-rustic-offwhite p-5 flex justify-between items-center shadow-md z-10">
-            <h2 class="font-serif text-xl font-bold flex items-center gap-3">
-                <i class="ph ph-shopping-bag text-rustic-gold text-2xl"></i> Meu Pedido
+        <div class="bg-rustic-dark text-rustic-offwhite p-4 sm:p-5 flex justify-between items-center shadow-md z-10 shrink-0">
+            <h2 class="font-serif text-lg sm:text-xl font-bold flex items-center gap-2.5 sm:gap-3">
+                <i class="ph ph-shopping-bag text-rustic-gold text-xl sm:text-2xl"></i> Meu Pedido
             </h2>
-            <button id="closeCartBtn" class="text-gray-400 hover:text-white transition-colors bg-white/10 rounded-full p-2">
-                <i class="ph ph-x text-xl"></i>
+            <button id="closeCartBtn" class="text-gray-400 hover:text-white transition-colors bg-white/10 rounded-full p-2" title="Fechar Carrinho">
+                <i class="ph ph-x text-lg sm:text-xl"></i>
             </button>
         </div>
 
@@ -818,7 +818,7 @@
 
                     <div class="space-y-2">
                         <div class="flex gap-2">
-                            <input type="text" id="cartCepDestino" maxlength="9" placeholder="Digite seu CEP" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-rustic-dark focus:outline-none focus:border-rustic-green focus:ring-1 focus:ring-rustic-green font-medium">
+                            <input type="text" id="cartCepDestino" maxlength="9" placeholder="Digite seu CEP" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-base sm:text-xs text-rustic-dark focus:outline-none focus:border-rustic-green focus:ring-1 focus:ring-rustic-green font-medium">
                             <button type="button" id="btnCartCalcularFrete" class="bg-rustic-green hover:bg-rustic-dark text-white px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shrink-0 active:scale-95">
                                 <span id="btnCartCalcularTxt">Calcular</span>
                                 <i class="ph-bold ph-arrow-right text-xs"></i>
@@ -1206,12 +1206,11 @@
             updateCartUI();
 
             const navbar = document.getElementById('navbar');
-            const navInner = navbar.querySelector('div.flex');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 10) {
-                    navInner.classList.replace('h-20', 'h-16');
+                    navbar.classList.add('shadow-2xl', 'bg-rustic-dark/98');
                 } else {
-                    navInner.classList.replace('h-16', 'h-20');
+                    navbar.classList.remove('shadow-2xl', 'bg-rustic-dark/98');
                 }
             });
         });
