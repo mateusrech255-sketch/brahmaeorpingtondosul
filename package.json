@@ -6,8 +6,9 @@
   "scripts": {
     "build": "tailwindcss -i assets/css/input.css -o assets/css/style.css --minify",
     "build:css": "tailwindcss -i assets/css/input.css -o assets/css/style.css --minify",
+    "watch:css": "tailwindcss -i assets/css/input.css -o assets/css/style.css --watch",
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node --watch server.js"
   },
   "keywords": [
     "landing-page",

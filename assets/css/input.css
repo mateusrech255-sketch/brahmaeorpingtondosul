@@ -1,6 +1,7 @@
 @import "../fonts/phosphor/bold/style.css";
 @import "../fonts/phosphor/regular/style.css";
 @import "tailwindcss";
+@source "../../*.html";
 
 @theme {
   --color-rustic-dark: #2A2F25;
@@ -111,3 +112,22 @@
   z-index: 10;
   line-height: 1;
 }
+
+/* Protecao de layout e espacamento garantido da secao Hero */
+header#inicio:has(> header#inicio),
+header#inicio:has(> section){display:block!important;padding:0!important;min-height:0!important;border:0!important;background:transparent!important;overflow:visible!important}
+header#inicio:not(:has(> header#inicio)):not(:has(> section)){padding-top:7rem!important;padding-bottom:4rem!important;background-color:#181d14!important;background-image:linear-gradient(to bottom,#181d14,#22291c,#181d14)!important}
+@media (min-width: 640px){
+  header#inicio:not(:has(> header#inicio)):not(:has(> section)){padding-top:9rem!important;padding-bottom:6rem!important}
+}
+#pageCepOrigem{padding-right:8.25rem!important}
+
+.bg-stone-900\/50 { background-color: rgb(28 25 23 / 0.5); }
+@media (min-width: 1024px) {
+  .lg\:flex-row { flex-direction: row; }
+  .lg\:items-center { align-items: center; }
+  .lg\:w-64 { width: 16rem; }
+}
+
+.w-11 { width: 2.75rem; }
+.h-11 { height: 2.75rem; }

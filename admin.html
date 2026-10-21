@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo | Brahma & Orpington do Sul</title>
+    <title>Painel Administrativo | Brahma e Orpington do Sul</title>
     <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     
     <!-- Google Fonts -->
@@ -129,7 +129,7 @@
                     <img src="assets/images/logo.svg" alt="Logo Criatório" class="w-14 h-14 object-contain">
                 </div>
                 <h1 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">Painel do Criador</h1>
-                <p class="text-xs text-stone-400">Criatório Brahma & Orpington do Sul</p>
+                <p class="text-xs text-stone-400">Criatório Brahma e Orpington do Sul</p>
                 <div class="inline-block mt-3 bg-rustic-gold/15 border border-rustic-gold/30 text-rustic-gold text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     Acesso Restrito
                 </div>
@@ -196,7 +196,7 @@
                         <img src="assets/images/logo.svg" alt="Logo" class="w-12 h-12 object-contain rounded-full bg-rustic-dark p-1 border border-rustic-gold/30">
                         <div>
                             <h2 class="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Painel Administrativo</h2>
-                            <p class="text-[11px] text-stone-400">Brahma & Orpington do Sul</p>
+                            <p class="text-[11px] text-stone-400">Brahma e Orpington do Sul</p>
                         </div>
                     </div>
 
@@ -238,6 +238,10 @@
                 <button type="button" id="tabBtnEbooks" onclick="switchMainTab('ebooks')" class="main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0">
                     <i class="ph-bold ph-book-open text-lg text-rustic-gold"></i>
                     <span>E-books & Manuais</span>
+                </button>
+                <button type="button" id="tabBtnPagamentos" onclick="switchMainTab('pagamentos')" class="main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0">
+                    <i class="ph-bold ph-credit-card text-lg"></i>
+                    <span>Links de Cartão & PIX</span>
                 </button>
                 <button type="button" id="tabBtnPedidos" onclick="switchMainTab('pedidos')" class="main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0 relative">
                     <i class="ph-bold ph-shopping-bag-open text-lg text-rustic-gold"></i>
@@ -372,7 +376,92 @@
             </div>
 
             <!-- ============================================== -->
-            <!-- ABA 3: PEDIDOS RECEBIDOS                       -->
+            <!-- ABA: CENTRAL DE PAGAMENTOS (CARTÃO & PIX)      -->
+            <!-- ============================================== -->
+            <div id="tabContentPagamentos" class="hidden space-y-8">
+                <!-- Configuração Geral de Cartão e PIX -->
+                <div class="bg-[#22271e] border border-rustic-gold/30 rounded-2xl p-6 shadow-lg space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+                        <div>
+                            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-rustic-gold uppercase tracking-wider bg-rustic-gold/15 px-3 py-1 rounded-full mb-2 border border-rustic-gold/30">
+                                <i class="ph-bold ph-credit-card"></i> Central de Recebimentos
+                            </span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-bold text-white">Links de Pagamento via Cartão & Chave PIX</h3>
+                            <p class="text-xs text-stone-400">Configure um link geral de pagamento por cartão (Mercado Pago, InfinitePay, PagBank, Asaas, PicPay) ou defina links individuais para cada produto abaixo.</p>
+                        </div>
+                        <button type="button" onclick="saveAllPaymentLinks()" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs py-3 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 shrink-0">
+                            <i class="ph-bold ph-floppy-disk text-base"></i>
+                            <span>Salvar Todos os Links</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-black/30 p-5 rounded-2xl border border-white/5">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5 flex items-center gap-1.5">
+                                <i class="ph-bold ph-credit-card text-rustic-gold"></i> Link Geral de Pagamento no Cartão (Opcional)
+                            </label>
+                            <div class="relative flex items-center">
+                                <div class="input-icon-left text-base" style="width: 2.5rem; color: #C89D3C;">
+                                    <i class="ph-bold ph-link"></i>
+                                </div>
+                                <input type="url" id="globalLinkCartao" placeholder="https://mpago.la/... ou https://pay.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                            <span class="text-[10px] text-stone-400 mt-1 block">Usado como padrão caso o produto não tenha um link exclusivo.</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5 flex items-center gap-1.5">
+                                <i class="ph-bold ph-tag text-rustic-gold"></i> Condição / Parcelamento no Cartão
+                            </label>
+                            <input type="text" id="globalCartaoParcelas" placeholder="Ex: Em até 12x no Cartão de Crédito" value="Em até 12x no Cartão" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            <span class="text-[10px] text-stone-400 mt-1 block">Texto exibido junto ao botão de cartão na loja.</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5 flex items-center gap-1.5">
+                                <i class="ph-bold ph-qr-code text-emerald-400"></i> Chave PIX Padrão do Criatório
+                            </label>
+                            <div class="relative flex items-center">
+                                <div class="input-icon-left text-base" style="width: 2.5rem; color: #34d399;">
+                                    <i class="ph-bold ph-key"></i>
+                                </div>
+                                <input type="text" id="globalChavePix" placeholder="Ex: contato@brahmaeorpingtondosul.com.br" value="contato@brahmaeorpingtondosul.com.br" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold font-mono">
+                            </div>
+                            <div class="mt-1.5 flex justify-end">
+                                <button type="button" onclick="applyGlobalPaymentToAll()" class="text-[11px] text-rustic-gold hover:underline font-semibold flex items-center gap-1">
+                                    <i class="ph-bold ph-arrows-clockwise"></i> Aplicar padrão a todos os produtos
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de Links por Produto (Aves & Ovos) -->
+                <div class="bg-[#22271e] border border-white/10 rounded-2xl p-6 shadow-lg space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-serif text-lg font-bold text-white flex items-center gap-2">
+                            <i class="ph-bold ph-egg text-rustic-gold"></i> Links de Cartão e PIX por Produto (Aves & Combos)
+                        </h4>
+                        <span class="text-xs text-stone-400">Edite rapidamente ou clique em "Opções" no produto</span>
+                    </div>
+                    <div id="paymentLinksProductsList" class="space-y-3">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+
+                <!-- Lista de Links por E-book -->
+                <div class="bg-[#22271e] border border-white/10 rounded-2xl p-6 shadow-lg space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-serif text-lg font-bold text-white flex items-center gap-2">
+                            <i class="ph-bold ph-book-open text-rustic-gold"></i> Links de Cartão e PIX por E-book
+                        </h4>
+                    </div>
+                    <div id="paymentLinksEbooksList" class="space-y-3">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- ABA 3: PEDIDOS RECEBIDOS & RASTREAMENTO        -->
             <!-- ============================================== -->
             <div id="tabContentPedidos" class="hidden space-y-8">
                 <!-- Cabeçalho da Seção de Pedidos -->
@@ -550,6 +639,90 @@
                         <label class="block text-xs font-semibold text-stone-300 mb-1.5">Descrição Comercial da Ave *</label>
                         <textarea id="prodFormDescricao" rows="3" required placeholder="Descreva os pontos fortes, visual, linhagem e padrão..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold leading-relaxed"></textarea>
                     </div>
+                </div>
+
+                <!-- Chave PIX do Produto -->
+                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-emerald-500/30 space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="ph-bold ph-qr-code text-base"></i> Chave PIX deste Produto
+                        </h4>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold border border-emerald-500/30">
+                            Pagamento via PIX
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Chave PIX (E-mail, CPF/CNPJ, Celular, Chave Aleatória ou Copia e Cola) *</label>
+                            <div class="relative flex items-center">
+                                <div class="input-icon-left text-base" style="width: 2.5rem; color: #34d399;">
+                                    <i class="ph-bold ph-key"></i>
+                                </div>
+                                <input type="text" id="prodFormChavePix" placeholder="Ex: contato@brahmaeorpingtondosul.com.br" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold font-mono">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Titular / Recebedor (Opcional)</label>
+                            <input type="text" id="prodFormPixTitular" placeholder="Ex: Brahma e Orpington do Sul" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-stone-400">Informe a chave PIX para recebimento deste produto. Ela ficará visível no produto e na confirmação do pedido.</p>
+                </div>
+
+                <!-- Link de Pagamento via Cartão do Produto -->
+                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-rustic-gold/30 space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
+                            <i class="ph-bold ph-credit-card text-base"></i> Link de Pagamento via Cartão
+                        </h4>
+                        <span class="text-[10px] bg-rustic-gold/20 text-rustic-gold px-2.5 py-0.5 rounded-full font-bold border border-rustic-gold/30">
+                            Crédito / Parcelamento
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Link de Pagamento no Cartão (Mercado Pago, InfinitePay, PagBank, Asaas, etc.)</label>
+                            <div class="relative flex items-center">
+                                <div class="input-icon-left text-base" style="width: 2.5rem; color: #C89D3C;">
+                                    <i class="ph-bold ph-link"></i>
+                                </div>
+                                <input type="url" id="prodFormLinkCartao" placeholder="Ex: https://mpago.la/... ou https://pay.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 pl-10 pr-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-300 mb-1.5">Texto de Parcelamento (Opcional)</label>
+                            <input type="text" id="prodFormCartaoParcelas" placeholder="Ex: Em até 12x no Cartão" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-3 px-3.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                        </div>
+                    </div>
+
+                    <!-- Links específicos por quantidade de ovos (Opcional) -->
+                    <details class="group border border-white/10 rounded-xl bg-stone-900/50 overflow-hidden">
+                        <summary class="flex justify-between items-center p-3 text-xs font-semibold text-stone-300 cursor-pointer list-none select-none hover:text-white">
+                            <span class="flex items-center gap-1.5"><i class="ph-bold ph-sliders text-rustic-gold"></i> Configurar links separados por quantidade de ovos (6, 12, 24 ovos) - Opcional</span>
+                            <i class="ph-bold ph-caret-down text-xs transition-transform group-open:rotate-180 text-rustic-gold"></i>
+                        </summary>
+                        <div class="p-3.5 pt-2 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <label class="block text-[11px] text-stone-400 mb-1">Link Meia Dúzia (6 ovos)</label>
+                                <input type="url" id="prodLinkCartaoMeia" placeholder="https://..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-stone-400 mb-1">Link Uma Dúzia (12 ovos)</label>
+                                <input type="url" id="prodLinkCartaoUma" placeholder="https://..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-stone-400 mb-1">Link Duas Dúzias (24 ovos)</label>
+                                <input type="url" id="prodLinkCartaoDuas" placeholder="https://..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-stone-400 mb-1">Link Combo Especial (15 ovos)</label>
+                                <input type="url" id="prodLinkCartaoCombo" placeholder="https://..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                        </div>
+                    </details>
+                    <p class="text-[11px] text-stone-400">Cole acima o link do checkout de cartão (Mercado Pago, InfinitePay, PagBank, etc.). O cliente poderá pagar com cartão diretamente no produto ou ao finalizar o pedido.</p>
                 </div>
 
                 <!-- 2. Galeria de Fotos -->
@@ -736,6 +909,40 @@
                             <div class="relative flex items-center">
                                 <span class="input-prefix-currency">R$</span>
                                 <input type="number" step="0.01" min="0" id="ebookFormPrecoPor" required placeholder="59.90" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-white/5 space-y-3">
+                        <label class="block text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+                            <i class="ph-bold ph-qr-code text-sm"></i> Chave PIX deste E-book
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="sm:col-span-2 relative flex items-center">
+                                <div class="input-icon-left text-base" style="width: 2.5rem; color: #34d399;">
+                                    <i class="ph-bold ph-key"></i>
+                                </div>
+                                <input type="text" id="ebookFormChavePix" placeholder="Ex: contato@brahmaeorpingtondosul.com.br" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold font-mono">
+                            </div>
+                            <div>
+                                <input type="text" id="ebookFormPixTitular" placeholder="Titular (Opcional)" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-white/5 space-y-3">
+                        <label class="block text-xs font-semibold text-rustic-gold flex items-center gap-1.5">
+                            <i class="ph-bold ph-credit-card text-sm"></i> Link de Pagamento via Cartão deste E-book
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="sm:col-span-2 relative flex items-center">
+                                <div class="input-icon-left text-base" style="width: 2.5rem; color: #C89D3C;">
+                                    <i class="ph-bold ph-link"></i>
+                                </div>
+                                <input type="url" id="ebookFormLinkCartao" placeholder="Ex: https://mpago.la/... ou https://pay.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 pl-10 pr-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            </div>
+                            <div>
+                                <input type="text" id="ebookFormCartaoParcelas" placeholder="Ex: Em até 12x no Cartão" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
                             </div>
                         </div>
                     </div>
@@ -1043,6 +1250,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="pt-3 border-t border-white/5">
+                        <label class="block text-xs font-semibold text-rustic-gold mb-1.5 flex items-center gap-1.5">
+                            <i class="ph-bold ph-credit-card"></i> Link de Pagamento no Cartão para este Pedido (Opcional)
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="url" id="orderModalCardLinkInput" placeholder="Cole aqui o link de pagamento por cartão (ex: Mercado Pago / InfinitePay)..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl py-2.5 px-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold">
+                            <button type="button" onclick="saveModalOrderCardLink()" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-4 py-2.5 rounded-xl text-xs transition-all shrink-0">
+                                Salvar Link
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Resumo Financeiro -->
@@ -1176,9 +1395,11 @@
             currentMainTab = tab;
             const btnAves = document.getElementById('tabBtnAves');
             const btnEbooks = document.getElementById('tabBtnEbooks');
+            const btnPagamentos = document.getElementById('tabBtnPagamentos');
             const btnPedidos = document.getElementById('tabBtnPedidos');
             const secAves = document.getElementById('tabContentAves');
             const secEbooks = document.getElementById('tabContentEbooks');
+            const secPagamentos = document.getElementById('tabContentPagamentos');
             const secPedidos = document.getElementById('tabContentPedidos');
 
             const inactiveClass = 'main-tab-btn flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-[#22271e] text-stone-300 hover:text-white hover:bg-stone-800 border border-white/5 shrink-0 relative';
@@ -1186,10 +1407,12 @@
 
             if (btnAves) btnAves.className = inactiveClass;
             if (btnEbooks) btnEbooks.className = inactiveClass;
+            if (btnPagamentos) btnPagamentos.className = inactiveClass;
             if (btnPedidos) btnPedidos.className = inactiveClass;
 
             if (secAves) secAves.classList.add('hidden');
             if (secEbooks) secEbooks.classList.add('hidden');
+            if (secPagamentos) secPagamentos.classList.add('hidden');
             if (secPedidos) secPedidos.classList.add('hidden');
 
             if (tab === 'aves') {
@@ -1199,6 +1422,10 @@
                 if (btnEbooks) btnEbooks.className = activeClass;
                 if (secEbooks) secEbooks.classList.remove('hidden');
                 loadEbooks();
+            } else if (tab === 'pagamentos') {
+                if (btnPagamentos) btnPagamentos.className = activeClass;
+                if (secPagamentos) secPagamentos.classList.remove('hidden');
+                renderPaymentLinksTab();
             } else if (tab === 'pedidos') {
                 if (btnPedidos) btnPedidos.className = activeClass;
                 if (secPedidos) secPedidos.classList.remove('hidden');
@@ -1477,8 +1704,25 @@
                         <h4 class="font-serif text-lg font-bold text-white mb-2 leading-tight">${p.nome}</h4>
                         <p class="text-stone-400 text-xs line-clamp-2 leading-relaxed mb-4">${p.descricao || 'Sem descrição cadastrada.'}</p>
                         
-                        <div class="flex flex-wrap gap-1.5 text-[11px] mb-5 mt-auto">
+                        <div class="flex flex-wrap gap-1.5 text-[11px] mb-3 mt-auto">
                             ${precosHtml}
+                        </div>
+
+                        <div class="mb-4 space-y-1.5 text-[11px]">
+                            <div class="px-3 py-1.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-1.5 truncate">
+                                    <i class="ph-bold ph-qr-code text-emerald-400 text-sm shrink-0"></i>
+                                    <span class="text-stone-400 font-semibold shrink-0">PIX:</span>
+                                    <span class="font-mono text-emerald-300 truncate" title="${p.chavePix || 'contato@brahmaeorpingtondosul.com.br'}">${p.chavePix || 'contato@brahmaeorpingtondosul.com.br'}</span>
+                                </div>
+                            </div>
+                            <div class="px-3 py-1.5 rounded-xl bg-black/40 border ${p.linkCartao ? 'border-rustic-gold/40' : 'border-white/5'} flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-1.5 truncate">
+                                    <i class="ph-bold ph-credit-card ${p.linkCartao ? 'text-rustic-gold' : 'text-stone-500'} text-sm shrink-0"></i>
+                                    <span class="text-stone-400 font-semibold shrink-0">Cartão:</span>
+                                    <span class="truncate ${p.linkCartao ? 'text-rustic-gold font-mono' : 'text-stone-500 italic'}" title="${p.linkCartao || 'Clique em Editar para adicionar link de cartão'}">${p.linkCartao || 'Adicionar link em Editar'}</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2 pt-3 border-t border-white/10">
@@ -1513,6 +1757,14 @@
                 document.getElementById('prodFormNome').value = prod.nome || '';
                 document.getElementById('prodFormCategoria').value = prod.categoria || 'Orpington';
                 document.getElementById('prodFormDescricao').value = prod.descricao || '';
+                document.getElementById('prodFormChavePix').value = prod.chavePix || 'contato@brahmaeorpingtondosul.com.br';
+                document.getElementById('prodFormPixTitular').value = prod.pixTitular || '';
+                document.getElementById('prodFormLinkCartao').value = prod.linkCartao || '';
+                document.getElementById('prodFormCartaoParcelas').value = prod.cartaoParcelas || 'Em até 12x no Cartão';
+                document.getElementById('prodLinkCartaoMeia').value = (prod.linksCartao && prod.linksCartao.meiaDuzia) ? prod.linksCartao.meiaDuzia : '';
+                document.getElementById('prodLinkCartaoUma').value = (prod.linksCartao && prod.linksCartao.umaDuzia) ? prod.linksCartao.umaDuzia : '';
+                document.getElementById('prodLinkCartaoDuas').value = (prod.linksCartao && prod.linksCartao.duasDuzias) ? prod.linksCartao.duasDuzias : '';
+                document.getElementById('prodLinkCartaoCombo').value = (prod.linksCartao && prod.linksCartao.combo15) ? prod.linksCartao.combo15 : '';
 
                 // Preços
                 document.getElementById('prodPriceMeia').value = (prod.precos && prod.precos.meiaDuzia) ? prod.precos.meiaDuzia : '';
@@ -1534,6 +1786,14 @@
                 icon.className = 'ph-bold ph-plus-circle';
                 document.getElementById('prodFormId').value = '';
                 document.getElementById('prodFormCategoria').value = 'Orpington';
+                document.getElementById('prodFormChavePix').value = 'contato@brahmaeorpingtondosul.com.br';
+                document.getElementById('prodFormPixTitular').value = '';
+                document.getElementById('prodFormLinkCartao').value = '';
+                document.getElementById('prodFormCartaoParcelas').value = 'Em até 12x no Cartão';
+                document.getElementById('prodLinkCartaoMeia').value = '';
+                document.getElementById('prodLinkCartaoUma').value = '';
+                document.getElementById('prodLinkCartaoDuas').value = '';
+                document.getElementById('prodLinkCartaoCombo').value = '';
                 document.getElementById('prodFormPesoMachos').value = '4 a 4,8 kg';
                 document.getElementById('prodFormPesoFemeas').value = '3 a 3,8 kg';
                 document.getElementById('prodFormPostura').value = 'Aproximadamente 150 a 200 ovos por ano';
@@ -1663,6 +1923,19 @@
             const nomeInput = document.getElementById('prodFormNome').value.trim();
             const categoriaInput = document.getElementById('prodFormCategoria').value.trim();
             const descricaoInput = document.getElementById('prodFormDescricao').value.trim();
+            const chavePixInput = document.getElementById('prodFormChavePix').value.trim() || 'contato@brahmaeorpingtondosul.com.br';
+            const pixTitularInput = document.getElementById('prodFormPixTitular').value.trim();
+            const linkCartaoInput = document.getElementById('prodFormLinkCartao').value.trim();
+            const cartaoParcelasInput = document.getElementById('prodFormCartaoParcelas').value.trim() || 'Em até 12x no Cartão';
+            const linksCartao = {};
+            const lcMeia = document.getElementById('prodLinkCartaoMeia').value.trim();
+            const lcUma = document.getElementById('prodLinkCartaoUma').value.trim();
+            const lcDuas = document.getElementById('prodLinkCartaoDuas').value.trim();
+            const lcCombo = document.getElementById('prodLinkCartaoCombo').value.trim();
+            if (lcMeia) linksCartao.meiaDuzia = lcMeia;
+            if (lcUma) linksCartao.umaDuzia = lcUma;
+            if (lcDuas) linksCartao.duasDuzias = lcDuas;
+            if (lcCombo) linksCartao.combo15 = lcCombo;
 
             const meiaPrice = parseFloat(document.getElementById('prodPriceMeia').value) || null;
             const umaPrice = parseFloat(document.getElementById('prodPriceUma').value) || null;
@@ -1700,6 +1973,13 @@
                         nome: nomeInput,
                         categoria: categoriaInput,
                         descricao: descricaoInput,
+                        chavePix: chavePixInput,
+                        pixTitular: pixTitularInput,
+                        linkCartao: linkCartaoInput,
+                        cartaoParcelas: cartaoParcelasInput,
+                        linkCartao: linkCartaoInput,
+                        cartaoParcelas: cartaoParcelasInput,
+                        linksCartao: linksCartao,
                         precos: precos,
                         detalhes: detalhes,
                         fotos: modalPhotos.length > 0 ? modalPhotos : updatedProducts[index].fotos
@@ -1717,6 +1997,8 @@
                     nome: nomeInput,
                     categoria: categoriaInput,
                     descricao: descricaoInput,
+                    chavePix: chavePixInput,
+                    pixTitular: pixTitularInput,
                     precos: precos,
                     detalhes: detalhes,
                     fotos: modalPhotos.length > 0 ? modalPhotos : ['assets/images/combo-surpresa.jpg']
@@ -1869,9 +2151,25 @@
                     </div>
 
                     <div class="pt-4 border-t border-white/10 mt-auto">
-                        <div class="flex items-baseline gap-2 mb-4">
+                        <div class="flex items-baseline gap-2 mb-3">
                             ${eb.precoDe ? `<span class="text-stone-500 line-through text-xs">De ${formatMoney(eb.precoDe)}</span>` : ''}
                             <span class="text-xl font-serif font-bold text-rustic-gold">Por ${formatMoney(eb.precoPor)}</span>
+                        </div>
+                        <div class="mb-4 space-y-1.5 text-[11px]">
+                            <div class="px-3 py-1.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-1.5 truncate">
+                                    <i class="ph-bold ph-qr-code text-emerald-400 text-sm shrink-0"></i>
+                                    <span class="text-stone-400 font-semibold shrink-0">PIX:</span>
+                                    <span class="font-mono text-emerald-300 truncate" title="${eb.chavePix || 'contato@brahmaeorpingtondosul.com.br'}">${eb.chavePix || 'contato@brahmaeorpingtondosul.com.br'}</span>
+                                </div>
+                            </div>
+                            <div class="px-3 py-1.5 rounded-xl bg-black/40 border ${eb.linkCartao ? 'border-rustic-gold/40' : 'border-white/5'} flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-1.5 truncate">
+                                    <i class="ph-bold ph-credit-card ${eb.linkCartao ? 'text-rustic-gold' : 'text-stone-500'} text-sm shrink-0"></i>
+                                    <span class="text-stone-400 font-semibold shrink-0">Cartão:</span>
+                                    <span class="truncate ${eb.linkCartao ? 'text-rustic-gold font-mono' : 'text-stone-500 italic'}">${eb.linkCartao || 'Adicionar link em Editar'}</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <button type="button" onclick="openEbookModal('${eb.id}')" class="bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/30 flex items-center justify-center gap-1.5">
@@ -1906,6 +2204,10 @@
                 document.getElementById('ebookFormLink').value = eb.link || `ebooks.html#${eb.id}`;
                 document.getElementById('ebookFormPrecoDe').value = eb.precoDe || '';
                 document.getElementById('ebookFormPrecoPor').value = eb.precoPor || '';
+                document.getElementById('ebookFormChavePix').value = eb.chavePix || 'contato@brahmaeorpingtondosul.com.br';
+                document.getElementById('ebookFormPixTitular').value = eb.pixTitular || '';
+                document.getElementById('ebookFormLinkCartao').value = eb.linkCartao || '';
+                document.getElementById('ebookFormCartaoParcelas').value = eb.cartaoParcelas || 'Em até 12x no Cartão';
                 document.getElementById('ebookFormFoto').value = eb.foto || 'assets/images/ebook-orpington.png';
                 document.getElementById('ebookCoverPreview').src = eb.foto || 'assets/images/ebook-orpington.png';
             } else {
@@ -1913,6 +2215,10 @@
                 document.getElementById('ebookFormId').value = '';
                 document.getElementById('ebookFormSubtitulo').value = 'E-book Oficial';
                 document.getElementById('ebookFormTag').value = 'Lançamento';
+                document.getElementById('ebookFormChavePix').value = 'contato@brahmaeorpingtondosul.com.br';
+                document.getElementById('ebookFormPixTitular').value = '';
+                document.getElementById('ebookFormLinkCartao').value = '';
+                document.getElementById('ebookFormCartaoParcelas').value = 'Em até 12x no Cartão';
                 document.getElementById('ebookFormFoto').value = 'assets/images/ebook-orpington.png';
                 document.getElementById('ebookCoverPreview').src = 'assets/images/ebook-orpington.png';
             }
@@ -1983,6 +2289,10 @@
             const linkInput = document.getElementById('ebookFormLink').value.trim();
             const precoDeInput = parseFloat(document.getElementById('ebookFormPrecoDe').value) || null;
             const precoPorInput = parseFloat(document.getElementById('ebookFormPrecoPor').value) || 39.90;
+            const chavePixInput = document.getElementById('ebookFormChavePix').value.trim() || 'contato@brahmaeorpingtondosul.com.br';
+            const pixTitularInput = document.getElementById('ebookFormPixTitular').value.trim();
+            const linkCartaoInput = document.getElementById('ebookFormLinkCartao').value.trim();
+            const cartaoParcelasInput = document.getElementById('ebookFormCartaoParcelas').value.trim() || 'Em até 12x no Cartão';
             const fotoInput = document.getElementById('ebookFormFoto').value.trim() || 'assets/images/ebook-orpington.png';
 
             const btnSave = document.getElementById('btnSaveEbook');
@@ -2002,6 +2312,13 @@
                         descricao: descricaoInput,
                         precoDe: precoDeInput,
                         precoPor: precoPorInput,
+                        chavePix: chavePixInput,
+                        pixTitular: pixTitularInput,
+                        linkCartao: linkCartaoInput,
+                        cartaoParcelas: cartaoParcelasInput,
+                        linkCartao: linkCartaoInput,
+                        cartaoParcelas: cartaoParcelasInput,
+                        linksCartao: linksCartao,
                         foto: fotoInput,
                         link: linkInput || `ebooks.html#${idInput}`
                     };
@@ -2617,7 +2934,10 @@
                 msg += `📦 *Código de Rastreio dos Correios:* *${order.codigoRastreio}*%0A`;
                 msg += `Você pode rastrear a qualquer momento no site dos Correios ou no aplicativo!%0A`;
             } else if (order.status === 'pendente') {
-                msg += `💰 Aguardamos o envio do comprovante PIX para separação dos ovos com segurança máxima.%0A`;
+                msg += `💰 Aguardamos a confirmação do pagamento para separação dos ovos com segurança máxima.%0A`;
+                if (order.linkCartao) {
+                    msg += `💳 *Link para Pagamento no Cartão:* ${encodeURIComponent(order.linkCartao)}%0A`;
+                }
             } else if (order.status === 'pago') {
                 msg += `✅ Pagamento confirmado! Seus ovos estão sendo colhidos frescos, higienizados e embalados na caixa térmica com isopor.%0A`;
             }
@@ -2674,6 +2994,8 @@
 
             document.getElementById('orderModalStatusSelect').value = order.status || 'pendente';
             document.getElementById('orderModalTrackingInput').value = order.codigoRastreio || '';
+            const cardLinkEl = document.getElementById('orderModalCardLinkInput');
+            if (cardLinkEl) cardLinkEl.value = order.linkCartao || '';
 
             document.getElementById('orderModalSubtotal').textContent = formatMoney(order.subtotal || 0);
             document.getElementById('orderModalShippingVal').textContent = formatMoney(order.frete?.valor || 0);
@@ -2738,7 +3060,7 @@
             printWin.document.write(`
                 <html>
                 <head>
-                    <title>Comprovante de Pedido - Brahma & Orpington do Sul</title>
+                    <title>Comprovante de Pedido - Brahma e Orpington do Sul</title>
                     <style>
                         body { font-family: sans-serif; padding: 20px; color: #222; }
                         h1, h2, h3, h4 { margin-top: 0; }
@@ -2748,7 +3070,7 @@
                     </style>
                 </head>
                 <body>
-                    <h2>Criatório Brahma & Orpington do Sul</h2>
+                    <h2>Criatório Brahma e Orpington do Sul</h2>
                     <p><b>Comprovante de Encomenda</b></p>
                     <hr>
                     ${printContent}
@@ -2785,6 +3107,192 @@
                 loadOrders(false);
             }
         }, 20000);
+
+        const STORAGE_PAYMENT_CONFIG_KEY = 'bos_payment_config';
+
+        const getGlobalPaymentConfig = () => {
+            try {
+                const saved = localStorage.getItem(STORAGE_PAYMENT_CONFIG_KEY);
+                if (saved) return JSON.parse(saved);
+            } catch (e) {}
+            return {
+                linkCartao: '',
+                cartaoParcelas: 'Em até 12x no Cartão',
+                chavePix: 'contato@brahmaeorpingtondosul.com.br'
+            };
+        };
+
+        const renderPaymentLinksTab = async () => {
+            if (!products || products.length === 0) await loadProducts();
+            if (!ebooks || ebooks.length === 0) await loadEbooks();
+
+            const cfg = getGlobalPaymentConfig();
+            const gLink = document.getElementById('globalLinkCartao');
+            const gParc = document.getElementById('globalCartaoParcelas');
+            const gPix = document.getElementById('globalChavePix');
+            if (gLink) gLink.value = cfg.linkCartao || '';
+            if (gParc) gParc.value = cfg.cartaoParcelas || 'Em até 12x no Cartão';
+            if (gPix) gPix.value = cfg.chavePix || 'contato@brahmaeorpingtondosul.com.br';
+
+            const prodListEl = document.getElementById('paymentLinksProductsList');
+            if (prodListEl) {
+                prodListEl.innerHTML = products.map((p, idx) => `
+                    <div class="bg-black/25 p-4 rounded-xl border border-white/5 flex flex-col lg:flex-row lg:items-center gap-3">
+                        <div class="flex items-center gap-3 lg:w-64 shrink-0">
+                            <img src="${(p.fotos && p.fotos[0]) || 'assets/images/combo-surpresa.jpg'}" alt="${p.nome}" class="w-12 h-12 rounded-lg object-cover bg-stone-900 border border-stone-700 shrink-0">
+                            <div class="min-w-0">
+                                <span class="text-[10px] font-bold text-rustic-gold uppercase block">${p.categoria}</span>
+                                <h5 class="text-xs font-bold text-white truncate">${p.nome}</h5>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+                            <div>
+                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link de Pagamento no Cartão</label>
+                                <input type="url" id="quick-card-prod-${idx}" value="${p.linkCartao || ''}" placeholder="https://mpago.la/... ou InfinitePay" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-emerald-400 font-semibold mb-1">Chave PIX do Produto</label>
+                                <input type="text" id="quick-pix-prod-${idx}" value="${p.chavePix || 'contato@brahmaeorpingtondosul.com.br'}" placeholder="Chave PIX" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white font-mono placeholder-stone-500 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" onclick="openProductModal('${p.id}')" class="bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold py-2 px-3 rounded-lg border border-white/10 transition-all">
+                                Opções
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const ebListEl = document.getElementById('paymentLinksEbooksList');
+            if (ebListEl) {
+                ebListEl.innerHTML = ebooks.map((eb, idx) => `
+                    <div class="bg-black/25 p-4 rounded-xl border border-white/5 flex flex-col lg:flex-row lg:items-center gap-3">
+                        <div class="flex items-center gap-3 lg:w-64 shrink-0">
+                            <img src="${eb.foto || 'assets/images/ebook-orpington.png'}" alt="${eb.titulo}" class="w-12 h-12 rounded-lg object-contain bg-stone-900 border border-stone-700 shrink-0 p-1">
+                            <div class="min-w-0">
+                                <span class="text-[10px] font-bold text-rustic-gold uppercase block">${eb.subtitulo || 'E-book'}</span>
+                                <h5 class="text-xs font-bold text-white truncate">${eb.titulo}</h5>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+                            <div>
+                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link de Pagamento no Cartão</label>
+                                <input type="url" id="quick-card-eb-${idx}" value="${eb.linkCartao || ''}" placeholder="https://mpago.la/... ou InfinitePay" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-emerald-400 font-semibold mb-1">Chave PIX do E-book</label>
+                                <input type="text" id="quick-pix-eb-${idx}" value="${eb.chavePix || 'contato@brahmaeorpingtondosul.com.br'}" placeholder="Chave PIX" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white font-mono placeholder-stone-500 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" onclick="openEbookModal('${eb.id}')" class="bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold py-2 px-3 rounded-lg border border-white/10 transition-all">
+                                Opções
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        };
+
+        const applyGlobalPaymentToAll = () => {
+            const gLink = document.getElementById('globalLinkCartao')?.value.trim() || '';
+            const gPix = document.getElementById('globalChavePix')?.value.trim() || 'contato@brahmaeorpingtondosul.com.br';
+            products.forEach((_, idx) => {
+                const cEl = document.getElementById(`quick-card-prod-${idx}`);
+                const pEl = document.getElementById(`quick-pix-prod-${idx}`);
+                if (cEl && gLink) cEl.value = gLink;
+                if (pEl && gPix) pEl.value = gPix;
+            });
+            ebooks.forEach((_, idx) => {
+                const cEl = document.getElementById(`quick-card-eb-${idx}`);
+                const pEl = document.getElementById(`quick-pix-eb-${idx}`);
+                if (cEl && gLink) cEl.value = gLink;
+                if (pEl && gPix) pEl.value = gPix;
+            });
+            showToast('Padrão preenchido nos campos! Clique em "Salvar Todos os Links" para gravar.');
+        };
+
+        const saveAllPaymentLinks = async () => {
+            const gLink = document.getElementById('globalLinkCartao')?.value.trim() || '';
+            const gParc = document.getElementById('globalCartaoParcelas')?.value.trim() || 'Em até 12x no Cartão';
+            const gPix = document.getElementById('globalChavePix')?.value.trim() || 'contato@brahmaeorpingtondosul.com.br';
+
+            localStorage.setItem(STORAGE_PAYMENT_CONFIG_KEY, JSON.stringify({
+                linkCartao: gLink,
+                cartaoParcelas: gParc,
+                chavePix: gPix
+            }));
+
+            products = products.map((p, idx) => {
+                const cardVal = document.getElementById(`quick-card-prod-${idx}`)?.value.trim();
+                const pixVal = document.getElementById(`quick-pix-prod-${idx}`)?.value.trim();
+                return {
+                    ...p,
+                    linkCartao: cardVal !== undefined ? cardVal : (p.linkCartao || ''),
+                    cartaoParcelas: p.cartaoParcelas || gParc,
+                    chavePix: pixVal || p.chavePix || gPix
+                };
+            });
+
+            ebooks = ebooks.map((eb, idx) => {
+                const cardVal = document.getElementById(`quick-card-eb-${idx}`)?.value.trim();
+                const pixVal = document.getElementById(`quick-pix-eb-${idx}`)?.value.trim();
+                return {
+                    ...eb,
+                    linkCartao: cardVal !== undefined ? cardVal : (eb.linkCartao || ''),
+                    cartaoParcelas: eb.cartaoParcelas || gParc,
+                    chavePix: pixVal || eb.chavePix || gPix
+                };
+            });
+
+            localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(products));
+            localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(ebooks));
+            renderProductsGrid();
+            renderEbooksGrid();
+
+            if (isServerAvailable) {
+                try {
+                    await Promise.all([
+                        fetch('/api/produtos', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                            body: JSON.stringify(products)
+                        }),
+                        fetch('/api/ebooks', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                            body: JSON.stringify(ebooks)
+                        })
+                    ]);
+                } catch (e) {}
+            }
+
+            showToast('Todos os links de cartão e chaves PIX foram salvos!', 'Pagamentos Salvos');
+        };
+
+        const saveModalOrderCardLink = () => {
+            if (!currentViewingOrderId) return;
+            const input = document.getElementById('orderModalCardLinkInput');
+            const link = input ? input.value.trim() : '';
+            const order = orders.find(o => o.id === currentViewingOrderId);
+            if (!order) return;
+            order.linkCartao = link;
+            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+
+            if (isServerAvailable || authToken) {
+                fetch(`/api/pedidos/${currentViewingOrderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ status: order.status, codigoRastreio: order.codigoRastreio || '', linkCartao: order.linkCartao })
+                }).catch(() => {});
+            }
+            renderOrdersList();
+            showToast('Link de pagamento no cartão salvo no pedido!');
+        };
 
         // --- Inicialização Automática ---
         document.addEventListener('DOMContentLoaded', () => {

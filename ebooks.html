@@ -22,9 +22,9 @@
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 sm:h-20 transition-all duration-300">
                 <a href="index.html" class="flex-shrink-0 flex items-center gap-2 sm:gap-3 min-w-0 group">
-                    <img src="assets/images/logo.svg" alt="Brahma & Orpington do Sul" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain drop-shadow-md shrink-0 group-hover:scale-105 transition-transform">
+                    <img src="assets/images/logo.svg" alt="Brahma e Orpington do Sul" class="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain drop-shadow-md shrink-0 group-hover:scale-105 transition-transform">
                     <span class="font-serif text-sm sm:text-lg md:text-2xl font-bold tracking-tight sm:tracking-wide leading-tight truncate">
-                        Brahma & Orpington<br><span class="text-rustic-gold text-[10px] sm:text-xs md:text-sm font-normal">do Sul</span>
+                        Brahma e Orpington<br><span class="text-rustic-gold text-[10px] sm:text-xs md:text-sm font-normal">do Sul</span>
                     </span>
                 </a>
 
@@ -700,7 +700,7 @@
             <div>
                 <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
                     <img src="assets/images/logo.svg" alt="Criatório Brahma e Orpington do Sul" class="w-10 h-10 object-contain">
-                    <span class="font-serif text-lg font-bold text-white">Brahma & Orpington do Sul</span>
+                    <span class="font-serif text-lg font-bold text-white">Brahma e Orpington do Sul</span>
                 </div>
                 <p class="text-xs mb-4 leading-relaxed">Especialistas na criação, preservação e aprimoramento genético de aves nobres, produção de ovos férteis e manuais técnicos para criadores.</p>
                 <p class="text-[11px] text-rustic-gold">Maximiliano de Almeida - RS (CEP 99890-000)</p>
@@ -980,6 +980,7 @@
                     price: ebook.price,
                     quantity: 1,
                     photo: ebook.photo,
+                    chavePix: ebook.chavePix || 'contato@brahmaeorpingtondosul.com.br',
                     isDigital: true
                 });
             }
@@ -996,8 +997,14 @@
 
             let text = `Olá! Gostaria de adquirir o *E-book: ${ebook.name}* 📖%0A%0A`;
             text += `*Valor Promocional:* De ~R$ ${ebook.originalPrice.toFixed(2).replace('.', ',')}~ por *${formatMoney(ebook.price)}*%0A`;
-            text += `*Formato:* Envio imediato em PDF via WhatsApp / E-mail%0A%0A`;
-            text += `Por favor, me envie a chave PIX para eu realizar o pagamento e receber o material!`;
+            const pixKey = ebook.chavePix || 'contato@brahmaeorpingtondosul.com.br';
+            text += `*Formato:* Envio imediato em PDF via WhatsApp / E-mail%0A`;
+            text += `*Chave PIX:* ${encodeURIComponent(pixKey)}%0A`;
+            if (ebook.linkCartao) {
+                text += `*Link Cartão de Crédito:* ${encodeURIComponent(ebook.linkCartao)}%0A`;
+            }
+            text += `%0A`;
+            text += `Olá! Segue meu pedido do e-book para envio do comprovante PIX e recebimento do material!`;
             
             const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
             window.open(url, '_blank');
@@ -1201,8 +1208,39 @@
             window.open(url, '_blank');
         });
 
+        const syncCustomEbooks = async () => {
+            let list = null;
+            try {
+                const saved = localStorage.getItem('bos_custom_ebooks');
+                if (saved) list = JSON.parse(saved);
+            } catch (e) {}
+            if (!list) {
+                try {
+                    const res = await fetch('/api/ebooks');
+                    if (res.ok) list = await res.json();
+                } catch (e) {}
+            }
+            if (!list) {
+                try {
+                    const res = await fetch('data/ebooks.json');
+                    if (res.ok) list = await res.json();
+                } catch (e) {}
+            }
+            if (Array.isArray(list)) {
+                list.forEach(eb => {
+                    if (EBOOKS[eb.id]) {
+                        EBOOKS[eb.id].price = Number(eb.precoPor) || EBOOKS[eb.id].price;
+                        EBOOKS[eb.id].originalPrice = Number(eb.precoDe) || EBOOKS[eb.id].originalPrice;
+                        EBOOKS[eb.id].chavePix = eb.chavePix || 'contato@brahmaeorpingtondosul.com.br';
+                        EBOOKS[eb.id].linkCartao = eb.linkCartao || '';
+                    }
+                });
+            }
+        };
+
         // Initialize UI
         document.addEventListener('DOMContentLoaded', () => {
+            syncCustomEbooks();
             updateCartUI();
 
             const navbar = document.getElementById('navbar');

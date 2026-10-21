@@ -5,10 +5,13 @@
     "subtitulo": "E-book Oficial",
     "tag": "33% OFF",
     "descricao": "Padrão racial, variedades de cores, genética, reprodução, manejo e dicas para aprimorar a qualidade do plantel.",
-    "precoDe": 89.90,
-    "precoPor": 59.90,
+    "precoDe": 89.9,
+    "precoPor": 59.9,
     "foto": "assets/images/ebook-orpington.png",
-    "link": "ebooks.html#ebook-orpington"
+    "link": "ebooks.html#ebook-orpington",
+    "chavePix": "contato@brahmaeorpingtondosul.com.br",
+    "linkCartao": "",
+    "cartaoParcelas": "Em até 12x no Cartão"
   },
   {
     "id": "ebook-brahma",
@@ -16,10 +19,13 @@
     "subtitulo": "E-book Oficial",
     "tag": "33% OFF",
     "descricao": "Características da raça gigante, variedades de cores nobres, genética, reprodução e seleção de reprodutores de elite.",
-    "precoDe": 59.90,
-    "precoPor": 39.90,
+    "precoDe": 59.9,
+    "precoPor": 39.9,
     "foto": "assets/images/ebook-brahma.png",
-    "link": "ebooks.html#ebook-brahma"
+    "link": "ebooks.html#ebook-brahma",
+    "chavePix": "contato@brahmaeorpingtondosul.com.br",
+    "linkCartao": "",
+    "cartaoParcelas": "Em até 12x no Cartão"
   },
   {
     "id": "ebook-gsb",
@@ -27,10 +33,12 @@
     "subtitulo": "E-book Oficial",
     "tag": "33% OFF",
     "descricao": "Origem, conformação do balão, padrões raciais, manejo, nutrição, reprodução e cuidados para manter aves saudáveis.",
-    "precoDe": 59.90,
-    "precoPor": 39.90,
+    "precoDe": 59.9,
+    "precoPor": 39.9,
     "foto": "assets/images/ebook-gsb.png",
-    "link": "ebooks.html#ebook-gsb"
+    "link": "ebooks.html#ebook-gsb",
+    "chavePix": "contato@brahmaeorpingtondosul.com.br",
+    "linkCartao": "",
+    "cartaoParcelas": "Em até 12x no Cartão"
   }
 ]
-

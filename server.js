@@ -83,6 +83,45 @@ const isAuthenticated = (req) => {
 // Sessões ativas de clientes (token -> { clienteId, email, nome, createdAt })
 const activeClientSessions = new Map();
 
+// ==========================================
+// LIVE RELOAD (SSE - Tempo Real)
+// ==========================================
+const liveReloadClients = new Set();
+let reloadDebounceTimer = null;
+
+const triggerLiveReload = () => {
+    clearTimeout(reloadDebounceTimer);
+    reloadDebounceTimer = setTimeout(() => {
+        for (const client of liveReloadClients) {
+            try {
+                client.write('data: reload\n\n');
+            } catch (e) {
+                liveReloadClients.delete(client);
+            }
+        }
+    }, 150);
+};
+
+try {
+    fs.watch(PUBLIC_DIR, { recursive: true }, (eventType, filename) => {
+        if (!filename) return;
+        const normalized = filename.replace(/\\/g, '/');
+        // Ignora pastas internas e arquivos de dados
+        if (
+            normalized.includes('.git') ||
+            normalized.includes('node_modules') ||
+            normalized.startsWith('data/') ||
+            normalized.endsWith('.json') ||
+            normalized.startsWith('.')
+        ) {
+            return;
+        }
+        triggerLiveReload();
+    });
+} catch (e) {
+    console.warn('[LiveReload] Watcher recursivo não disponível:', e.message);
+}
+
 const getClientAuthToken = (req) => {
     const authHeader = req.headers['authorization'];
     if (authHeader && authHeader.startsWith('Bearer ')) {
@@ -182,8 +221,24 @@ const server = http.createServer(async (req, res) => {
     const method = req.method.toUpperCase();
 
     // ==========================================
-    // API ROUTES
+    // API ROUTES & LIVE RELOAD
     // ==========================================
+
+    // Endpoint Live Reload (SSE para recarregar navegador em tempo real)
+    if (pathname === '/__livereload') {
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache, no-transform',
+            'Connection': 'keep-alive',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.write('retry: 1500\n\n');
+        liveReloadClients.add(res);
+        req.on('close', () => {
+            liveReloadClients.delete(res);
+        });
+        return;
+    }
 
     // 1. Login
     if (pathname === '/api/login' && method === 'POST') {
@@ -311,6 +366,7 @@ const server = http.createServer(async (req, res) => {
             }
 
             fs.writeFileSync(PRODUTOS_FILE, JSON.stringify(body, null, 2), 'utf8');
+            fs.writeFileSync(path.join(DATA_DIR, 'products.json'), JSON.stringify(body, null, 2), 'utf8');
 
             console.log(`[ADMIN] Produtos atualizados com sucesso por ${session.username} (${body.length} itens)`);
 
@@ -643,6 +699,8 @@ const server = http.createServer(async (req, res) => {
                 status: 'pendente', // pendente, pago, enviado, concluido, cancelado
                 codigoRastreio: '',
                 metodoPagamento: metodoPagamento || 'pix',
+                chavePix: body.chavePix || '',
+                linkCartao: body.linkCartao || '',
                 observacoes: observacoes || ''
             };
 
@@ -735,6 +793,7 @@ const server = http.createServer(async (req, res) => {
             if (body.status) pedidos[idx].status = body.status;
             if (body.codigoRastreio !== undefined) pedidos[idx].codigoRastreio = body.codigoRastreio.trim();
             if (body.observacoes !== undefined) pedidos[idx].observacoes = body.observacoes.trim();
+            if (body.linkCartao !== undefined) pedidos[idx].linkCartao = body.linkCartao.trim();
 
             fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
 
@@ -794,6 +853,33 @@ const server = http.createServer(async (req, res) => {
         const ext = path.extname(targetPath).toLowerCase();
         const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
+        // Para páginas HTML, injeta o script de Live Reload automático
+        if (ext === '.html') {
+            fs.readFile(targetPath, 'utf8', (readErr, content) => {
+                if (readErr) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain; charset=UTF-8' });
+                    res.end('Erro ao carregar arquivo HTML.');
+                    return;
+                }
+                const liveReloadSnippet = `\n<!-- Live Reload Automático -->\n<script id="__livereload_script">(() => { let s; function c() { s = new EventSource('/__livereload'); s.onmessage = (e) => { if (e.data === 'reload') { console.log('[LiveReload] Atualizando página...'); location.reload(); } }; s.onerror = () => { s.close(); setTimeout(c, 1500); }; } c(); })();</script>\n`;
+                let finalHtml = content;
+                if (content.includes('</body>')) {
+                    finalHtml = content.replace('</body>', `${liveReloadSnippet}</body>`);
+                } else {
+                    finalHtml += liveReloadSnippet;
+                }
+
+                res.writeHead(200, {
+                    'Content-Type': contentType,
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                });
+                res.end(finalHtml);
+            });
+            return;
+        }
+
         res.writeHead(200, {
             'Content-Type': contentType,
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -817,15 +903,7 @@ const server = http.createServer(async (req, res) => {
             }
 
             const fallbackPath = path.join(PUBLIC_DIR, 'index.html');
-            fs.readFile(fallbackPath, (fallbackErr, data) => {
-                if (fallbackErr) {
-                    res.writeHead(404, { 'Content-Type': 'text/plain; charset=UTF-8' });
-                    res.end('404 Not Found');
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
-                res.end(data);
-            });
+            serveFile(fallbackPath);
         });
     });
 });
@@ -848,6 +926,7 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log(`\n🚀 Servidor local iniciado com sucesso!`);
     console.log(`📡 URL Local:      http://localhost:${actualPort}`);
     console.log(`🔒 Painel Admin:   http://localhost:${actualPort}/admin`);
+    console.log(`⚡ Live Reload:    Ativo (atualização em tempo real ao salvar arquivos)`);
     console.log(`📂 Diretório:      ${PUBLIC_DIR}`);
     console.log(`Pressione Ctrl+C para encerrar o servidor.\n`);
 });
