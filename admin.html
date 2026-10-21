@@ -1571,6 +1571,163 @@
             showToast('Sessão encerrada.', 'Logout');
         };
 
+        const DEFAULT_PRODUCT_CARD_LINKS = {
+            "combo-surpresa": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-byBLxn3Z9p-299,00",
+                linksCartao: { combo15: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-byBLxn3Z9p-299,00" }
+            },
+            "brahma-buff": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-x9fVPysJDW-270,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-XvEkhw8plt-150,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-x9fVPysJDW-270,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-y1tH8k0fBi-510,00"
+                }
+            },
+            "brahma-isabelli": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-x9fVPysJDW-270,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-XvEkhw8plt-150,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-x9fVPysJDW-270,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-y1tH8k0fBi-510,00"
+                }
+            },
+            "gsb": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-kXZaaKINvp-297,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-q0QMs4n2JW-165,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-kXZaaKINvp-297,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-IC8p5cQQ2X-561,00"
+                }
+            },
+            "polaco-balao": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-aS3g7k8I7y-306,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-Wcb08WBN5Z-170,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-aS3g7k8I7y-306,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-fVleOsHHRs-578,00"
+                }
+            },
+            "orpington-azul": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-pwgf7D2gXl-414,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-WqJfqPqQlb-230,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-pwgf7D2gXl-414,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-vo9842AuQC-782,00"
+                }
+            },
+            "orpington-negro": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-pwgf7D2gXl-414,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-WqJfqPqQlb-230,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-pwgf7D2gXl-414,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-vo9842AuQC-782,00"
+                }
+            },
+            "orpington-cuckoo": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-LFXsjfzHdt-450,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-6tNo0xVzjY-250,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-LFXsjfzHdt-450,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-ugA62lMgHJ-850,00"
+                }
+            },
+            "orpington-mottled": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-kk7GmVefQf-504,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-gMUMK6jT5M-280,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-kk7GmVefQf-504,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-XH2UdWHjgz-952,00"
+                }
+            },
+            "orpington-dourado-laceado-azul": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-7Yw9XAeQ3I-576,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-AZqY1JjIho-320,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-7Yw9XAeQ3I-576,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-Vtqp7zVBPK-1088,00"
+                }
+            },
+            "orpington-dourado-laceado-preto": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-7Yw9XAeQ3I-576,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-AZqY1JjIho-320,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-7Yw9XAeQ3I-576,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-Vtqp7zVBPK-1088,00"
+                }
+            },
+            "orpington-lavanda": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-mLn9Q25NyP-576,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-BZulYcpjdB-320,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-mLn9Q25NyP-576,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-fA6IEYp6mU-1088,00"
+                }
+            },
+            "orpington-chocolate": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-aXVRuobZfr-504,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-iCVgjzuwa2-280,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-aXVRuobZfr-504,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-Et7TCI29Wc-952,00"
+                }
+            },
+            "orpington-chocolate-mottled": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-3J7cZixaCA-666,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-cYpU2XDyPC-370,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-3J7cZixaCA-666,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-rnySEPDnYU-1258,00"
+                }
+            },
+            "orpington-cuckoo-lavanda": {
+                linkCartao: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-lDNPUM8pSr-666,00",
+                linksCartao: {
+                    meiaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-lIsliN178P-370,00",
+                    umaDuzia: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-lDNPUM8pSr-666,00",
+                    duasDuzias: "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-iH8lKOT12y-1258,00"
+                }
+            }
+        };
+
+        const DEFAULT_EBOOK_CARD_LINKS = {
+            "ebook-orpington": "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-iSkMbBsGwz-59,90",
+            "ebook-brahma": "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-fbu9KXnetj-39,90",
+            "ebook-gsb": "https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-fbu9KXnetj-39,90"
+        };
+
+        const applyDefaultProductCardLinks = (list) => {
+            if (!Array.isArray(list)) return list;
+            return list.map(prod => {
+                const def = DEFAULT_PRODUCT_CARD_LINKS[prod.id];
+                if (!def) return prod;
+                return {
+                    ...prod,
+                    linkCartao: prod.linkCartao || def.linkCartao,
+                    linksCartao: {
+                        ...def.linksCartao,
+                        ...(prod.linksCartao || {})
+                    }
+                };
+            });
+        };
+
+        const applyDefaultEbookCardLinks = (list) => {
+            if (!Array.isArray(list)) return list;
+            return list.map(eb => {
+                const defLink = DEFAULT_EBOOK_CARD_LINKS[eb.id];
+                if (!defLink) return eb;
+                return {
+                    ...eb,
+                    linkCartao: eb.linkCartao || defLink,
+                    linksCartao: {
+                        pdf: defLink,
+                        ...(eb.linksCartao || {})
+                    }
+                };
+            });
+        };
+
         // --- Carregar e Renderizar Produtos (Aves) ---
         const loadProducts = async () => {
             // 1. Se o servidor estiver disponível, tenta a API
@@ -1578,7 +1735,7 @@
                 try {
                     const res = await fetch('/api/produtos');
                     if (res.ok) {
-                        products = await res.json();
+                        products = applyDefaultProductCardLinks(await res.json());
                         updateStats();
                         renderProductsGrid();
                         return;
@@ -1595,7 +1752,7 @@
                 try {
                     const parsed = JSON.parse(savedCustom);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        products = parsed;
+                        products = applyDefaultProductCardLinks(parsed);
                         updateStats();
                         renderProductsGrid();
                         return;
@@ -1607,7 +1764,7 @@
             try {
                 const res = await fetch('data/produtos.json');
                 if (res.ok) {
-                    products = await res.json();
+                    products = applyDefaultProductCardLinks(await res.json());
                     updateStats();
                     renderProductsGrid();
                     return;
@@ -2080,7 +2237,7 @@
                 try {
                     const res = await fetch('/api/ebooks');
                     if (res.ok) {
-                        ebooks = await res.json();
+                        ebooks = applyDefaultEbookCardLinks(await res.json());
                         renderEbooksGrid();
                         return;
                     }
@@ -2095,7 +2252,7 @@
                 try {
                     const parsed = JSON.parse(savedCustom);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        ebooks = parsed;
+                        ebooks = applyDefaultEbookCardLinks(parsed);
                         renderEbooksGrid();
                         return;
                     }
@@ -2105,7 +2262,7 @@
             try {
                 const res = await fetch('data/ebooks.json');
                 if (res.ok) {
-                    ebooks = await res.json();
+                    ebooks = applyDefaultEbookCardLinks(await res.json());
                     renderEbooksGrid();
                     return;
                 }
@@ -3136,32 +3293,58 @@
 
             const prodListEl = document.getElementById('paymentLinksProductsList');
             if (prodListEl) {
-                prodListEl.innerHTML = products.map((p, idx) => `
-                    <div class="bg-black/25 p-4 rounded-xl border border-white/5 flex flex-col lg:flex-row lg:items-center gap-3">
-                        <div class="flex items-center gap-3 lg:w-64 shrink-0">
-                            <img src="${(p.fotos && p.fotos[0]) || 'assets/images/combo-surpresa.jpg'}" alt="${p.nome}" class="w-12 h-12 rounded-lg object-cover bg-stone-900 border border-stone-700 shrink-0">
-                            <div class="min-w-0">
-                                <span class="text-[10px] font-bold text-rustic-gold uppercase block">${p.categoria}</span>
-                                <h5 class="text-xs font-bold text-white truncate">${p.nome}</h5>
+                prodListEl.innerHTML = products.map((p, idx) => {
+                    const isCombo = Boolean(p.precos && p.precos.combo15);
+                    const links = p.linksCartao || {};
+                    return `
+                    <div class="bg-black/25 p-4 rounded-xl border border-white/5 flex flex-col gap-3">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <img src="${(p.fotos && p.fotos[0]) || 'assets/images/combo-surpresa.jpg'}" alt="${p.nome}" class="w-12 h-12 rounded-lg object-cover bg-stone-900 border border-stone-700 shrink-0">
+                                <div class="min-w-0">
+                                    <span class="text-[10px] font-bold text-rustic-gold uppercase block">${p.categoria}</span>
+                                    <h5 class="text-sm font-bold text-white truncate">${p.nome}</h5>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <button type="button" onclick="openProductModal('${p.id}')" class="bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold py-2 px-3 rounded-lg border border-white/10 transition-all flex items-center gap-1.5">
+                                    <i class="ph-bold ph-pencil-simple"></i> Editar Completo
+                                </button>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+                        ${isCombo ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link de Pagamento no Cartão</label>
-                                <input type="url" id="quick-card-prod-${idx}" value="${p.linkCartao || ''}" placeholder="https://mpago.la/... ou InfinitePay" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link Cartão — Combo 15 Ovos (${formatMoney(p.precos?.combo15)})</label>
+                                <input type="url" id="quick-card-combo-${idx}" value="${links.combo15 || p.linkCartao || ''}" placeholder="https://link.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
                             </div>
                             <div>
                                 <label class="block text-[10px] text-emerald-400 font-semibold mb-1">Chave PIX do Produto</label>
                                 <input type="text" id="quick-pix-prod-${idx}" value="${p.chavePix || 'contato@brahmaeorpingtondosul.com.br'}" placeholder="Chave PIX" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white font-mono placeholder-stone-500 focus:outline-none">
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button type="button" onclick="openProductModal('${p.id}')" class="bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold py-2 px-3 rounded-lg border border-white/10 transition-all">
-                                Opções
-                            </button>
+                        ` : `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div>
+                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link 6 Ovos (${formatMoney(p.precos?.meiaDuzia)})</label>
+                                <input type="url" id="quick-card-meia-${idx}" value="${links.meiaDuzia || ''}" placeholder="https://link.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link 12 Ovos (${formatMoney(p.precos?.umaDuzia)})</label>
+                                <input type="url" id="quick-card-uma-${idx}" value="${links.umaDuzia || p.linkCartao || ''}" placeholder="https://link.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-rustic-gold font-semibold mb-1">Link 24 Ovos (${formatMoney(p.precos?.duasDuzias)})</label>
+                                <input type="url" id="quick-card-duas-${idx}" value="${links.duasDuzias || ''}" placeholder="https://link.infinitepay.io/..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white placeholder-stone-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-emerald-400 font-semibold mb-1">Chave PIX do Produto</label>
+                                <input type="text" id="quick-pix-prod-${idx}" value="${p.chavePix || 'contato@brahmaeorpingtondosul.com.br'}" placeholder="Chave PIX" class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-lg py-2 px-3 text-xs text-white font-mono placeholder-stone-500 focus:outline-none">
+                            </div>
                         </div>
+                        `}
                     </div>
-                `).join('');
+                `}).join('');
             }
 
             const ebListEl = document.getElementById('paymentLinksEbooksList');
@@ -3225,11 +3408,31 @@
             }));
 
             products = products.map((p, idx) => {
-                const cardVal = document.getElementById(`quick-card-prod-${idx}`)?.value.trim();
+                const isCombo = Boolean(p.precos && p.precos.combo15);
                 const pixVal = document.getElementById(`quick-pix-prod-${idx}`)?.value.trim();
+                const currentLinks = { ...(p.linksCartao || {}) };
+                let mainCardLink = p.linkCartao || '';
+
+                if (isCombo) {
+                    const comboVal = document.getElementById(`quick-card-combo-${idx}`)?.value.trim();
+                    if (comboVal !== undefined) {
+                        currentLinks.combo15 = comboVal;
+                        mainCardLink = comboVal;
+                    }
+                } else {
+                    const meiaVal = document.getElementById(`quick-card-meia-${idx}`)?.value.trim();
+                    const umaVal = document.getElementById(`quick-card-uma-${idx}`)?.value.trim();
+                    const duasVal = document.getElementById(`quick-card-duas-${idx}`)?.value.trim();
+                    if (meiaVal !== undefined) currentLinks.meiaDuzia = meiaVal;
+                    if (umaVal !== undefined) currentLinks.umaDuzia = umaVal;
+                    if (duasVal !== undefined) currentLinks.duasDuzias = duasVal;
+                    mainCardLink = currentLinks.umaDuzia || currentLinks.meiaDuzia || currentLinks.duasDuzias || mainCardLink;
+                }
+
                 return {
                     ...p,
-                    linkCartao: cardVal !== undefined ? cardVal : (p.linkCartao || ''),
+                    linkCartao: mainCardLink,
+                    linksCartao: currentLinks,
                     cartaoParcelas: p.cartaoParcelas || gParc,
                     chavePix: pixVal || p.chavePix || gPix
                 };
