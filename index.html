@@ -543,6 +543,7 @@
                         </p>
                     </div>
                 </div>
+                </div>
             </div>
 
             <!-- Resumo Financeiro -->
@@ -579,7 +580,7 @@
     <!-- ======================================================== -->
     <!-- MODAL 1: AUTENTICAÇÃO DO CLIENTE (LOGIN / CADASTRO / PERFIL) -->
     <!-- ======================================================== -->
-    <div id="clientAuthModal" class="hidden fixed inset-0 z-[85] overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div id="clientAuthModal" onclick="if(event.target===this) closeAuthModal()" class="hidden fixed inset-0 z-[85] overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
         <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-6 overflow-hidden text-stone-100">
             
             <!-- Modal Header -->
