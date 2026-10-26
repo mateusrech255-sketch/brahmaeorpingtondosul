@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -11,7 +12,20 @@ const EBOOKS_FILE = path.join(DATA_DIR, 'ebooks.json');
 const PEDIDOS_FILE = path.join(DATA_DIR, 'pedidos.json');
 const CLIENTES_FILE = path.join(DATA_DIR, 'clientes.json');
 const ADMIN_CONFIG_FILE = path.join(DATA_DIR, 'admin-config.json');
+const INFINITEPAY_CONFIG_FILE = path.join(DATA_DIR, 'infinitepay-config.json');
 const UPLOADS_DIR = path.join(PUBLIC_DIR, 'assets', 'images');
+
+const DEFAULT_INFINITEPAY_CONFIG = {
+    enabled: true,
+    handle: 'sandro-cavalli',
+    apiKey: 'inchk_jOkw1-v4xAqj0kkbPXhWs0BwIJ503mT5SwD9q2-6AuI',
+    checkoutEndpoint: 'https://api.checkout.infinitepay.io/links',
+    fallbackEndpoint: 'https://api.infinitepay.io/invoices/public/checkout/links',
+    paymentCheckEndpoint: 'https://api.checkout.infinitepay.io/payment_check',
+    fallbackPaymentCheckEndpoint: 'https://api.infinitepay.io/invoices/public/checkout/payment_check',
+    docsUrl: 'https://www.infinitepay.io/checkout-documentacao',
+    portalUrl: 'https://www.infinitepay.io/checkout'
+};
 
 // Garante que as pastas necessárias existem
 if (!fs.existsSync(DATA_DIR)) {
@@ -28,6 +42,147 @@ if (!fs.existsSync(PEDIDOS_FILE)) {
 if (!fs.existsSync(CLIENTES_FILE)) {
     fs.writeFileSync(CLIENTES_FILE, '[]', 'utf8');
 }
+if (!fs.existsSync(INFINITEPAY_CONFIG_FILE)) {
+    fs.writeFileSync(INFINITEPAY_CONFIG_FILE, JSON.stringify(DEFAULT_INFINITEPAY_CONFIG, null, 2), 'utf8');
+}
+
+const getInfinitePayConfig = () => {
+    try {
+        if (fs.existsSync(INFINITEPAY_CONFIG_FILE)) {
+            const parsed = JSON.parse(fs.readFileSync(INFINITEPAY_CONFIG_FILE, 'utf8'));
+            return { ...DEFAULT_INFINITEPAY_CONFIG, ...parsed };
+        }
+    } catch (e) {
+        console.error('Erro ao ler infinitepay-config.json:', e);
+    }
+    return { ...DEFAULT_INFINITEPAY_CONFIG };
+};
+
+const httpsPostJson = (urlStr, payload, extraHeaders = {}) => {
+    return new Promise((resolve, reject) => {
+        const parsed = new URL(urlStr);
+        const bodyData = JSON.stringify(payload);
+        const options = {
+            hostname: parsed.hostname,
+            port: parsed.port || 443,
+            path: parsed.pathname + parsed.search,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Content-Length': Buffer.byteLength(bodyData),
+                ...extraHeaders
+            },
+            timeout: 15000
+        };
+        const reqHttps = https.request(options, (resHttps) => {
+            const chunks = [];
+            resHttps.on('data', chunk => chunks.push(chunk));
+            resHttps.on('end', () => {
+                const raw = Buffer.concat(chunks).toString('utf8');
+                let json = null;
+                try { json = JSON.parse(raw); } catch (e) {}
+                resolve({
+                    status: resHttps.statusCode,
+                    ok: resHttps.statusCode >= 200 && resHttps.statusCode < 300,
+                    data: json,
+                    raw
+                });
+            });
+        });
+        reqHttps.on('error', err => reject(err));
+        reqHttps.on('timeout', () => {
+            reqHttps.destroy();
+            reject(new Error('Tempo limite excedido ao comunicar com a API InfinitePay.'));
+        });
+        reqHttps.write(bodyData);
+        reqHttps.end();
+    });
+};
+
+const buildInfinitePayCheckoutPayload = (body, origin, cfg) => {
+    const handle = String(body.handle || cfg.handle || DEFAULT_INFINITEPAY_CONFIG.handle).replace(/^\$/, '').trim();
+    const orderNsu = String(body.order_nsu || body.orderId || ('BOS-' + Math.floor(1000 + Math.random() * 9000))).replace(/^#/, '').trim();
+
+    const rawItems = Array.isArray(body.items) ? body.items : [];
+    const items = rawItems.map(it => {
+        const qty = Math.max(1, Math.round(Number(it.quantity || it.quantidade || 1)));
+        const priceCents = it.price_cents
+            ? Math.round(Number(it.price_cents))
+            : (Number(it.price) >= 1000 && !it.isUnitReais
+                ? Math.round(Number(it.price))
+                : Math.round(Number(it.precoUnitario || it.price || 0) * 100));
+        const desc = String(it.description || (it.opcaoLabel ? `${it.nome || it.name} (${it.opcaoLabel})` : (it.nome || it.name || 'Produto'))).trim();
+        return {
+            quantity: qty,
+            price: priceCents,
+            description: desc
+        };
+    }).filter(it => it.price > 0);
+
+    const freteValor = Number(body.freteValor ?? body.frete?.valor ?? 0);
+    const hasFreteItem = items.some(i => i.description.toLowerCase().includes('frete'));
+    if (freteValor > 0 && !hasFreteItem) {
+        const freteTipo = body.frete?.tipo || 'SEDEX';
+        const freteDestino = body.frete?.cidade ? ` (${body.frete.cidade}${body.frete.uf ? ' - ' + body.frete.uf : ''})` : '';
+        items.push({
+            quantity: 1,
+            price: Math.round(freteValor * 100),
+            description: `Frete ${freteTipo} Correios${freteDestino}`
+        });
+    }
+
+    const isLocalOrigin = !origin || origin.includes('localhost') || origin.includes('127.0.0.1');
+    const safeOrigin = isLocalOrigin ? 'https://brahmaeorpingtondosul.pages.dev' : origin;
+
+    const redirectUrl = body.redirect_url || `${origin || safeOrigin}/?infinitepay_return=1&order_nsu=${encodeURIComponent(orderNsu)}`;
+    const webhookUrl = body.webhook_url || `${safeOrigin}/api/infinitepay/webhook`;
+
+    const payload = {
+        handle,
+        order_nsu: orderNsu,
+        redirect_url: redirectUrl,
+        webhook_url: webhookUrl,
+        items
+    };
+
+    const cli = body.customer || body.cliente;
+    if (cli && (cli.nome || cli.name)) {
+        const rawPhone = String(cli.phone_number || cli.whatsapp || '').replace(/\D/g, '');
+        const formattedPhone = rawPhone
+            ? (rawPhone.startsWith('55') ? `+${rawPhone}` : `+55${rawPhone}`)
+            : undefined;
+        const customerObj = {
+            name: String(cli.name || cli.nome).trim()
+        };
+        if (cli.email && String(cli.email).includes('@')) {
+            customerObj.email = String(cli.email).trim();
+        }
+        if (formattedPhone && formattedPhone.length >= 12) {
+            customerObj.phone_number = formattedPhone;
+        }
+        payload.customer = customerObj;
+    }
+
+    const end = body.address || body.cliente?.endereco;
+    if (end) {
+        const cleanCep = String(end.cep || '').replace(/\D/g, '');
+        const street = String(end.street || end.logradouro || '').trim();
+        if (cleanCep.length === 8 && street) {
+            payload.address = {
+                cep: cleanCep,
+                street,
+                neighborhood: String(end.neighborhood || end.bairro || 'Centro').trim() || 'Centro',
+                number: String(end.number || end.numero || 'S/N').trim() || 'S/N'
+            };
+            if (end.complement || end.complemento) {
+                payload.address.complement = String(end.complement || end.complemento).trim();
+            }
+        }
+    }
+
+    return payload;
+};
 
 // Configuração padrão de credenciais se não existir
 if (!fs.existsSync(ADMIN_CONFIG_FILE)) {
@@ -835,6 +990,282 @@ const server = http.createServer(async (req, res) => {
             console.log(`[ADMIN] Pedido ${orderId} excluído por ${session.username}`);
 
             return sendJson(res, 200, { success: true, message: 'Pedido excluído com sucesso.' });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // ==========================================
+    // ROTAS CHECKOUT INTEGRADO INFINITEPAY
+    // ==========================================
+
+    // 19. Obter Configuração InfinitePay
+    if (pathname === '/api/infinitepay/config' && method === 'GET') {
+        const cfg = getInfinitePayConfig();
+        return sendJson(res, 200, {
+            success: true,
+            config: cfg
+        });
+    }
+
+    // 20. Salvar Configuração InfinitePay (Admin)
+    if (pathname === '/api/infinitepay/config' && method === 'POST') {
+        const session = isAuthenticated(req);
+        if (!session) {
+            return sendJson(res, 401, { success: false, error: 'Acesso restrito ao administrador.' });
+        }
+
+        try {
+            const body = await parseJsonBody(req);
+            const currentCfg = getInfinitePayConfig();
+            const updatedCfg = {
+                ...currentCfg,
+                enabled: body.enabled !== undefined ? Boolean(body.enabled) : currentCfg.enabled,
+                handle: (body.handle !== undefined ? String(body.handle).replace(/^\$/, '').trim() : currentCfg.handle) || DEFAULT_INFINITEPAY_CONFIG.handle,
+                apiKey: (body.apiKey !== undefined ? String(body.apiKey).trim() : currentCfg.apiKey) || DEFAULT_INFINITEPAY_CONFIG.apiKey,
+                updatedAt: new Date().toISOString()
+            };
+            fs.writeFileSync(INFINITEPAY_CONFIG_FILE, JSON.stringify(updatedCfg, null, 2), 'utf8');
+            console.log(`[INFINITEPAY] Configuração atualizada por ${session.username} (Handle: ${updatedCfg.handle})`);
+            return sendJson(res, 200, {
+                success: true,
+                config: updatedCfg,
+                message: 'Configuração da API InfinitePay salva com sucesso!'
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // 21. Gerar Link de Checkout Integrado via API InfinitePay
+    if (pathname === '/api/infinitepay/checkout' && method === 'POST') {
+        try {
+            const body = await parseJsonBody(req);
+            const cfg = getInfinitePayConfig();
+            const apiKey = body.apiKey || cfg.apiKey || DEFAULT_INFINITEPAY_CONFIG.apiKey;
+            const proto = req.headers['x-forwarded-proto'] || 'http';
+            const host = req.headers.host || `localhost:${PORT}`;
+            const origin = `${proto}://${host}`;
+
+            const fullPayload = buildInfinitePayCheckoutPayload(body, origin, cfg);
+            if (!fullPayload.items || fullPayload.items.length === 0) {
+                return sendJson(res, 400, {
+                    success: false,
+                    error: 'O pedido precisa conter pelo menos 1 item com valor válido.'
+                });
+            }
+
+            const headers = {
+                'X-Api-Key': apiKey
+            };
+
+            const endpoints = [
+                cfg.checkoutEndpoint || 'https://api.checkout.infinitepay.io/links',
+                cfg.fallbackEndpoint || 'https://api.infinitepay.io/invoices/public/checkout/links'
+            ];
+
+            let checkoutUrl = null;
+            let invoiceSlug = '';
+            let usedEndpoint = '';
+            let lastErr = '';
+
+            for (const endpoint of endpoints) {
+                try {
+                    const resp = await httpsPostJson(endpoint, fullPayload, headers);
+                    const urlCandidate = resp.data && (resp.data.url || resp.data.checkout_url || resp.data.link);
+                    if (resp.ok && urlCandidate) {
+                        checkoutUrl = urlCandidate;
+                        invoiceSlug = resp.data.slug || resp.data.invoice_slug || '';
+                        usedEndpoint = endpoint;
+                        break;
+                    }
+
+                    // Fallback enxuto (sem customer/address caso o telefone/CEP do cliente tenha formato inválido na validação estrita)
+                    const minimalPayload = {
+                        handle: fullPayload.handle,
+                        order_nsu: fullPayload.order_nsu,
+                        redirect_url: fullPayload.redirect_url,
+                        items: fullPayload.items
+                    };
+                    const respMin = await httpsPostJson(endpoint, minimalPayload, headers);
+                    const urlMin = respMin.data && (respMin.data.url || respMin.data.checkout_url || respMin.data.link);
+                    if (respMin.ok && urlMin) {
+                        checkoutUrl = urlMin;
+                        invoiceSlug = respMin.data.slug || respMin.data.invoice_slug || '';
+                        usedEndpoint = endpoint;
+                        break;
+                    }
+
+                    lastErr = (resp.data && (resp.data.message || resp.data.error)) ||
+                              (respMin.data && (respMin.data.message || respMin.data.error)) ||
+                              `HTTP ${resp.status}`;
+                } catch (e) {
+                    lastErr = e.message;
+                }
+            }
+
+            if (!checkoutUrl) {
+                return sendJson(res, 502, {
+                    success: false,
+                    error: lastErr || 'Não foi possível gerar o link na API da InfinitePay.'
+                });
+            }
+
+            // Se o pedido existir em pedidos.json, vincula o link gerado e o slug
+            if (fs.existsSync(PEDIDOS_FILE)) {
+                try {
+                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
+                    const idx = pedidos.findIndex(p =>
+                        p.id === fullPayload.order_nsu ||
+                        p.numero === fullPayload.order_nsu ||
+                        p.numero === `#${fullPayload.order_nsu}`
+                    );
+                    if (idx !== -1) {
+                        pedidos[idx].linkCartao = checkoutUrl;
+                        pedidos[idx].infinitePayUrl = checkoutUrl;
+                        if (invoiceSlug) pedidos[idx].invoiceSlug = invoiceSlug;
+                        fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+                    }
+                } catch (e) {}
+            }
+
+            console.log(`[INFINITEPAY] Link de checkout gerado para ${fullPayload.order_nsu}: ${checkoutUrl}`);
+            return sendJson(res, 200, {
+                success: true,
+                url: checkoutUrl,
+                slug: invoiceSlug,
+                order_nsu: fullPayload.order_nsu,
+                endpoint: usedEndpoint
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, error: err.message });
+        }
+    }
+
+    // 22. Verificar Status de Pagamento na InfinitePay (payment_check)
+    if (pathname === '/api/infinitepay/payment-check' && method === 'POST') {
+        try {
+            const body = await parseJsonBody(req);
+            const cfg = getInfinitePayConfig();
+            const apiKey = body.apiKey || cfg.apiKey || DEFAULT_INFINITEPAY_CONFIG.apiKey;
+            const handle = String(body.handle || cfg.handle || DEFAULT_INFINITEPAY_CONFIG.handle).replace(/^\$/, '').trim();
+            const order_nsu = String(body.order_nsu || body.orderId || '').replace(/^#/, '').trim();
+            const transaction_nsu = String(body.transaction_nsu || '').trim();
+            const slug = String(body.slug || body.invoice_slug || '').trim();
+            const receipt_url = String(body.receipt_url || '').trim();
+
+            const checkPayload = { handle, order_nsu, transaction_nsu, slug };
+            const headers = { 'X-Api-Key': apiKey };
+            const endpoints = [
+                cfg.paymentCheckEndpoint || 'https://api.checkout.infinitepay.io/payment_check',
+                cfg.fallbackPaymentCheckEndpoint || 'https://api.infinitepay.io/invoices/public/checkout/payment_check'
+            ];
+
+            let isPaid = false;
+            let captureMethod = body.capture_method || '';
+            let apiResponse = null;
+
+            for (const endpoint of endpoints) {
+                try {
+                    const resp = await httpsPostJson(endpoint, checkPayload, headers);
+                    if (resp.ok && resp.data) {
+                        apiResponse = resp.data;
+                        if (resp.data.paid || resp.data.success) {
+                            isPaid = true;
+                            captureMethod = resp.data.capture_method || captureMethod || 'infinitepay';
+                            break;
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            // Se o redirecionamento trouxe transaction_nsu e slug válidos
+            if (!isPaid && transaction_nsu && slug) {
+                isPaid = true;
+                captureMethod = captureMethod || 'infinitepay';
+            }
+
+            let updatedOrder = null;
+            if (isPaid && order_nsu && fs.existsSync(PEDIDOS_FILE)) {
+                try {
+                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
+                    const idx = pedidos.findIndex(p =>
+                        p.id === order_nsu ||
+                        p.numero === order_nsu ||
+                        p.numero === `#${order_nsu}`
+                    );
+                    if (idx !== -1) {
+                        pedidos[idx].status = 'pago';
+                        pedidos[idx].pagoEm = new Date().toISOString();
+                        if (transaction_nsu) pedidos[idx].transactionNsu = transaction_nsu;
+                        if (slug) pedidos[idx].invoiceSlug = slug;
+                        if (receipt_url) pedidos[idx].receiptUrl = receipt_url;
+                        if (captureMethod) {
+                            pedidos[idx].metodoPagamento = captureMethod === 'pix' ? 'pix' : 'cartao';
+                            pedidos[idx].captureMethod = captureMethod;
+                        }
+                        fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+                        updatedOrder = pedidos[idx];
+                        console.log(`[INFINITEPAY] Pagamento confirmado para o pedido ${pedidos[idx].numero} (${captureMethod})`);
+                    }
+                } catch (e) {}
+            }
+
+            return sendJson(res, 200, {
+                success: true,
+                paid: isPaid,
+                capture_method: captureMethod,
+                order_nsu,
+                transaction_nsu,
+                slug,
+                receipt_url,
+                pedido: updatedOrder,
+                raw: apiResponse
+            });
+        } catch (err) {
+            return sendJson(res, 400, { success: false, paid: false, error: err.message });
+        }
+    }
+
+    // 23. Webhook Oficial InfinitePay
+    if (pathname === '/api/infinitepay/webhook' && method === 'POST') {
+        try {
+            const body = await parseJsonBody(req);
+            const orderNsu = String(body.order_nsu || '').replace(/^#/, '').trim();
+            const invoiceSlug = String(body.invoice_slug || body.slug || '').trim();
+            const transactionNsu = String(body.transaction_nsu || '').trim();
+            const captureMethod = String(body.capture_method || 'infinitepay').trim();
+            const receiptUrl = String(body.receipt_url || '').trim();
+
+            if (orderNsu && fs.existsSync(PEDIDOS_FILE)) {
+                try {
+                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
+                    const idx = pedidos.findIndex(p =>
+                        p.id === orderNsu ||
+                        p.numero === orderNsu ||
+                        p.numero === `#${orderNsu}`
+                    );
+                    if (idx !== -1) {
+                        pedidos[idx].status = 'pago';
+                        pedidos[idx].pagoEm = new Date().toISOString();
+                        if (invoiceSlug) pedidos[idx].invoiceSlug = invoiceSlug;
+                        if (transactionNsu) pedidos[idx].transactionNsu = transactionNsu;
+                        if (receiptUrl) pedidos[idx].receiptUrl = receiptUrl;
+                        pedidos[idx].captureMethod = captureMethod;
+                        pedidos[idx].metodoPagamento = captureMethod === 'pix' ? 'pix' : 'cartao';
+                        fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+                        console.log(`[WEBHOOK INFINITEPAY] Pedido ${pedidos[idx].numero} atualizado automaticamente para PAGO (${captureMethod})`);
+                    }
+                } catch (e) {
+                    console.error('[WEBHOOK INFINITEPAY] Erro ao atualizar pedido:', e);
+                }
+            }
+
+            return sendJson(res, 200, {
+                success: true,
+                received: true,
+                order_nsu: orderNsu
+            });
         } catch (err) {
             return sendJson(res, 400, { success: false, error: err.message });
         }

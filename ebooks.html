@@ -893,10 +893,16 @@
                 </div>
             </div>
             
-            <button id="checkoutBtn" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-[#25D366] shadow-md">
-                <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
-                Finalizar no WhatsApp
-            </button>
+            <div class="space-y-2">
+                <button id="checkoutInfinitePayBtn" onclick="checkoutCartInfinitePay()" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md text-xs sm:text-sm">
+                    <i class="ph-bold ph-credit-card text-xl"></i>
+                    Pagar Agora via InfinitePay (Cartão até 12x / PIX)
+                </button>
+                <button id="checkoutBtn" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-[#25D366] shadow-md text-xs sm:text-sm">
+                    <i class="ph-bold ph-whatsapp-logo text-xl"></i>
+                    Finalizar no WhatsApp
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1079,6 +1085,7 @@
             const subtotalEl = document.getElementById('cartSubtotal');
             const emptyMsg = document.getElementById('emptyCartMsg');
             const checkoutBtn = document.getElementById('checkoutBtn');
+            const checkoutInfBtn = document.getElementById('checkoutInfinitePayBtn');
             const totalGeralEl = document.getElementById('cartTotalGeral');
             const cartShippingBox = document.getElementById('cartShippingBox');
             const cartDigitalShippingInfo = document.getElementById('cartDigitalShippingInfo');
@@ -1132,8 +1139,10 @@
                     container.innerHTML = '';
                 }
                 if (checkoutBtn) checkoutBtn.disabled = true;
+                if (checkoutInfBtn) checkoutInfBtn.disabled = true;
             } else {
                 if (emptyMsg) emptyMsg.classList.add('hidden');
+                if (checkoutInfBtn) checkoutInfBtn.disabled = false;
                 if (container) {
                     container.classList.remove('hidden');
                     container.innerHTML = cart.map((item, index) => {
@@ -1193,6 +1202,109 @@
         document.getElementById('cartBtn').addEventListener('click', openCart);
         document.getElementById('closeCartBtn').addEventListener('click', closeCart);
         cartOverlay.addEventListener('click', closeCart);
+
+        // Checkout do Carrinho via API Oficial da InfinitePay
+        const INFINITEPAY_API_KEY_DEFAULT = "inchk_jOkw1-v4xAqj0kkbPXhWs0BwIJ503mT5SwD9q2-6AuI";
+        const INFINITEPAY_HANDLE_DEFAULT = "sandro-cavalli";
+
+        const checkoutCartInfinitePay = async () => {
+            if (cart.length === 0) return;
+
+            const checkoutWin = window.open('about:blank', '_blank');
+            if (checkoutWin) {
+                checkoutWin.document.write(`
+                    <html><head><title>Checkout Seguro InfinitePay...</title>
+                    <style>body{background:#181c15;color:#F8F6F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center;}
+                    .box{padding:32px;border:1px solid rgba(200,157,60,0.4);border-radius:20px;background:#22271e;max-width:380px;}
+                    h3{color:#C89D3C;margin:0 0 10px;}</style></head>
+                    <body><div class="box"><h3>Conectando ao Checkout InfinitePay...</h3><p style="font-size:13px;color:#ccc;">Gerando link seguro para pagamento em até 12x no Cartão ou PIX...</p></div></body></html>
+                `);
+            }
+
+            const orderId = `BOS-${Math.floor(1000 + Math.random() * 9000)}`;
+            const hasPhysical = cart.some(i => !i.isDigital);
+            const freteVal = (hasPhysical && cartFrete && cartFrete.calculado) ? (Number(cartFrete.valor) || 0) : 0;
+            const fallbackSingleLink = cart.length === 1 ? (cart[0].linkCartao || (EBOOKS[cart[0].id] && EBOOKS[cart[0].id].linkCartao) || '') : '';
+
+            let checkoutUrl = '';
+
+            // 1. Tenta via API Backend (/api/infinitepay/checkout)
+            try {
+                const res = await fetch('/api/infinitepay/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        handle: INFINITEPAY_HANDLE_DEFAULT,
+                        apiKey: INFINITEPAY_API_KEY_DEFAULT,
+                        order_nsu: orderId,
+                        items: cart.map(it => ({
+                            nome: it.name,
+                            opcaoLabel: it.isDigital ? 'Envio por PDF' : (optionLabels[it.option] || it.option),
+                            quantidade: it.quantity,
+                            precoUnitario: it.price
+                        })),
+                        frete: { tipo: 'SEDEX', valor: freteVal },
+                        redirect_url: `${window.location.origin}/?infinitepay_return=1&order_nsu=${encodeURIComponent(orderId)}`
+                    })
+                });
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.success && data.url) {
+                    checkoutUrl = data.url;
+                }
+            } catch (e) {}
+
+            // 2. Fallback direto à API InfinitePay
+            if (!checkoutUrl) {
+                const items = cart.map(it => ({
+                    quantity: Math.max(1, Number(it.quantity) || 1),
+                    price: Math.round((Number(it.price) || 0) * 100),
+                    description: `${it.name} (${it.isDigital ? 'Envio por PDF' : (optionLabels[it.option] || it.option)})`
+                }));
+                if (freteVal > 0) {
+                    items.push({
+                        quantity: 1,
+                        price: Math.round(freteVal * 100),
+                        description: 'Frete SEDEX Correios'
+                    });
+                }
+                for (const ep of ['https://api.checkout.infinitepay.io/links', 'https://api.infinitepay.io/invoices/public/checkout/links']) {
+                    try {
+                        const res = await fetch(ep, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-Api-Key': INFINITEPAY_API_KEY_DEFAULT
+                            },
+                            body: JSON.stringify({
+                                handle: INFINITEPAY_HANDLE_DEFAULT,
+                                order_nsu: orderId,
+                                redirect_url: `${window.location.origin}/?infinitepay_return=1&order_nsu=${encodeURIComponent(orderId)}`,
+                                items
+                            })
+                        });
+                        const data = await res.json().catch(() => null);
+                        const u = data && (data.url || data.checkout_url || data.link);
+                        if (res.ok && u) {
+                            checkoutUrl = u;
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            }
+
+            if (!checkoutUrl && fallbackSingleLink) {
+                checkoutUrl = fallbackSingleLink;
+            }
+
+            if (checkoutUrl) {
+                if (checkoutWin) checkoutWin.location.href = checkoutUrl;
+                else window.open(checkoutUrl, '_blank');
+            } else {
+                if (checkoutWin) checkoutWin.close();
+                showToast('Finalize pelo botão do WhatsApp para receber o link de pagamento.');
+            }
+        };
 
         // WhatsApp Checkout
         document.getElementById('checkoutBtn').addEventListener('click', () => {
