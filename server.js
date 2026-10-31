@@ -109,9 +109,7 @@ const buildInfinitePayCheckoutPayload = (body, origin, cfg) => {
         const qty = Math.max(1, Math.round(Number(it.quantity || it.quantidade || 1)));
         const priceCents = it.price_cents
             ? Math.round(Number(it.price_cents))
-            : (Number(it.price) >= 1000 && !it.isUnitReais
-                ? Math.round(Number(it.price))
-                : Math.round(Number(it.precoUnitario || it.price || 0) * 100));
+            : Math.round(Number(it.precoUnitario ?? it.price ?? 0) * 100);
         const desc = String(it.description || (it.opcaoLabel ? `${it.nome || it.name} (${it.opcaoLabel})` : (it.nome || it.name || 'Produto'))).trim();
         return {
             quantity: qty,
@@ -1056,10 +1054,12 @@ const server = http.createServer(async (req, res) => {
             }
 
             const headers = {
-                'X-Api-Key': apiKey
+                'X-Api-Key': apiKey,
+                'Authorization': `Bearer ${apiKey}`
             };
 
             const endpoints = [
+                'https://api.infinitepay.io/invoices/public/checkout/links',
                 cfg.checkoutEndpoint || 'https://api.checkout.infinitepay.io/links',
                 cfg.fallbackEndpoint || 'https://api.infinitepay.io/invoices/public/checkout/links'
             ];
@@ -1105,10 +1105,35 @@ const server = http.createServer(async (req, res) => {
             }
 
             if (!checkoutUrl) {
-                return sendJson(res, 502, {
-                    success: false,
-                    error: lastErr || 'Não foi possível gerar o link na API da InfinitePay.'
-                });
+                if (body.fallbackUrl && fullPayload.items && fullPayload.items.length === 1) {
+                    checkoutUrl = body.fallbackUrl;
+                    usedEndpoint = 'fallback_link';
+                } else {
+                    const urlItems = (fullPayload.items || []).map(it => ({
+                        name: it.description || it.name || 'Produto',
+                        description: it.description || it.name || 'Produto',
+                        price: it.price,
+                        quantity: it.quantity
+                    }));
+                    const params = new URLSearchParams();
+                    params.set('items', JSON.stringify(urlItems));
+                    if (fullPayload.order_nsu) params.set('order_nsu', fullPayload.order_nsu);
+                    if (fullPayload.redirect_url) params.set('redirect_url', fullPayload.redirect_url);
+                    if (fullPayload.customer) {
+                        if (fullPayload.customer.name) params.set('customer_name', fullPayload.customer.name);
+                        if (fullPayload.customer.email) params.set('customer_email', fullPayload.customer.email);
+                        if (fullPayload.customer.phone_number) params.set('customer_cellphone', fullPayload.customer.phone_number);
+                    }
+                    if (fullPayload.address) {
+                        if (fullPayload.address.cep) params.set('address_cep', fullPayload.address.cep);
+                        if (fullPayload.address.street) params.set('address_street', fullPayload.address.street);
+                        if (fullPayload.address.number) params.set('address_number', fullPayload.address.number);
+                        if (fullPayload.address.neighborhood) params.set('address_neighborhood', fullPayload.address.neighborhood);
+                        if (fullPayload.address.complement) params.set('address_complement', fullPayload.address.complement);
+                    }
+                    checkoutUrl = `https://checkout.infinitepay.io/${fullPayload.handle}?${params.toString()}`;
+                    usedEndpoint = 'https://checkout.infinitepay.io';
+                }
             }
 
             // Se o pedido existir em pedidos.json, vincula o link gerado e o slug
@@ -1294,8 +1319,9 @@ const server = http.createServer(async (req, res) => {
                 }
                 const liveReloadSnippet = `\n<!-- Live Reload Automático -->\n<script id="__livereload_script">(() => { let s; function c() { s = new EventSource('/__livereload'); s.onmessage = (e) => { if (e.data === 'reload') { console.log('[LiveReload] Atualizando página...'); location.reload(); } }; s.onerror = () => { s.close(); setTimeout(c, 1500); }; } c(); })();</script>\n`;
                 let finalHtml = content;
-                if (content.includes('</body>')) {
-                    finalHtml = content.replace('</body>', `${liveReloadSnippet}</body>`);
+                const lastBodyIdx = content.lastIndexOf('</body>');
+                if (lastBodyIdx !== -1) {
+                    finalHtml = content.slice(0, lastBodyIdx) + liveReloadSnippet + content.slice(lastBodyIdx);
                 } else {
                     finalHtml += liveReloadSnippet;
                 }

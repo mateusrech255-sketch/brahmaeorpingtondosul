@@ -10,9 +10,7 @@ function buildInfinitePayPayload(body, origin) {
         const qty = Math.max(1, Math.round(Number(it.quantity || it.quantidade || 1)));
         const priceCents = it.price_cents
             ? Math.round(Number(it.price_cents))
-            : (Number(it.price) >= 1000 && !it.isUnitReais
-                ? Math.round(Number(it.price))
-                : Math.round(Number(it.precoUnitario || it.price || 0) * 100));
+            : Math.round(Number(it.precoUnitario ?? it.price ?? 0) * 100);
         const desc = String(it.description || (it.opcaoLabel ? `${it.nome || it.name} (${it.opcaoLabel})` : (it.nome || it.name || 'Produto'))).trim();
         return {
             quantity: qty,
@@ -86,6 +84,35 @@ function buildInfinitePayPayload(body, origin) {
     return payload;
 }
 
+function buildInfinitePayDirectCheckoutUrl(payload, fallbackUrl = '') {
+    if (fallbackUrl && payload.items && payload.items.length === 1) {
+        return fallbackUrl;
+    }
+    const urlItems = (payload.items || []).map(it => ({
+        name: it.description || it.name || 'Produto',
+        description: it.description || it.name || 'Produto',
+        price: it.price,
+        quantity: it.quantity
+    }));
+    const params = new URLSearchParams();
+    params.set('items', JSON.stringify(urlItems));
+    if (payload.order_nsu) params.set('order_nsu', payload.order_nsu);
+    if (payload.redirect_url) params.set('redirect_url', payload.redirect_url);
+    if (payload.customer) {
+        if (payload.customer.name) params.set('customer_name', payload.customer.name);
+        if (payload.customer.email) params.set('customer_email', payload.customer.email);
+        if (payload.customer.phone_number) params.set('customer_cellphone', payload.customer.phone_number);
+    }
+    if (payload.address) {
+        if (payload.address.cep) params.set('address_cep', payload.address.cep);
+        if (payload.address.street) params.set('address_street', payload.address.street);
+        if (payload.address.number) params.set('address_number', payload.address.number);
+        if (payload.address.neighborhood) params.set('address_neighborhood', payload.address.neighborhood);
+        if (payload.address.complement) params.set('address_complement', payload.address.complement);
+    }
+    return `https://checkout.infinitepay.io/${payload.handle}?${params.toString()}`;
+}
+
 export async function onRequestOptions() {
     return new Response(null, {
         status: 204,
@@ -120,12 +147,13 @@ export async function onRequestPost(context) {
         const headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "X-Api-Key": apiKey
+            "X-Api-Key": apiKey,
+            "Authorization": `Bearer ${apiKey}`
         };
 
         const endpoints = [
-            "https://api.checkout.infinitepay.io/links",
-            "https://api.infinitepay.io/invoices/public/checkout/links"
+            "https://api.infinitepay.io/invoices/public/checkout/links",
+            "https://api.checkout.infinitepay.io/links"
         ];
 
         let lastError = null;
@@ -180,10 +208,16 @@ export async function onRequestPost(context) {
             }
         }
 
+        // Fallback garantido via URL oficial de Checkout Integrado InfinitePay
+        const fallbackCheckoutUrl = buildInfinitePayDirectCheckoutUrl(fullPayload, body.fallbackUrl || '');
         return new Response(JSON.stringify({
-            success: false,
-            error: lastError || "Não foi possível gerar o link na API da InfinitePay."
-        }), { status: 502, headers: corsHeaders });
+            success: true,
+            url: fallbackCheckoutUrl,
+            slug: "",
+            order_nsu: fullPayload.order_nsu,
+            endpoint: "https://checkout.infinitepay.io",
+            warning: lastError || undefined
+        }), { status: 200, headers: corsHeaders });
     } catch (err) {
         return new Response(JSON.stringify({
             success: false,

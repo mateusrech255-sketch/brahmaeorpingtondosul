@@ -158,9 +158,6 @@
                                     Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
                                 </a>
                             </div>
-                            <a href="https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-iSkMbBsGwz-59,90" target="_blank" rel="noopener" class="mt-2 w-full bg-white/10 hover:bg-rustic-gold hover:text-rustic-dark text-rustic-gold font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/40 flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="ph-bold ph-credit-card text-sm"></i> Pagar no Cartão
-                            </a>
                         </div>
                     </div>
 
@@ -196,9 +193,6 @@
                                     Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
                                 </a>
                             </div>
-                            <a href="https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-fbu9KXnetj-39,90" target="_blank" rel="noopener" class="mt-2 w-full bg-white/10 hover:bg-rustic-gold hover:text-rustic-dark text-rustic-gold font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/40 flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="ph-bold ph-credit-card text-sm"></i> Pagar no Cartão
-                            </a>
                         </div>
                     </div>
 
@@ -234,9 +228,6 @@
                                     Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
                                 </a>
                             </div>
-                            <a href="https://link.infinitepay.io/sandro-cavalli/VC1DLTAtUg-fbu9KXnetj-39,90" target="_blank" rel="noopener" class="mt-2 w-full bg-white/10 hover:bg-rustic-gold hover:text-rustic-dark text-rustic-gold font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/40 flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="ph-bold ph-credit-card text-sm"></i> Pagar no Cartão
-                            </a>
                         </div>
                     </div>
 
@@ -967,62 +958,56 @@
                     </div>
                 </div>
 
-                <!-- 4. Pagamento via PIX -->
-                <div class="bg-gradient-to-r from-emerald-950/40 via-stone-900 to-emerald-950/40 border border-emerald-500/30 p-4 rounded-2xl space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="ph-bold ph-qr-code text-base"></i> Pagamento via PIX
+                <!-- 4. Pagamento Controlado via Checkout Integrado InfinitePay (API Oficial) -->
+                <div class="bg-gradient-to-r from-amber-950/35 via-stone-900 to-emerald-950/30 border border-rustic-gold/40 p-4 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="ph-bold ph-shield-check text-base"></i> Checkout Oficial InfinitePay (API)
                         </span>
-                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">
-                            Chave Oficial
+                        <span class="text-[10px] bg-rustic-gold/20 text-rustic-gold px-2.5 py-0.5 rounded-full font-bold" id="orderConfirmCardBadge">
+                            PIX ou Cartão em até 12x
                         </span>
                     </div>
                     <p class="text-xs text-stone-300 leading-relaxed">
-                        Ao confirmar, o pedido é registrado instantaneamente no nosso painel administrativo e a conversa no WhatsApp será aberta com todos os detalhes e chave PIX para envio do comprovante.
+                        O pagamento do seu pedido é processado e controlado pela <strong>Integração de Checkout via API da InfinitePay</strong> (Cartão de Crédito em até 12x ou PIX com confirmação automática), já incluindo itens e frete SEDEX.
                     </p>
-                    <div class="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-emerald-500/20">
-                        <span class="text-xs font-mono text-emerald-300 flex-1 truncate select-all" id="pixKeyText">contato@brahmaeorpingtondosul.com.br</span>
-                        <button type="button" onclick="copyPixKey()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-all shrink-0 flex items-center gap-1">
-                            <i class="ph-bold ph-copy"></i> Copiar
+
+                    <!-- Box Pagamento no Cartão / Checkout API InfinitePay (Exibido apenas ao finalizar o pedido) -->
+                    <div id="orderConfirmCardActiveBox" class="p-3 rounded-xl bg-rustic-gold/10 border border-rustic-gold/30 flex items-center justify-between gap-2.5">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-lg bg-rustic-gold/20 text-rustic-gold flex items-center justify-center shrink-0">
+                                <i class="ph-bold ph-credit-card text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-rustic-gold">Pagamento no Cartão / Checkout InfinitePay</span>
+                                <span class="block text-xs font-mono text-stone-200 truncate select-all" id="orderConfirmCardLinkText">Conectando à API InfinitePay...</span>
+                            </div>
+                        </div>
+                        <button type="button" id="orderConfirmCardLinkBtn" onclick="confirmAndPlaceOrder(true)" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark text-xs font-bold py-2 px-3 rounded-lg transition-all shrink-0 flex items-center gap-1 shadow-sm">
+                            <i class="ph-bold ph-credit-card text-xs"></i> Cartão / PIX
                         </button>
                     </div>
-                </div>
 
-                <!-- 4B. Checkout Integrado InfinitePay (API Oficial) -->
-                <div class="bg-gradient-to-r from-amber-950/35 via-stone-900 to-amber-950/35 border border-rustic-gold/40 p-4 rounded-2xl space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="ph-bold ph-credit-card text-base"></i> Checkout Online InfinitePay (API)
-                        </span>
-                        <span class="text-[10px] bg-rustic-gold/20 text-rustic-gold px-2 py-0.5 rounded font-bold" id="orderConfirmCardBadge">
-                            Cartão em até 12x ou PIX
-                        </span>
-                    </div>
-                    <p class="text-xs text-stone-300 leading-relaxed">
-                        Pague com segurança pelo <strong>Checkout Integrado InfinitePay</strong> (Cartão de Crédito em até 12x ou PIX com aprovação automática). O valor já inclui seus itens e o frete SEDEX calculado!
-                    </p>
-                    <div id="orderConfirmCardActiveBox" class="hidden space-y-2">
-                        <div class="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-rustic-gold/20">
-                            <span class="text-xs font-mono text-rustic-gold flex-1 truncate select-all" id="orderConfirmCardLinkText">--</span>
-                            <a href="#" target="_blank" id="orderConfirmCardLinkBtn" onclick="selectOrderPaymentMethod('cartao')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark text-xs font-bold py-1.5 px-3 rounded-lg transition-all shrink-0 flex items-center gap-1">
-                                <i class="ph-bold ph-arrow-square-out"></i> Abrir Link
-                            </a>
+                    <!-- Box Chave PIX do Pedido (Exibido apenas ao finalizar o pedido) -->
+                    <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-2.5">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                                <i class="ph-bold ph-qr-code text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-emerald-400">Chave PIX do Produto / Pedido</span>
+                                <span class="block text-xs font-mono text-emerald-200 truncate select-all" id="pixKeyText">contato@brahmaeorpingtondosul.com.br</span>
+                            </div>
                         </div>
+                        <button type="button" onclick="copyPixKey()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 px-3 rounded-lg transition-all shrink-0 flex items-center gap-1 shadow-sm">
+                            <i class="ph-bold ph-copy text-xs"></i> Copiar
+                        </button>
                     </div>
-                    <p id="orderConfirmCardFallbackText" class="hidden text-xs text-stone-400 leading-relaxed">
-                        O link exclusivo do seu pedido (com itens + frete SEDEX) será gerado automaticamente na InfinitePay ao clicar em pagar abaixo.
+
+                    <p id="orderConfirmCardFallbackText" class="text-[11px] text-emerald-400 font-medium flex items-center gap-1.5">
+                        <i class="ph-fill ph-check-circle"></i>
+                        <span>Checkout Integrado InfinitePay pronto para processar seu pagamento com confirmação automática.</span>
                     </p>
-                    <div class="pt-1 flex flex-wrap items-center gap-4 text-xs">
-                        <span class="text-stone-400 font-semibold">Preferência de Pagamento:</span>
-                        <label class="inline-flex items-center gap-1.5 cursor-pointer text-white font-semibold">
-                            <input type="radio" name="orderPaymentMethod" value="cartao" checked onchange="selectOrderPaymentMethod('cartao')">
-                            <span>Checkout InfinitePay (Cartão até 12x / PIX)</span>
-                        </label>
-                        <label class="inline-flex items-center gap-1.5 cursor-pointer text-white font-semibold">
-                            <input type="radio" name="orderPaymentMethod" value="pix" onchange="selectOrderPaymentMethod('pix')">
-                            <span>Chave PIX Direta</span>
-                        </label>
-                    </div>
                 </div>
 
                 <!-- 5. Observações Opcionais -->
@@ -1035,11 +1020,11 @@
                 <div class="space-y-2.5">
                     <button type="button" id="btnConfirmInfinitePaySubmit" onclick="confirmAndPlaceOrder(true)" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-4 rounded-2xl transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2.5 text-sm sm:text-base">
                         <i class="ph-bold ph-credit-card text-2xl"></i>
-                        <span>Pagar Agora com InfinitePay (Cartão até 12x ou PIX)</span>
+                        <span>Finalizar e Pagar com InfinitePay (Cartão até 12x ou PIX)</span>
                     </button>
                     <button type="button" id="btnConfirmOrderSubmit" onclick="confirmAndPlaceOrder(false)" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2.5 text-xs sm:text-sm">
                         <i class="ph-bold ph-whatsapp-logo text-xl"></i>
-                        <span>Confirmar Pedido & Abrir WhatsApp</span>
+                        <span>Confirmar Pedido & Acompanhar no WhatsApp</span>
                     </button>
                 </div>
             </div>
@@ -1642,39 +1627,6 @@
                         
                         <div class="space-y-2.5 mb-4 mt-auto">
                             ${optionsHtml}
-                        </div>
-
-                        <div class="mb-4 space-y-2">
-                            <div class="p-2.5 rounded-xl bg-rustic-green/5 border border-emerald-500/30 flex items-center justify-between gap-2">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-rustic-green flex items-center justify-center shrink-0">
-                                        <i class="ph-bold ph-qr-code text-sm"></i>
-                                    </div>
-                                    <div class="min-w-0">
-                                        <span class="block text-[10px] font-bold uppercase tracking-wider text-rustic-green">Chave PIX do Produto</span>
-                                        <span class="block text-xs font-mono text-gray-700 truncate select-all" title="${prod.chavePix || 'contato@brahmaeorpingtondosul.com.br'}">${prod.chavePix || 'contato@brahmaeorpingtondosul.com.br'}</span>
-                                    </div>
-                                </div>
-                                <button type="button" onclick="copyProductPixKey('${prod.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1.5 px-2.5 rounded-lg transition-all shrink-0 flex items-center gap-1 shadow-sm">
-                                    <i class="ph-bold ph-copy text-xs"></i> Copiar
-                                </button>
-                            </div>
-                            ${getProductCardLink(prod.id) ? `
-                            <div id="card-box-${prod.id}" class="p-2.5 rounded-xl bg-rustic-gold/10 border border-rustic-gold/30 flex items-center justify-between gap-2">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <div class="w-7 h-7 rounded-lg bg-rustic-gold/20 text-rustic-earth flex items-center justify-center shrink-0">
-                                        <i class="ph-bold ph-credit-card text-sm"></i>
-                                    </div>
-                                    <div class="min-w-0">
-                                        <span class="block text-[10px] font-bold uppercase tracking-wider text-rustic-earth">Pagamento no Cartão</span>
-                                        <span id="card-opt-label-${prod.id}" class="block text-xs font-semibold text-gray-700 truncate">${optionLabels[getSelectedOption(prod.id)] || (prod.cartaoParcelas || 'Em até 12x no Cartão')}</span>
-                                    </div>
-                                </div>
-                                <button type="button" onclick="openProductCardLink('${prod.id}')" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark text-xs font-bold py-1.5 px-2.5 rounded-lg transition-all shrink-0 flex items-center gap-1 shadow-sm">
-                                    <i class="ph-bold ph-credit-card text-xs"></i> Cartão
-                                </button>
-                            </div>
-                            ` : ''}
                         </div>
                         
                         <button onclick="addToCart('${prod.id}')" class="w-full bg-rustic-dark hover:bg-rustic-green text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
@@ -3051,28 +3003,62 @@
                 return item.linkCartao || '';
             }).filter(Boolean))];
             const activeCardLink = resolvedCardLinks[0] || cfgPay.linkCartao || '';
-            const cardActiveBox = document.getElementById('orderConfirmCardActiveBox');
-            const cardFallbackText = document.getElementById('orderConfirmCardFallbackText');
             const cardLinkText = document.getElementById('orderConfirmCardLinkText');
-            const cardLinkBtn = document.getElementById('orderConfirmCardLinkBtn');
             const cardBadge = document.getElementById('orderConfirmCardBadge');
-            if (cardBadge) cardBadge.textContent = cfgPay.cartaoParcelas || 'Em até 12x no Cartão';
+            if (cardBadge) cardBadge.textContent = cfgPay.cartaoParcelas || 'PIX ou Cartão em até 12x';
 
-            if (activeCardLink) {
-                if (cardActiveBox) cardActiveBox.classList.remove('hidden');
-                if (cardFallbackText) cardFallbackText.classList.add('hidden');
-                if (cardLinkText) cardLinkText.textContent = activeCardLink;
-                if (cardLinkBtn) cardLinkBtn.href = activeCardLink;
-            } else {
-                if (cardActiveBox) cardActiveBox.classList.add('hidden');
-                if (cardFallbackText) cardFallbackText.classList.remove('hidden');
-                if (cardLinkText) cardLinkText.textContent = '';
+            currentPendingOrderId = `BOS-${Math.floor(1000 + Math.random() * 9000)}`;
+            currentPreparedCheckout = null;
+
+            if (cardLinkText) {
+                cardLinkText.textContent = `Gerando link oficial InfinitePay (${formatMoney(totalGeral)})...`;
             }
+
+            // Gera imediatamente o Checkout Oficial via API InfinitePay ao abrir a tela de finalização
+            currentPreparedCheckoutPromise = generateInfinitePayCheckoutUrl({
+                orderId: currentPendingOrderId,
+                items: cart.map(i => ({
+                    id: i.id,
+                    nome: i.name,
+                    opcao: i.option,
+                    opcaoLabel: i.isDigital ? "Envio por PDF" : (optionLabels[i.option] || i.option),
+                    quantidade: i.quantity,
+                    precoUnitario: i.price,
+                    total: i.price * i.quantity,
+                    isDigital: !!i.isDigital
+                })),
+                frete: {
+                    tipo: isAllDigital ? 'DIGITAL' : 'SEDEX',
+                    valor: freteValor,
+                    prazo: fretePrazo,
+                    cidade: currentClient.endereco?.cidade || cartFrete.localidade || 'Passo Fundo',
+                    uf: currentClient.endereco?.uf || cartFrete.uf || 'RS',
+                    cep: currentClient.endereco?.cep || cartFrete.cep || '99010-000'
+                },
+                cliente: {
+                    nome: currentClient.nome,
+                    email: currentClient.email || '',
+                    whatsapp: currentClient.whatsapp,
+                    endereco: currentClient.endereco || {}
+                },
+                fallbackUrl: activeCardLink
+            }).then(res => {
+                currentPreparedCheckout = res;
+                if (cardLinkText && res && res.url) {
+                    cardLinkText.textContent = res.url;
+                }
+                return res;
+            });
+
             selectOrderPaymentMethod('cartao');
 
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         };
+
+        let currentPendingOrderId = '';
+        let currentPreparedCheckout = null;
+        let currentPreparedCheckoutPromise = null;
 
         const closeOrderConfirmModal = () => {
             const modal = document.getElementById('orderConfirmModal');
@@ -3205,7 +3191,39 @@
                 }
             }
 
-            // 3. Fallback seguro para o link individual da opção selecionada
+            // 3. Fallback seguro para o link individual da opção selecionada ou URL oficial do Checkout Integrado InfinitePay
+            if (fallbackUrl && formattedItems.length <= 1) {
+                return {
+                    success: true,
+                    url: fallbackUrl,
+                    slug: '',
+                    order_nsu: orderNsu,
+                    isFallback: true
+                };
+            }
+
+            if (formattedItems.length > 0) {
+                const urlItems = formattedItems.map(it => ({
+                    name: it.description,
+                    description: it.description,
+                    price: it.price,
+                    quantity: it.quantity
+                }));
+                const params = new URLSearchParams();
+                params.set('items', JSON.stringify(urlItems));
+                params.set('order_nsu', orderNsu);
+                params.set('redirect_url', `${origin}/?infinitepay_return=1&order_nsu=${encodeURIComponent(orderNsu)}`);
+                if (cliente && cliente.nome) params.set('customer_name', cliente.nome);
+                if (cliente && cliente.email) params.set('customer_email', cliente.email);
+                if (cliente && cliente.whatsapp) params.set('customer_cellphone', cliente.whatsapp);
+                return {
+                    success: true,
+                    url: `https://checkout.infinitepay.io/${handle}?${params.toString()}`,
+                    slug: '',
+                    order_nsu: orderNsu
+                };
+            }
+
             if (fallbackUrl) {
                 return {
                     success: true,
@@ -3254,8 +3272,8 @@
                     <html><head><title>Checkout Seguro InfinitePay...</title>
                     <style>body{background:#181c15;color:#F8F6F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center;}
                     .box{padding:32px;border:1px solid rgba(200,157,60,0.4);border-radius:20px;background:#22271e;max-width:380px;}
-                    h3{color:#C89D3C;margin:0 0 10px;}</style></head>
-                    <body><div class="box"><h3>Conectando ao Checkout InfinitePay...</h3><p style="font-size:13px;color:#ccc;">Gerando link seguro para <b>${prod.nome} (${optLabel})</b>...</p></div></body></html>
+                    h3{color:#C89D3C;margin:0 0 10px;}<\/style><\/head>
+                    <body><div class="box"><h3>Conectando ao Checkout InfinitePay...<\/h3><p style="font-size:13px;color:#ccc;">Gerando link seguro para <b>${prod.nome} (${optLabel})<\/b>...<\/p><\/div><\/body><\/html>
                 `);
             }
 
@@ -3327,11 +3345,11 @@
                 checkoutPopup = window.open('about:blank', '_blank');
                 if (checkoutPopup) {
                     checkoutPopup.document.write(`
-                        <html><head><title>Checkout Seguro InfinitePay</title>
+                        <html><head><title>Checkout Seguro InfinitePay<\/title>
                         <style>body{background:#181c15;color:#F8F6F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center;}
                         .box{padding:32px;border:1px solid rgba(200,157,60,0.4);border-radius:20px;background:#22271e;max-width:400px;}
-                        h3{color:#C89D3C;margin:0 0 10px;}</style></head>
-                        <body><div class="box"><h3>Preparando seu Checkout InfinitePay...</h3><p style="font-size:13px;color:#ccc;">Calculando itens e frete SEDEX para pagamento em até 12x no Cartão ou PIX...</p></div></body></html>
+                        h3{color:#C89D3C;margin:0 0 10px;}<\/style><\/head>
+                        <body><div class="box"><h3>Preparando seu Checkout InfinitePay...<\/h3><p style="font-size:13px;color:#ccc;">Calculando itens e frete SEDEX para pagamento em até 12x no Cartão ou PIX...<\/p><\/div><\/body><\/html>
                     `);
                 }
             }
@@ -3346,11 +3364,11 @@
 
             const observacoes = document.getElementById('orderNotesInput')?.value.trim() || '';
 
-            const numRandom = Math.floor(1000 + Math.random() * 9000);
-            const orderId = `BOS-${numRandom}`;
+            const orderId = currentPendingOrderId || `BOS-${Math.floor(1000 + Math.random() * 9000)}`;
 
             const activeOrderPix = document.getElementById('pixKeyText')?.textContent || 'contato@brahmaeorpingtondosul.com.br';
-            const fallbackCardLink = document.getElementById('orderConfirmCardLinkText')?.textContent || '';
+            const rawCardLinkText = document.getElementById('orderConfirmCardLinkText')?.textContent || '';
+            const fallbackCardLink = rawCardLinkText.startsWith('http') ? rawCardLinkText : '';
 
             const orderPayload = {
                 id: orderId,
@@ -3386,18 +3404,28 @@
                 codigoRastreio: '',
                 metodoPagamento: openInfinitePayDirect ? 'cartao' : (selectedOrderPaymentMethod || 'cartao'),
                 chavePix: activeOrderPix,
-                linkCartao: fallbackCardLink !== '--' ? fallbackCardLink : '',
+                linkCartao: fallbackCardLink,
                 observacoes: observacoes
             };
 
-            // 1. Gera o Link Dinâmico na API da InfinitePay (com todos os itens + frete SEDEX + cliente + endereço)
-            const checkoutRes = await generateInfinitePayCheckoutUrl({
-                orderId: orderPayload.id,
-                items: orderPayload.itens,
-                frete: orderPayload.frete,
-                cliente: orderPayload.cliente,
-                fallbackUrl: orderPayload.linkCartao
-            });
+            // 1. Usa o Link Dinâmico gerado na API da InfinitePay (ou gera se ainda não resolvido)
+            let checkoutRes = currentPreparedCheckout;
+            if (!checkoutRes || !checkoutRes.url) {
+                if (currentPreparedCheckoutPromise) {
+                    try {
+                        checkoutRes = await currentPreparedCheckoutPromise;
+                    } catch (e) {}
+                }
+                if (!checkoutRes || !checkoutRes.url) {
+                    checkoutRes = await generateInfinitePayCheckoutUrl({
+                        orderId: orderPayload.id,
+                        items: orderPayload.itens,
+                        frete: orderPayload.frete,
+                        cliente: orderPayload.cliente,
+                        fallbackUrl: orderPayload.linkCartao
+                    });
+                }
+            }
 
             if (checkoutRes && checkoutRes.url) {
                 orderPayload.linkCartao = checkoutRes.url;
@@ -3534,11 +3562,11 @@
             const checkoutWin = window.open('about:blank', '_blank');
             if (checkoutWin) {
                 checkoutWin.document.write(`
-                    <html><head><title>Checkout Seguro InfinitePay...</title>
+                    <html><head><title>Checkout Seguro InfinitePay...<\/title>
                     <style>body{background:#181c15;color:#F8F6F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center;}
                     .box{padding:32px;border:1px solid rgba(200,157,60,0.4);border-radius:20px;background:#22271e;max-width:380px;}
-                    h3{color:#C89D3C;margin:0 0 10px;}</style></head>
-                    <body><div class="box"><h3>Abrindo Checkout InfinitePay...</h3><p style="font-size:13px;color:#ccc;">Carregando pagamento do pedido <b>#${orderId}</b>...</p></div></body></html>
+                    h3{color:#C89D3C;margin:0 0 10px;}<\/style><\/head>
+                    <body><div class="box"><h3>Abrindo Checkout InfinitePay...<\/h3><p style="font-size:13px;color:#ccc;">Carregando pagamento do pedido <b>#${orderId}<\/b>...<\/p><\/div><\/body><\/html>
                 `);
             }
 
@@ -4057,11 +4085,6 @@
                                         Detalhes <i class="ph-bold ph-arrow-right text-xs"></i>
                                     </a>
                                 </div>
-                                ${eb.linkCartao ? `
-                                <a href="${eb.linkCartao}" target="_blank" rel="noopener" class="mt-2 w-full bg-white/10 hover:bg-rustic-gold hover:text-rustic-dark text-rustic-gold font-bold text-xs py-2.5 px-3 rounded-xl transition-all border border-rustic-gold/40 flex items-center justify-center gap-1.5 shadow-sm">
-                                    <i class="ph-bold ph-credit-card text-sm"></i> Pagar no Cartão
-                                </a>
-                                ` : ''}
                             </div>
                         </div>
                     `).join('');
