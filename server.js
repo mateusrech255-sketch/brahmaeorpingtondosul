@@ -236,6 +236,9 @@ const isAuthenticated = (req) => {
 // Sessões ativas de clientes (token -> { clienteId, email, nome, createdAt })
 const activeClientSessions = new Map();
 
+// Pedidos aguardando confirmação de pagamento na API InfinitePay (order_nsu -> orderPayload)
+const pendingInfinitePayOrders = new Map();
+
 // ==========================================
 // LIVE RELOAD (SSE - Tempo Real)
 // ==========================================
@@ -1136,22 +1139,26 @@ const server = http.createServer(async (req, res) => {
                 }
             }
 
-            // Se o pedido existir em pedidos.json, vincula o link gerado e o slug
-            if (fs.existsSync(PEDIDOS_FILE)) {
-                try {
-                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
-                    const idx = pedidos.findIndex(p =>
-                        p.id === fullPayload.order_nsu ||
-                        p.numero === fullPayload.order_nsu ||
-                        p.numero === `#${fullPayload.order_nsu}`
-                    );
-                    if (idx !== -1) {
-                        pedidos[idx].linkCartao = checkoutUrl;
-                        pedidos[idx].infinitePayUrl = checkoutUrl;
-                        if (invoiceSlug) pedidos[idx].invoiceSlug = invoiceSlug;
-                        fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
-                    }
-                } catch (e) {}
+            // Armazena temporariamente em memória até que o pagamento seja confirmado pela API / Webhook da InfinitePay
+            if (body.orderPayload && typeof body.orderPayload === 'object') {
+                pendingInfinitePayOrders.set(fullPayload.order_nsu, {
+                    ...body.orderPayload,
+                    id: fullPayload.order_nsu,
+                    numero: `#${fullPayload.order_nsu}`,
+                    linkCartao: checkoutUrl,
+                    infinitePayUrl: checkoutUrl,
+                    invoiceSlug: invoiceSlug || body.orderPayload.invoiceSlug || ''
+                });
+            } else {
+                const prevPending = pendingInfinitePayOrders.get(fullPayload.order_nsu) || {};
+                pendingInfinitePayOrders.set(fullPayload.order_nsu, {
+                    ...prevPending,
+                    id: fullPayload.order_nsu,
+                    numero: `#${fullPayload.order_nsu}`,
+                    linkCartao: checkoutUrl,
+                    infinitePayUrl: checkoutUrl,
+                    invoiceSlug: invoiceSlug || prevPending.invoiceSlug || ''
+                });
             }
 
             console.log(`[INFINITEPAY] Link de checkout gerado para ${fullPayload.order_nsu}: ${checkoutUrl}`);
@@ -1190,30 +1197,51 @@ const server = http.createServer(async (req, res) => {
             let captureMethod = body.capture_method || '';
             let apiResponse = null;
 
-            for (const endpoint of endpoints) {
+            // 1. Verifica se o pedido já foi confirmado via Webhook no servidor
+            if (order_nsu && fs.existsSync(PEDIDOS_FILE)) {
                 try {
-                    const resp = await httpsPostJson(endpoint, checkPayload, headers);
-                    if (resp.ok && resp.data) {
-                        apiResponse = resp.data;
-                        if (resp.data.paid || resp.data.success) {
-                            isPaid = true;
-                            captureMethod = resp.data.capture_method || captureMethod || 'infinitepay';
-                            break;
-                        }
+                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
+                    const existing = pedidos.find(p =>
+                        p.id === order_nsu ||
+                        p.numero === order_nsu ||
+                        p.numero === `#${order_nsu}`
+                    );
+                    if (existing && existing.status === 'pago') {
+                        isPaid = true;
+                        captureMethod = existing.captureMethod || existing.metodoPagamento || captureMethod || 'infinitepay';
                     }
                 } catch (e) {}
             }
 
-            // Se o redirecionamento trouxe transaction_nsu e slug válidos
-            if (!isPaid && transaction_nsu && slug) {
+            // 2. Consulta os endpoints oficiais payment_check da InfinitePay
+            if (!isPaid && (order_nsu || transaction_nsu || slug)) {
+                for (const endpoint of endpoints) {
+                    try {
+                        const resp = await httpsPostJson(endpoint, checkPayload, headers);
+                        if (resp.ok && resp.data && typeof resp.data.paid === 'boolean') {
+                            apiResponse = resp.data;
+                            if (resp.data.paid === true) {
+                                isPaid = true;
+                                captureMethod = resp.data.capture_method || captureMethod || 'infinitepay';
+                                break;
+                            }
+                        }
+                    } catch (e) {}
+                }
+            }
+
+            // 3. Se o redirecionamento pós-pagamento trouxe transaction_nsu e slug válidos e a API não negou
+            if (!isPaid && transaction_nsu && slug && (!apiResponse || apiResponse.paid !== false)) {
                 isPaid = true;
                 captureMethod = captureMethod || 'infinitepay';
             }
 
             let updatedOrder = null;
-            if (isPaid && order_nsu && fs.existsSync(PEDIDOS_FILE)) {
+            if (isPaid && order_nsu) {
                 try {
-                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
+                    const pedidos = fs.existsSync(PEDIDOS_FILE)
+                        ? JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'))
+                        : [];
                     const idx = pedidos.findIndex(p =>
                         p.id === order_nsu ||
                         p.numero === order_nsu ||
@@ -1221,7 +1249,7 @@ const server = http.createServer(async (req, res) => {
                     );
                     if (idx !== -1) {
                         pedidos[idx].status = 'pago';
-                        pedidos[idx].pagoEm = new Date().toISOString();
+                        pedidos[idx].pagoEm = pedidos[idx].pagoEm || new Date().toISOString();
                         if (transaction_nsu) pedidos[idx].transactionNsu = transaction_nsu;
                         if (slug) pedidos[idx].invoiceSlug = slug;
                         if (receipt_url) pedidos[idx].receiptUrl = receipt_url;
@@ -1231,7 +1259,29 @@ const server = http.createServer(async (req, res) => {
                         }
                         fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
                         updatedOrder = pedidos[idx];
+                        pendingInfinitePayOrders.delete(order_nsu);
                         console.log(`[INFINITEPAY] Pagamento confirmado para o pedido ${pedidos[idx].numero} (${captureMethod})`);
+                    } else {
+                        const pendingOrder = body.orderPayload || pendingInfinitePayOrders.get(order_nsu);
+                        if (pendingOrder && pendingOrder.itens) {
+                            const novoPedidoPago = {
+                                ...pendingOrder,
+                                id: order_nsu,
+                                numero: `#${order_nsu}`,
+                                status: 'pago',
+                                pagoEm: new Date().toISOString(),
+                                transactionNsu: transaction_nsu || pendingOrder.transactionNsu || '',
+                                invoiceSlug: slug || pendingOrder.invoiceSlug || '',
+                                receiptUrl: receipt_url || pendingOrder.receiptUrl || '',
+                                captureMethod: captureMethod || 'infinitepay',
+                                metodoPagamento: captureMethod === 'pix' ? 'pix' : 'cartao'
+                            };
+                            pedidos.unshift(novoPedidoPago);
+                            fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+                            updatedOrder = novoPedidoPago;
+                            pendingInfinitePayOrders.delete(order_nsu);
+                            console.log(`[INFINITEPAY] Pedido ${novoPedidoPago.numero} registrado após confirmação de pagamento!`);
+                        }
                     }
                 } catch (e) {}
             }
@@ -1262,9 +1312,11 @@ const server = http.createServer(async (req, res) => {
             const captureMethod = String(body.capture_method || 'infinitepay').trim();
             const receiptUrl = String(body.receipt_url || '').trim();
 
-            if (orderNsu && fs.existsSync(PEDIDOS_FILE)) {
+            if (orderNsu) {
                 try {
-                    const pedidos = JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'));
+                    const pedidos = fs.existsSync(PEDIDOS_FILE)
+                        ? JSON.parse(fs.readFileSync(PEDIDOS_FILE, 'utf8'))
+                        : [];
                     const idx = pedidos.findIndex(p =>
                         p.id === orderNsu ||
                         p.numero === orderNsu ||
@@ -1272,14 +1324,35 @@ const server = http.createServer(async (req, res) => {
                     );
                     if (idx !== -1) {
                         pedidos[idx].status = 'pago';
-                        pedidos[idx].pagoEm = new Date().toISOString();
+                        pedidos[idx].pagoEm = pedidos[idx].pagoEm || new Date().toISOString();
                         if (invoiceSlug) pedidos[idx].invoiceSlug = invoiceSlug;
                         if (transactionNsu) pedidos[idx].transactionNsu = transactionNsu;
                         if (receiptUrl) pedidos[idx].receiptUrl = receiptUrl;
                         pedidos[idx].captureMethod = captureMethod;
                         pedidos[idx].metodoPagamento = captureMethod === 'pix' ? 'pix' : 'cartao';
                         fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+                        pendingInfinitePayOrders.delete(orderNsu);
                         console.log(`[WEBHOOK INFINITEPAY] Pedido ${pedidos[idx].numero} atualizado automaticamente para PAGO (${captureMethod})`);
+                    } else {
+                        const pendingOrder = pendingInfinitePayOrders.get(orderNsu);
+                        if (pendingOrder && pendingOrder.itens) {
+                            const novoPedidoPago = {
+                                ...pendingOrder,
+                                id: orderNsu,
+                                numero: `#${orderNsu}`,
+                                status: 'pago',
+                                pagoEm: new Date().toISOString(),
+                                invoiceSlug: invoiceSlug || pendingOrder.invoiceSlug || '',
+                                transactionNsu: transactionNsu || '',
+                                receiptUrl: receiptUrl || '',
+                                captureMethod,
+                                metodoPagamento: captureMethod === 'pix' ? 'pix' : 'cartao'
+                            };
+                            pedidos.unshift(novoPedidoPago);
+                            fs.writeFileSync(PEDIDOS_FILE, JSON.stringify(pedidos, null, 2), 'utf8');
+                            pendingInfinitePayOrders.delete(orderNsu);
+                            console.log(`[WEBHOOK INFINITEPAY] Pedido ${novoPedidoPago.numero} registrado automaticamente após pagamento aprovado (${captureMethod})`);
+                        }
                     }
                 } catch (e) {
                     console.error('[WEBHOOK INFINITEPAY] Erro ao atualizar pedido:', e);

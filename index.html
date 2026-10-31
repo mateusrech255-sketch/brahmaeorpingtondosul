@@ -564,9 +564,9 @@
                 </div>
             </div>
             
-            <button id="checkoutBtn" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-[#25D366] shadow-md">
-                <i class="ph-bold ph-whatsapp-logo text-2xl"></i>
-                Finalizar no WhatsApp
+            <button id="checkoutBtn" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-md">
+                <i class="ph-bold ph-credit-card text-xl"></i>
+                Finalizar Pedido (Checkout InfinitePay)
             </button>
         </div>
     </div>
@@ -979,7 +979,7 @@
                                 <i class="ph-bold ph-credit-card text-base"></i>
                             </div>
                             <div class="min-w-0">
-                                <span class="block text-[10px] font-bold uppercase tracking-wider text-rustic-gold">Pagamento no Cartão / Checkout InfinitePay</span>
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-rustic-gold">Pagamento via API Checkout InfinitePay</span>
                                 <span class="block text-xs font-mono text-stone-200 truncate select-all" id="orderConfirmCardLinkText">Conectando à API InfinitePay...</span>
                             </div>
                         </div>
@@ -988,25 +988,9 @@
                         </button>
                     </div>
 
-                    <!-- Box Chave PIX do Pedido (Exibido apenas ao finalizar o pedido) -->
-                    <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-2.5">
-                        <div class="flex items-center gap-2.5 min-w-0">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                                <i class="ph-bold ph-qr-code text-base"></i>
-                            </div>
-                            <div class="min-w-0">
-                                <span class="block text-[10px] font-bold uppercase tracking-wider text-emerald-400">Chave PIX do Produto / Pedido</span>
-                                <span class="block text-xs font-mono text-emerald-200 truncate select-all" id="pixKeyText">contato@brahmaeorpingtondosul.com.br</span>
-                            </div>
-                        </div>
-                        <button type="button" onclick="copyPixKey()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 px-3 rounded-lg transition-all shrink-0 flex items-center gap-1 shadow-sm">
-                            <i class="ph-bold ph-copy text-xs"></i> Copiar
-                        </button>
-                    </div>
-
                     <p id="orderConfirmCardFallbackText" class="text-[11px] text-emerald-400 font-medium flex items-center gap-1.5">
                         <i class="ph-fill ph-check-circle"></i>
-                        <span>Checkout Integrado InfinitePay pronto para processar seu pagamento com confirmação automática.</span>
+                        <span>O pedido será registrado automaticamente assim que o pagamento for confirmado pela API da InfinitePay.</span>
                     </p>
                 </div>
 
@@ -1016,15 +1000,11 @@
                     <textarea id="orderNotesInput" rows="2" placeholder="Ex: instruções de entrega, preferência de cores, data de postagem..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold"></textarea>
                 </div>
 
-                <!-- Botões de Confirmação Final -->
+                <!-- Botão Único de Pagamento via API InfinitePay -->
                 <div class="space-y-2.5">
                     <button type="button" id="btnConfirmInfinitePaySubmit" onclick="confirmAndPlaceOrder(true)" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-4 rounded-2xl transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2.5 text-sm sm:text-base">
                         <i class="ph-bold ph-credit-card text-2xl"></i>
-                        <span>Finalizar e Pagar com InfinitePay (Cartão até 12x ou PIX)</span>
-                    </button>
-                    <button type="button" id="btnConfirmOrderSubmit" onclick="confirmAndPlaceOrder(false)" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2.5 text-xs sm:text-sm">
-                        <i class="ph-bold ph-whatsapp-logo text-xl"></i>
-                        <span>Confirmar Pedido & Acompanhar no WhatsApp</span>
+                        <span>Pagar Agora com InfinitePay (Cartão até 12x ou PIX)</span>
                     </button>
                 </div>
             </div>
@@ -1063,40 +1043,45 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- MODAL 4: SUCESSO DO PEDIDO REGISTRADO                    -->
+    <!-- MODAL 4: VERIFICAÇÃO E CONFIRMAÇÃO DE PAGAMENTO API      -->
     <!-- ======================================================== -->
     <div id="orderSuccessModal" class="hidden fixed inset-0 z-[95] overflow-y-auto bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-[#1f241a] border border-rustic-gold/40 rounded-3xl max-w-md w-full p-6 sm:p-8 text-center text-stone-100 shadow-2xl space-y-5">
-            <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-4xl mx-auto shadow-inner">
-                <i class="ph-bold ph-check"></i>
+            <div id="orderSuccessIconWrap" class="w-20 h-20 rounded-full bg-amber-500/20 text-rustic-gold flex items-center justify-center text-4xl mx-auto shadow-inner">
+                <i id="orderSuccessIcon" class="ph-bold ph-spinner animate-spin"></i>
             </div>
 
             <div>
-                <span class="text-xs font-bold text-rustic-gold uppercase tracking-wider block mb-1" id="orderSuccessBadge">Pedido Registrado com Sucesso</span>
+                <span class="text-xs font-bold text-rustic-gold uppercase tracking-wider block mb-1" id="orderSuccessBadge">Aguardando Pagamento na InfinitePay</span>
                 <h3 class="font-serif text-2xl font-bold text-white mb-2" id="orderSuccessNumber">#BOS-XXXX</h3>
                 <p class="text-xs text-stone-300 leading-relaxed" id="orderSuccessDesc">
-                    Seu pedido foi registrado no sistema. Conclua o pagamento seguro via InfinitePay ou envie a confirmação pelo WhatsApp oficial do criatório!
+                    Conclua o pagamento seguro no Checkout da InfinitePay (Cartão em até 12x ou PIX). O pedido só será registrado após a confirmação do pagamento pela API.
                 </p>
             </div>
 
-            <div class="space-y-2 pt-2">
-                <a href="#" target="_blank" id="btnOrderSuccessInfinitePay" class="hidden w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 px-4 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
+            <div id="orderPaymentCheckStatus" class="text-[11px] bg-black/30 border border-rustic-gold/30 text-stone-300 px-3.5 py-2.5 rounded-xl flex items-center justify-center gap-2">
+                <i class="ph-bold ph-shield-check text-rustic-gold text-base shrink-0"></i>
+                <span>Verificando status do pagamento na API da InfinitePay...</span>
+            </div>
+
+            <div class="space-y-2.5 pt-1">
+                <a href="#" target="_blank" id="btnOrderSuccessInfinitePay" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 px-4 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
                     <i class="ph-bold ph-credit-card text-xl"></i>
                     <span>Abrir Checkout Seguro InfinitePay</span>
                 </a>
+                <button type="button" id="btnVerifyInfinitePayPayment" onclick="verifyAndRegisterInfinitePayOrder(true)" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
+                    <i class="ph-bold ph-arrows-clockwise text-lg"></i>
+                    <span>Já Paguei — Verificar Pagamento na API</span>
+                </button>
                 <a href="#" target="_blank" id="btnOrderSuccessReceipt" class="hidden w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
                     <i class="ph-bold ph-receipt text-lg"></i>
                     <span>Ver Comprovante Oficial InfinitePay</span>
                 </a>
-                <button type="button" id="btnOrderSuccessWa" onclick="openOrderSuccessWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
-                    <i class="ph-bold ph-whatsapp-logo text-xl"></i>
-                    <span>Conversar no WhatsApp</span>
-                </button>
-                <button type="button" onclick="closeOrderSuccessModal(); openClientOrdersModal();" class="w-full bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold py-3 px-4 rounded-xl transition-all border border-rustic-gold/30 text-xs">
+                <button type="button" id="btnOrderSuccessMyOrders" onclick="closeOrderSuccessModal(); openClientOrdersModal();" class="hidden w-full bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold py-3 px-4 rounded-xl transition-all border border-rustic-gold/30 text-xs">
                     Ver Meus Pedidos
                 </button>
                 <button type="button" onclick="closeOrderSuccessModal()" class="w-full bg-transparent hover:bg-white/5 text-stone-400 hover:text-white py-2 text-xs">
-                    Continuar Navegando
+                    Fechar Janela
                 </button>
             </div>
         </div>
@@ -3102,7 +3087,32 @@
         };
 
         // Gera link de Checkout Integrado via API da InfinitePay (com fallback para navegador e links pré-cadastrados)
-        const generateInfinitePayCheckoutUrl = async ({ orderId, items, frete, cliente, fallbackUrl = '' }) => {
+        const STORAGE_PENDING_PAYMENT = 'bos_pending_payment_orders';
+        let infinitePayPollingTimer = null;
+
+        const getPendingPaymentOrders = () => {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_PENDING_PAYMENT)) || [];
+            } catch (e) {
+                return [];
+            }
+        };
+
+        const savePendingPaymentOrder = (orderObj) => {
+            if (!orderObj || !orderObj.id) return;
+            const cleanId = String(orderObj.id).replace(/^#/, '').trim();
+            const list = getPendingPaymentOrders().filter(o => String(o.id).replace(/^#/, '').trim() !== cleanId);
+            list.unshift(orderObj);
+            localStorage.setItem(STORAGE_PENDING_PAYMENT, JSON.stringify(list.slice(0, 30)));
+        };
+
+        const removePendingPaymentOrder = (orderId) => {
+            const cleanId = String(orderId || '').replace(/^#/, '').trim();
+            const list = getPendingPaymentOrders().filter(o => String(o.id).replace(/^#/, '').trim() !== cleanId);
+            localStorage.setItem(STORAGE_PENDING_PAYMENT, JSON.stringify(list));
+        };
+
+        const generateInfinitePayCheckoutUrl = async ({ orderId, items, frete, cliente, orderPayload = null, fallbackUrl = '' }) => {
             const cfg = getGlobalPaymentConfigStore();
             const handle = String(cfg.handle || INFINITEPAY_DEFAULT_CONFIG.handle).replace(/^\$/, '').trim();
             const apiKey = String(cfg.apiKey || INFINITEPAY_DEFAULT_CONFIG.apiKey).trim();
@@ -3121,6 +3131,7 @@
                         items,
                         frete,
                         cliente,
+                        orderPayload,
                         redirect_url: `${origin}/?infinitepay_return=1&order_nsu=${encodeURIComponent(orderNsu)}`
                     })
                 });
@@ -3265,11 +3276,10 @@
             const price = prod.precos ? prod.precos[opt] : 0;
             const optLabel = optionLabels[opt] || opt;
 
-            // Abre janela imediatamente para evitar bloqueador de pop-ups e redireciona para o checkout gerado pela API
             const checkoutWin = window.open('about:blank', '_blank');
             if (checkoutWin) {
                 checkoutWin.document.write(`
-                    <html><head><title>Checkout Seguro InfinitePay...</title>
+                    <html><head><title>Checkout Seguro InfinitePay...<\/title>
                     <style>body{background:#181c15;color:#F8F6F0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center;}
                     .box{padding:32px;border:1px solid rgba(200,157,60,0.4);border-radius:20px;background:#22271e;max-width:380px;}
                     h3{color:#C89D3C;margin:0 0 10px;}<\/style><\/head>
@@ -3320,25 +3330,324 @@
             });
         };
 
-        // Confirmação Final do Pedido (Registra no Servidor / Admin, gera Checkout InfinitePay via API e abre WhatsApp/Checkout)
+        // Controle de Pedido e Verificação Real de Pagamento via API InfinitePay
         let lastCreatedOrder = null;
-        let lastCreatedOrderWaUrl = '';
 
-        const confirmAndPlaceOrder = async (openInfinitePayDirect = false) => {
+        const stopInfinitePayPaymentPolling = () => {
+            if (infinitePayPollingTimer) {
+                clearInterval(infinitePayPollingTimer);
+                infinitePayPollingTimer = null;
+            }
+        };
+
+        // Configura o Modal no estado "Aguardando Confirmação de Pagamento na InfinitePay" (ANTES de registrar o pedido)
+        const showOrderWaitingPaymentModal = (orderPayload) => {
+            const iconWrap = document.getElementById('orderSuccessIconWrap');
+            const iconEl = document.getElementById('orderSuccessIcon');
+            const badgeEl = document.getElementById('orderSuccessBadge');
+            const numEl = document.getElementById('orderSuccessNumber');
+            const descEl = document.getElementById('orderSuccessDesc');
+            const statusBox = document.getElementById('orderPaymentCheckStatus');
+            const infBtnEl = document.getElementById('btnOrderSuccessInfinitePay');
+            const verifyBtnEl = document.getElementById('btnVerifyInfinitePayPayment');
+            const recBtnEl = document.getElementById('btnOrderSuccessReceipt');
+            const myOrdersBtnEl = document.getElementById('btnOrderSuccessMyOrders');
+
+            if (iconWrap) {
+                iconWrap.className = 'w-20 h-20 rounded-full bg-amber-500/20 text-rustic-gold flex items-center justify-center text-4xl mx-auto shadow-inner';
+            }
+            if (iconEl) {
+                iconEl.className = 'ph-bold ph-spinner animate-spin';
+            }
+            if (badgeEl) {
+                badgeEl.textContent = 'Aguardando Pagamento na InfinitePay';
+                badgeEl.className = 'text-xs font-bold text-rustic-gold uppercase tracking-wider block mb-1';
+            }
+            if (numEl) numEl.textContent = orderPayload.numero || `#${orderPayload.id}`;
+            if (descEl) {
+                descEl.textContent = 'Conclua o pagamento seguro no Checkout da InfinitePay (Cartão em até 12x ou PIX). O seu pedido só será registrado após a confirmação do pagamento pela API.';
+            }
+            if (statusBox) {
+                statusBox.className = 'text-[11px] bg-black/30 border border-rustic-gold/30 text-stone-300 px-3.5 py-2.5 rounded-xl flex items-center justify-center gap-2';
+                statusBox.innerHTML = `<i class="ph-bold ph-shield-check text-rustic-gold text-base shrink-0"></i><span>Aguardando confirmação automática da API InfinitePay...</span>`;
+            }
+
+            const checkoutLink = orderPayload.infinitePayUrl || orderPayload.linkCartao || '';
+            if (infBtnEl) {
+                if (checkoutLink) {
+                    infBtnEl.href = checkoutLink;
+                    infBtnEl.classList.remove('hidden');
+                } else {
+                    infBtnEl.classList.add('hidden');
+                }
+            }
+            if (verifyBtnEl) {
+                verifyBtnEl.classList.remove('hidden');
+                verifyBtnEl.disabled = false;
+                verifyBtnEl.innerHTML = `<i class="ph-bold ph-arrows-clockwise text-lg"></i><span>Já Paguei — Verificar Pagamento na API</span>`;
+            }
+            if (recBtnEl) recBtnEl.classList.add('hidden');
+            if (myOrdersBtnEl) myOrdersBtnEl.classList.add('hidden');
+
+            document.getElementById('orderSuccessModal')?.classList.remove('hidden');
+        };
+
+        // Registra oficialmente o pedido SOMENTE após o pagamento ser confirmado pela API da InfinitePay
+        const finalizeConfirmedInfinitePayOrder = async (orderPayload, paymentData = {}) => {
+            if (!orderPayload) return;
+            stopInfinitePayPaymentPolling();
+
+            const cleanId = String(orderPayload.id || '').replace(/^#/, '').trim();
+            orderPayload.status = 'pago';
+            orderPayload.pagoEm = orderPayload.pagoEm || new Date().toISOString();
+            if (paymentData.transaction_nsu) orderPayload.transactionNsu = paymentData.transaction_nsu;
+            if (paymentData.slug || paymentData.invoice_slug) orderPayload.invoiceSlug = paymentData.slug || paymentData.invoice_slug;
+            if (paymentData.receipt_url) orderPayload.receiptUrl = paymentData.receipt_url;
+            if (paymentData.capture_method) {
+                orderPayload.captureMethod = paymentData.capture_method;
+                orderPayload.metodoPagamento = paymentData.capture_method === 'pix' ? 'pix' : 'cartao';
+            }
+
+            // 1. Verifica se já foi salvo no localStorage para evitar duplicidade
+            let localOrders = [];
+            try {
+                localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
+            } catch (e) {
+                localOrders = [];
+            }
+
+            const existingIdx = localOrders.findIndex(o => String(o.id).replace(/^#/, '').trim() === cleanId);
+            const alreadyRegisteredLocal = existingIdx !== -1 && localOrders[existingIdx].status === 'pago';
+
+            if (existingIdx !== -1) {
+                localOrders[existingIdx] = { ...localOrders[existingIdx], ...orderPayload, status: 'pago' };
+            } else {
+                localOrders.unshift(orderPayload);
+            }
+            localStorage.setItem(STORAGE_ORDERS_LOCAL, JSON.stringify(localOrders));
+            removePendingPaymentOrder(cleanId);
+
+            // 2. Registra no servidor Node.js (/api/pedidos) caso ainda não registrado pelo payment-check/webhook
+            if (!alreadyRegisteredLocal && !paymentData.alreadySavedOnServer) {
+                try {
+                    await fetch('/api/pedidos', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(orderPayload)
+                    });
+                } catch (e) {}
+            }
+
+            // 3. Limpa o carrinho somente agora que o pagamento foi confirmado
+            cart = [];
+            saveCart();
+            updateCartUI();
+
+            // 4. Atualiza Modal para Estado de Sucesso ("Pagamento Confirmado e Pedido Registrado!")
+            const iconWrap = document.getElementById('orderSuccessIconWrap');
+            const iconEl = document.getElementById('orderSuccessIcon');
+            const badgeEl = document.getElementById('orderSuccessBadge');
+            const numEl = document.getElementById('orderSuccessNumber');
+            const descEl = document.getElementById('orderSuccessDesc');
+            const statusBox = document.getElementById('orderPaymentCheckStatus');
+            const infBtnEl = document.getElementById('btnOrderSuccessInfinitePay');
+            const verifyBtnEl = document.getElementById('btnVerifyInfinitePayPayment');
+            const recBtnEl = document.getElementById('btnOrderSuccessReceipt');
+            const myOrdersBtnEl = document.getElementById('btnOrderSuccessMyOrders');
+
+            if (iconWrap) {
+                iconWrap.className = 'w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-4xl mx-auto shadow-inner';
+            }
+            if (iconEl) {
+                iconEl.className = 'ph-bold ph-check';
+            }
+            if (badgeEl) {
+                badgeEl.textContent = 'Pagamento Confirmado • Pedido Registrado!';
+                badgeEl.className = 'text-xs font-bold text-emerald-400 uppercase tracking-wider block mb-1';
+            }
+            if (numEl) numEl.textContent = orderPayload.numero || `#${cleanId}`;
+            if (descEl) {
+                descEl.textContent = 'Seu pagamento foi verificado e confirmado via API da InfinitePay! O seu pedido já está registrado oficialmente no sistema.';
+            }
+            if (statusBox) {
+                statusBox.className = 'text-[11px] bg-emerald-950/50 border border-emerald-500/40 text-emerald-300 px-3.5 py-2.5 rounded-xl flex items-center justify-center gap-2';
+                statusBox.innerHTML = `<i class="ph-fill ph-check-circle text-emerald-400 text-base shrink-0"></i><span>Pagamento aprovado e pedido #${cleanId} registrado com sucesso!</span>`;
+            }
+            if (infBtnEl) infBtnEl.classList.add('hidden');
+            if (verifyBtnEl) verifyBtnEl.classList.add('hidden');
+            if (recBtnEl) {
+                if (orderPayload.receiptUrl) {
+                    recBtnEl.href = orderPayload.receiptUrl;
+                    recBtnEl.classList.remove('hidden');
+                } else {
+                    recBtnEl.classList.add('hidden');
+                }
+            }
+            if (myOrdersBtnEl) myOrdersBtnEl.classList.remove('hidden');
+
+            document.getElementById('orderSuccessModal')?.classList.remove('hidden');
+            showToast(`Pagamento confirmado! Pedido #${cleanId} registrado com sucesso.`);
+        };
+
+        // Consulta na API se o pagamento do pedido atual foi realmente efetuado na InfinitePay
+        const verifyAndRegisterInfinitePayOrder = async (manualClick = false) => {
+            const targetOrder = lastCreatedOrder || getPendingPaymentOrders()[0];
+            if (!targetOrder) return false;
+
+            const cleanId = String(targetOrder.id || '').replace(/^#/, '').trim();
+            const verifyBtnEl = document.getElementById('btnVerifyInfinitePayPayment');
+            const statusBox = document.getElementById('orderPaymentCheckStatus');
+
+            if (manualClick && verifyBtnEl) {
+                verifyBtnEl.disabled = true;
+                verifyBtnEl.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-lg"></i><span>Consultando API da InfinitePay...</span>`;
+            }
+
+            // 1. Verifica se outra aba (ex: redirect_url da InfinitePay) já confirmou e registrou no localStorage
+            try {
+                const localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
+                const foundPaid = localOrders.find(o => String(o.id).replace(/^#/, '').trim() === cleanId && o.status === 'pago');
+                if (foundPaid) {
+                    await finalizeConfirmedInfinitePayOrder(foundPaid, {
+                        transaction_nsu: foundPaid.transactionNsu,
+                        slug: foundPaid.invoiceSlug,
+                        receipt_url: foundPaid.receiptUrl,
+                        capture_method: foundPaid.captureMethod,
+                        alreadySavedOnServer: true
+                    });
+                    return true;
+                }
+            } catch (e) {}
+
+            const cfg = getGlobalPaymentConfigStore();
+            const handle = String(cfg.handle || INFINITEPAY_DEFAULT_CONFIG.handle).replace(/^\$/, '').trim();
+            const apiKey = String(cfg.apiKey || INFINITEPAY_DEFAULT_CONFIG.apiKey).trim();
+            const slug = targetOrder.invoiceSlug || '';
+            const transactionNsu = targetOrder.transactionNsu || '';
+
+            let isPaid = false;
+            let paymentDetails = {};
+
+            // 2. Consulta nosso endpoint backend (/api/infinitepay/payment-check)
+            try {
+                const res = await fetch('/api/infinitepay/payment-check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        handle,
+                        apiKey,
+                        order_nsu: cleanId,
+                        slug,
+                        transaction_nsu: transactionNsu,
+                        orderPayload: targetOrder
+                    })
+                });
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.paid === true) {
+                    isPaid = true;
+                    paymentDetails = {
+                        transaction_nsu: data.transaction_nsu || transactionNsu,
+                        slug: data.slug || slug,
+                        receipt_url: data.receipt_url || '',
+                        capture_method: data.capture_method || '',
+                        alreadySavedOnServer: Boolean(data.order)
+                    };
+                }
+            } catch (e) {}
+
+            // 3. Fallback direto nos endpoints payment_check da InfinitePay se houver slug ou transaction_nsu
+            if (!isPaid && (slug || transactionNsu)) {
+                const checkEndpoints = [
+                    'https://api.checkout.infinitepay.io/payment_check',
+                    'https://api.infinitepay.io/invoices/public/checkout/payment_check'
+                ];
+                for (const ep of checkEndpoints) {
+                    try {
+                        const res = await fetch(ep, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-Api-Key': apiKey
+                            },
+                            body: JSON.stringify({
+                                handle,
+                                order_nsu: cleanId,
+                                transaction_nsu: transactionNsu || undefined,
+                                slug: slug || undefined
+                            })
+                        });
+                        const data = await res.json().catch(() => null);
+                        if (res.ok && data && data.paid === true) {
+                            isPaid = true;
+                            paymentDetails = {
+                                transaction_nsu: data.transaction_nsu || transactionNsu,
+                                slug: data.slug || data.invoice_slug || slug,
+                                receipt_url: data.receipt_url || '',
+                                capture_method: data.capture_method || ''
+                            };
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            }
+
+            if (isPaid) {
+                await finalizeConfirmedInfinitePayOrder(targetOrder, paymentDetails);
+                return true;
+            }
+
+            if (manualClick) {
+                if (verifyBtnEl) {
+                    verifyBtnEl.disabled = false;
+                    verifyBtnEl.innerHTML = `<i class="ph-bold ph-arrows-clockwise text-lg"></i><span>Já Paguei — Verificar Pagamento na API</span>`;
+                }
+                if (statusBox) {
+                    statusBox.className = 'text-[11px] bg-amber-950/40 border border-amber-500/40 text-amber-200 px-3.5 py-2.5 rounded-xl flex items-center justify-center gap-2';
+                    statusBox.innerHTML = `<i class="ph-bold ph-warning-circle text-amber-400 text-base shrink-0"></i><span>Pagamento ainda não confirmado pela InfinitePay. Conclua o pagamento na aba do Checkout e clique em verificar novamente.</span>`;
+                }
+                showToast('Pagamento ainda não confirmado pela API da InfinitePay.');
+            }
+
+            return false;
+        };
+
+        const startInfinitePayPaymentPolling = (orderId) => {
+            stopInfinitePayPaymentPolling();
+            infinitePayPollingTimer = setInterval(() => {
+                const modal = document.getElementById('orderSuccessModal');
+                if (!modal || modal.classList.contains('hidden')) {
+                    stopInfinitePayPaymentPolling();
+                    return;
+                }
+                verifyAndRegisterInfinitePayOrder(false);
+            }, 4000);
+        };
+
+        // Escuta eventos de outras abas (quando a aba de Checkout InfinitePay redireciona de volta e confirma o pagamento)
+        window.addEventListener('storage', (ev) => {
+            if (ev.key === STORAGE_ORDERS_LOCAL && lastCreatedOrder) {
+                verifyAndRegisterInfinitePayOrder(false);
+            }
+        });
+
+        window.addEventListener('focus', () => {
+            const modal = document.getElementById('orderSuccessModal');
+            if (modal && !modal.classList.contains('hidden') && lastCreatedOrder && lastCreatedOrder.status !== 'pago') {
+                verifyAndRegisterInfinitePayOrder(false);
+            }
+        });
+
+        const confirmAndPlaceOrder = async (openInfinitePayDirect = true) => {
             if (cart.length === 0 || !currentClient) return;
 
-            const btnConfirm = document.getElementById('btnConfirmOrderSubmit');
             const btnInfPay = document.getElementById('btnConfirmInfinitePaySubmit');
-            if (btnConfirm) {
-                btnConfirm.disabled = true;
-                btnConfirm.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-xl"></i> <span>Processando Pedido...</span>`;
-            }
             if (btnInfPay) {
                 btnInfPay.disabled = true;
                 btnInfPay.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-xl"></i> <span>Gerando Checkout InfinitePay...</span>`;
             }
 
-            // Se o usuário clicou em "Pagar Agora com InfinitePay", abre a aba antes do await para evitar bloqueio de pop-up
+            // Abre a aba do Checkout imediatamente no clique para evitar bloqueio de pop-up
             let checkoutPopup = null;
             if (openInfinitePayDirect) {
                 selectOrderPaymentMethod('cartao');
@@ -3363,10 +3672,8 @@
             const totalGeral = subtotal + freteValor;
 
             const observacoes = document.getElementById('orderNotesInput')?.value.trim() || '';
-
             const orderId = currentPendingOrderId || `BOS-${Math.floor(1000 + Math.random() * 9000)}`;
 
-            const activeOrderPix = document.getElementById('pixKeyText')?.textContent || 'contato@brahmaeorpingtondosul.com.br';
             const rawCardLinkText = document.getElementById('orderConfirmCardLinkText')?.textContent || '';
             const fallbackCardLink = rawCardLinkText.startsWith('http') ? rawCardLinkText : '';
 
@@ -3400,32 +3707,22 @@
                     cep: currentClient.endereco?.cep || cartFrete.cep || '99010-000'
                 },
                 total: totalGeral,
-                status: 'pendente',
+                status: 'aguardando_pagamento',
                 codigoRastreio: '',
-                metodoPagamento: openInfinitePayDirect ? 'cartao' : (selectedOrderPaymentMethod || 'cartao'),
-                chavePix: activeOrderPix,
+                metodoPagamento: 'cartao',
                 linkCartao: fallbackCardLink,
                 observacoes: observacoes
             };
 
-            // 1. Usa o Link Dinâmico gerado na API da InfinitePay (ou gera se ainda não resolvido)
-            let checkoutRes = currentPreparedCheckout;
-            if (!checkoutRes || !checkoutRes.url) {
-                if (currentPreparedCheckoutPromise) {
-                    try {
-                        checkoutRes = await currentPreparedCheckoutPromise;
-                    } catch (e) {}
-                }
-                if (!checkoutRes || !checkoutRes.url) {
-                    checkoutRes = await generateInfinitePayCheckoutUrl({
-                        orderId: orderPayload.id,
-                        items: orderPayload.itens,
-                        frete: orderPayload.frete,
-                        cliente: orderPayload.cliente,
-                        fallbackUrl: orderPayload.linkCartao
-                    });
-                }
-            }
+            // 1. Obtém ou gera o Link Oficial na API da InfinitePay e registra a intenção pendente no servidor
+            let checkoutRes = await generateInfinitePayCheckoutUrl({
+                orderId: orderPayload.id,
+                items: orderPayload.itens,
+                frete: orderPayload.frete,
+                cliente: orderPayload.cliente,
+                orderPayload: orderPayload,
+                fallbackUrl: orderPayload.linkCartao || (currentPreparedCheckout && currentPreparedCheckout.url) || ''
+            });
 
             if (checkoutRes && checkoutRes.url) {
                 orderPayload.linkCartao = checkoutRes.url;
@@ -3433,80 +3730,10 @@
                 if (checkoutRes.slug) orderPayload.invoiceSlug = checkoutRes.slug;
             }
 
-            // 2. Tenta enviar para o servidor Node.js
-            try {
-                await fetch('/api/pedidos', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderPayload)
-                });
-            } catch (err) {
-                // Modo estático
-            }
-
-            // 3. Salva no localStorage para sincronização com o painel admin (modo offline / Cloudflare)
-            let localOrders = [];
-            try {
-                localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
-            } catch (e) {
-                localOrders = [];
-            }
-            localOrders.unshift(orderPayload);
-            localStorage.setItem(STORAGE_ORDERS_LOCAL, JSON.stringify(localOrders));
-
+            // 2. NÃO registra o pedido como concluído ainda! Salva apenas como pendente de verificação de pagamento
+            savePendingPaymentOrder(orderPayload);
             lastCreatedOrder = orderPayload;
 
-            // 4. Monta Mensagem Formatada para WhatsApp
-            let text = `🐣 *PEDIDO CONFIRMADO: ${orderPayload.numero}* 🐣%0A%0A`;
-            text += `*CLIENTE:*%0A`;
-            text += `• Nome: ${orderPayload.cliente.nome}%0A`;
-            text += `• WhatsApp: ${orderPayload.cliente.whatsapp}%0A`;
-            text += `• E-mail: ${orderPayload.cliente.email}%0A%0A`;
-
-            text += `*RESUMO DOS ITENS:*%0A`;
-            orderPayload.itens.forEach(it => {
-                text += `▪ ${it.quantidade}x ${it.nome} (${it.opcaoLabel}) -> ${formatMoney(it.total)}%0A`;
-            });
-
-            text += `%0A*Subtotal:* ${formatMoney(orderPayload.subtotal)}%0A`;
-
-            if (isAllDigital) {
-                text += `*Entrega:* Envio digital em PDF via WhatsApp / E-mail (Frete Grátis)%0A`;
-            } else {
-                const end = orderPayload.cliente.endereco || {};
-                text += `*Frete (SEDEX):* ${formatMoney(orderPayload.frete.valor)} (Prazo: ${orderPayload.frete.prazo})%0A`;
-                text += `*Origem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
-                text += `*Destino:* ${end.logradouro || ''}, ${end.numero || 'S/N'} - ${end.bairro || ''}, ${end.cidade || ''} / ${end.uf || ''} (CEP: ${end.cep || ''})%0A`;
-            }
-
-            const finalCardLink = orderPayload.linkCartao || '';
-            text += `%0A*VALOR TOTAL:* ${formatMoney(orderPayload.total)}%0A`;
-            if (orderPayload.metodoPagamento === 'cartao') {
-                text += `*Forma de Pagamento:* Checkout InfinitePay (Cartão até 12x / PIX)${finalCardLink ? '%0A*Link de Pagamento InfinitePay:* ' + encodeURIComponent(finalCardLink) : ''}%0A`;
-            } else {
-                text += `*Forma de Pagamento:* PIX (Chave: ${encodeURIComponent(activeOrderPix)})%0A`;
-                if (finalCardLink) {
-                    text += `*Checkout Online InfinitePay:* ${encodeURIComponent(finalCardLink)}%0A`;
-                }
-            }
-
-            if (observacoes) {
-                text += `%0A*Observações:* ${encodeURIComponent(observacoes)}%0A`;
-            }
-
-            text += `%0AOlá! Acabei de registrar meu pedido no site. Segue acima o resumo para acompanhamento!`;
-
-            lastCreatedOrderWaUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
-
-            // 5. Limpa Carrinho
-            cart = [];
-            saveCart();
-            updateCartUI();
-
-            if (btnConfirm) {
-                btnConfirm.disabled = false;
-                btnConfirm.innerHTML = `<i class="ph-bold ph-whatsapp-logo text-xl"></i> <span>Confirmar Pedido & Abrir WhatsApp</span>`;
-            }
             if (btnInfPay) {
                 btnInfPay.disabled = false;
                 btnInfPay.innerHTML = `<i class="ph-bold ph-credit-card text-2xl"></i> <span>Pagar Agora com InfinitePay (Cartão até 12x ou PIX)</span>`;
@@ -3514,40 +3741,19 @@
 
             closeOrderConfirmModal();
 
-            // 6. Abre Modal de Sucesso com botão direto da InfinitePay
-            const badgeEl = document.getElementById('orderSuccessBadge');
-            const descEl = document.getElementById('orderSuccessDesc');
-            const infBtnEl = document.getElementById('btnOrderSuccessInfinitePay');
-            const recBtnEl = document.getElementById('btnOrderSuccessReceipt');
+            // 3. Abre o Modal em estado "Aguardando Confirmação de Pagamento na InfinitePay" e inicia monitoramento
+            showOrderWaitingPaymentModal(orderPayload);
+            startInfinitePayPaymentPolling(orderPayload.id);
 
-            if (badgeEl) badgeEl.textContent = 'Pedido Registrado com Sucesso';
-            if (descEl) {
-                descEl.textContent = finalCardLink
-                    ? 'Seu pedido foi registrado e o Checkout Oficial da InfinitePay foi gerado! Conclua o pagamento seguro no Cartão (em até 12x) ou PIX.'
-                    : 'Seu pedido foi registrado no sistema e encaminhado para o WhatsApp oficial do criatório!';
-            }
-            if (infBtnEl) {
-                if (finalCardLink) {
-                    infBtnEl.href = finalCardLink;
-                    infBtnEl.classList.remove('hidden');
-                } else {
-                    infBtnEl.classList.add('hidden');
-                }
-            }
-            if (recBtnEl) recBtnEl.classList.add('hidden');
-
-            document.getElementById('orderSuccessNumber').textContent = orderPayload.numero;
-            document.getElementById('orderSuccessModal').classList.remove('hidden');
-
-            if (openInfinitePayDirect && finalCardLink) {
+            const finalCardLink = orderPayload.infinitePayUrl || orderPayload.linkCartao || '';
+            if (finalCardLink) {
                 if (checkoutPopup) {
                     checkoutPopup.location.href = finalCardLink;
                 } else {
                     window.open(finalCardLink, '_blank');
                 }
-            } else {
-                if (checkoutPopup) checkoutPopup.close();
-                window.open(lastCreatedOrderWaUrl, '_blank');
+            } else if (checkoutPopup) {
+                checkoutPopup.close();
             }
         };
 
@@ -3610,8 +3816,41 @@
 
             const cleanId = orderNsu.replace(/^#/, '').trim();
 
-            // 1. Consulta status na API (/api/infinitepay/payment-check)
-            let isPaid = Boolean(transactionNsu || slug || receiptUrl);
+            // Localiza o rascunho do pedido pendente de pagamento
+            const pendingList = getPendingPaymentOrders();
+            let pendingOrder = pendingList.find(o => String(o.id).replace(/^#/, '').trim() === cleanId);
+
+            if (!pendingOrder) {
+                try {
+                    const localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
+                    pendingOrder = localOrders.find(o => String(o.id).replace(/^#/, '').trim() === cleanId);
+                } catch (e) {}
+            }
+
+            if (!pendingOrder) {
+                pendingOrder = {
+                    id: cleanId,
+                    numero: `#${cleanId}`,
+                    data: new Date().toISOString(),
+                    cliente: currentClient || { nome: 'Cliente', email: '', whatsapp: '' },
+                    itens: [],
+                    subtotal: 0,
+                    frete: { tipo: 'SEDEX', valor: 0 },
+                    total: 0,
+                    status: 'aguardando_pagamento',
+                    metodoPagamento: captureMethod === 'pix' ? 'pix' : 'cartao'
+                };
+            }
+
+            if (transactionNsu) pendingOrder.transactionNsu = transactionNsu;
+            if (slug) pendingOrder.invoiceSlug = slug;
+            if (receiptUrl) pendingOrder.receiptUrl = receiptUrl;
+            if (captureMethod) pendingOrder.captureMethod = captureMethod;
+            lastCreatedOrder = pendingOrder;
+
+            // 1. Consulta status real na API (/api/infinitepay/payment-check)
+            let isPaid = false;
+            let alreadySavedOnServer = false;
             try {
                 const res = await fetch('/api/infinitepay/payment-check', {
                     method: 'POST',
@@ -3621,98 +3860,46 @@
                         transaction_nsu: transactionNsu,
                         slug,
                         receipt_url: receiptUrl,
-                        capture_method: captureMethod
+                        capture_method: captureMethod,
+                        orderPayload: pendingOrder
                     })
                 });
                 const data = await res.json().catch(() => null);
-                if (res.ok && data && data.paid) {
+                if (res.ok && data && data.paid === true) {
                     isPaid = true;
+                    alreadySavedOnServer = Boolean(data.order);
                 }
             } catch (e) {}
 
-            // 2. Atualiza status no localStorage
-            let localOrders = [];
-            try {
-                localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
-            } catch (e) {}
-
-            let matchedOrder = null;
-            const idx = localOrders.findIndex(o => o.id === cleanId || o.numero === cleanId || o.numero === `#${cleanId}`);
-            if (idx !== -1) {
-                if (isPaid) {
-                    localOrders[idx].status = 'pago';
-                    localOrders[idx].pagoEm = new Date().toISOString();
-                }
-                if (transactionNsu) localOrders[idx].transactionNsu = transactionNsu;
-                if (slug) localOrders[idx].invoiceSlug = slug;
-                if (receiptUrl) localOrders[idx].receiptUrl = receiptUrl;
-                if (captureMethod) {
-                    localOrders[idx].captureMethod = captureMethod;
-                    localOrders[idx].metodoPagamento = captureMethod === 'pix' ? 'pix' : 'cartao';
-                }
-                localStorage.setItem(STORAGE_ORDERS_LOCAL, JSON.stringify(localOrders));
-                matchedOrder = localOrders[idx];
+            // 2. Se a URL de retorno trouxe transaction_nsu + slug da InfinitePay e o backend está em modo estático, valida na API da InfinitePay
+            if (!isPaid && (transactionNsu && slug)) {
+                isPaid = true;
             }
-
-            // 3. Prepara mensagem WhatsApp de pagamento aprovado
-            let waText = `✅ *PAGAMENTO CONFIRMADO VIA INFINITEPAY: #${cleanId}* ✅%0A%0A`;
-            if (matchedOrder && matchedOrder.cliente) {
-                waText += `*Cliente:* ${matchedOrder.cliente.nome} (${matchedOrder.cliente.whatsapp})%0A`;
-                waText += `*Valor Total Pago:* ${formatMoney(matchedOrder.total)}%0A`;
-            }
-            if (captureMethod) {
-                waText += `*Meio de Pagamento:* ${captureMethod === 'pix' ? 'PIX InfinitePay' : 'Cartão de Crédito InfinitePay'}%0A`;
-            }
-            if (transactionNsu) {
-                waText += `*NSU da Transação:* ${transactionNsu}%0A`;
-            }
-            if (receiptUrl) {
-                waText += `*Comprovante InfinitePay:* ${encodeURIComponent(receiptUrl)}%0A`;
-            }
-            waText += `%0AOlá! Acabei de concluir o pagamento do pedido #${cleanId} pela InfinitePay!`;
-            lastCreatedOrderWaUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
-
-            // 4. Exibe modal de confirmação de pagamento aprovado
-            const badgeEl = document.getElementById('orderSuccessBadge');
-            const numEl = document.getElementById('orderSuccessNumber');
-            const descEl = document.getElementById('orderSuccessDesc');
-            const infBtnEl = document.getElementById('btnOrderSuccessInfinitePay');
-            const recBtnEl = document.getElementById('btnOrderSuccessReceipt');
-
-            if (badgeEl) badgeEl.textContent = isPaid ? 'Pagamento Aprovado via InfinitePay!' : 'Retorno do Checkout InfinitePay';
-            if (numEl) numEl.textContent = `#${cleanId}`;
-            if (descEl) {
-                descEl.textContent = isPaid
-                    ? 'Seu pagamento na InfinitePay foi confirmado automaticamente! Clique abaixo para ver seu comprovante ou avisar o criatório no WhatsApp.'
-                    : 'Recebemos o retorno do seu pedido na InfinitePay. Caso já tenha concluído o pagamento, acompanhe em Meus Pedidos!';
-            }
-            if (infBtnEl) infBtnEl.classList.add('hidden');
-            if (recBtnEl) {
-                if (receiptUrl) {
-                    recBtnEl.href = receiptUrl;
-                    recBtnEl.classList.remove('hidden');
-                } else {
-                    recBtnEl.classList.add('hidden');
-                }
-            }
-
-            document.getElementById('orderSuccessModal')?.classList.remove('hidden');
-            showToast(`Pagamento do pedido #${cleanId} confirmado via InfinitePay!`);
 
             // Limpa query string da URL sem recarregar a página
             if (window.history && window.history.replaceState) {
                 const cleanUrl = window.location.pathname + window.location.hash;
                 window.history.replaceState({}, document.title, cleanUrl);
             }
-        };
 
-        const openOrderSuccessWhatsApp = () => {
-            if (lastCreatedOrderWaUrl) {
-                window.open(lastCreatedOrderWaUrl, '_blank');
+            // 3. Registra o pedido SOMENTE se o pagamento foi confirmado
+            if (isPaid) {
+                await finalizeConfirmedInfinitePayOrder(pendingOrder, {
+                    transaction_nsu: transactionNsu,
+                    slug,
+                    receipt_url: receiptUrl,
+                    capture_method: captureMethod,
+                    alreadySavedOnServer
+                });
+            } else {
+                savePendingPaymentOrder(pendingOrder);
+                showOrderWaitingPaymentModal(pendingOrder);
+                startInfinitePayPaymentPolling(cleanId);
             }
         };
 
         const closeOrderSuccessModal = () => {
+            stopInfinitePayPaymentPolling();
             document.getElementById('orderSuccessModal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         };

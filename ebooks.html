@@ -854,11 +854,7 @@
             <div class="space-y-2">
                 <button id="checkoutInfinitePayBtn" onclick="checkoutCartInfinitePay()" class="w-full bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md text-xs sm:text-sm">
                     <i class="ph-bold ph-credit-card text-xl"></i>
-                    Pagar Agora via InfinitePay (Cartão até 12x / PIX)
-                </button>
-                <button id="checkoutBtn" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-[#25D366] shadow-md text-xs sm:text-sm">
-                    <i class="ph-bold ph-whatsapp-logo text-xl"></i>
-                    Finalizar no WhatsApp
+                    Finalizar Pedido (Checkout InfinitePay)
                 </button>
             </div>
         </div>
@@ -1282,54 +1278,9 @@
                 else window.open(checkoutUrl, '_blank');
             } else {
                 if (checkoutWin) checkoutWin.close();
-                showToast('Finalize pelo botão do WhatsApp para receber o link de pagamento.');
+                showToast('Não foi possível abrir o Checkout InfinitePay. Tente novamente.');
             }
         };
-
-        // WhatsApp Checkout
-        document.getElementById('checkoutBtn').addEventListener('click', () => {
-            if(cart.length === 0) return;
-
-            const hasPhysicalItems = cart.some(item => !item.isDigital);
-            const isAllDigital = cart.length > 0 && !hasPhysicalItems;
-
-            let text = "Olá! Gostaria de fazer um pedido no *Criatório Brahma e Orpington do Sul*. 🐣📖%0A%0A";
-            text += "*RESUMO DOS ITENS:*%0A";
-            
-            let total = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                const label = item.isDigital ? "Envio por PDF" : (optionLabels[item.option] || item.option);
-                text += `▪ ${item.quantity}x ${item.name} (${label}) -> ${formatMoney(itemTotal)}%0A`;
-            });
-
-            text += `%0A*Subtotal:* ${formatMoney(total)}%0A`;
-            
-            if (isAllDigital) {
-                text += `*Entrega:* Envio imediato em formato PDF via WhatsApp / E-mail (Frete Grátis)%0A%0A`;
-                text += `*VALOR TOTAL:* ${formatMoney(total)}%0A%0A`;
-                text += "Por favor, me informe a chave PIX para envio do material!";
-            } else if (cartFrete.calculado) {
-                text += `*Frete (${cartFrete.tipo.toUpperCase()}):* ${formatMoney(cartFrete.valor)} (Prazo: ${cartFrete.prazo})%0A`;
-                text += `*Origem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
-                text += `*Destino:* ${cartFrete.localidade} - ${cartFrete.uf} (CEP: ${cartFrete.cep})%0A%0A`;
-                text += `*VALOR TOTAL DO PEDIDO:* ${formatMoney(total + cartFrete.valor)}%0A%0A`;
-                text += "Por favor, confirme a disponibilidade e a chave PIX!";
-            } else {
-                text += `*Origem da Postagem:* ${CIDADE_ORIGEM} (CEP: ${CEP_ORIGEM})%0A`;
-                const cepInformado = document.getElementById('cartCepDestino')?.value || '';
-                if (cepInformado) {
-                    text += `*Meu CEP de Entrega:* ${cepInformado}%0A%0A`;
-                } else {
-                    text += `*Meu CEP de Entrega:* _(a informar no chat)_%0A%0A`;
-                }
-                text += "Por favor, me informe o valor do frete e os dados para pagamento!";
-            }
-
-            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
-            window.open(url, '_blank');
-        });
 
         const syncCustomEbooks = async () => {
             let list = null;

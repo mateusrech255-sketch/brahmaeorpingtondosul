@@ -52,10 +52,10 @@ export async function onRequestPost(context) {
                     body: JSON.stringify(payload)
                 });
                 const data = await res.json().catch(() => null);
-                if (res.ok && data) {
+                if (res.ok && data && typeof data.paid === "boolean") {
                     return new Response(JSON.stringify({
                         success: true,
-                        paid: Boolean(data.paid || data.success),
+                        paid: data.paid === true,
                         capture_method: data.capture_method || "",
                         amount: data.amount || 0,
                         paid_amount: data.paid_amount || 0,
