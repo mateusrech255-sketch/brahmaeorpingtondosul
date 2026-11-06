@@ -17,6 +17,11 @@
     
     <!-- Tailwind CSS (Estilo Base e CDN para utilitários do painel) -->
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Cropper.js (Ajuste e Recorte Profissional de Imagens) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -663,7 +668,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Galeria de Fotos -->
+                <!-- 2. Galeria de Fotos e Enquadramento -->
                 <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-white/5 space-y-4">
                     <div class="flex items-center justify-between">
                         <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
@@ -672,9 +677,23 @@
                         <span class="text-[11px] text-stone-400">A 1ª foto é a capa</span>
                     </div>
 
-                    <!-- Miniaturas das fotos atuais -->
+                    <!-- Controle de Enquadramento no Card -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-stone-900/60 border border-white/5">
+                        <div>
+                            <span class="text-xs font-semibold text-stone-200 flex items-center gap-1.5">
+                                <i class="ph-bold ph-aspect-ratio text-rustic-gold"></i> Enquadramento da Foto no Card
+                            </span>
+                            <span class="text-[11px] text-stone-400">"Preencher Card" ajusta a foto ao espaço eliminando as faixas pretas laterais.</span>
+                        </div>
+                        <select id="prodFormFotoFit" class="bg-stone-800 border border-stone-700 text-xs text-white rounded-lg px-3 py-2 focus:border-rustic-gold focus:outline-none">
+                            <option value="cover" selected>Preencher Card (Sem faixas pretas - Recomendado)</option>
+                            <option value="contain">Conter Inteira (Com faixas laterais se vertical)</option>
+                        </select>
+                    </div>
+
+                    <!-- Miniaturas das fotos atuais com botão Recortar -->
                     <div id="photosContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <!-- Preenchido dinamicamente -->
+                        <!-- Preenchido dinamicamente com botões de Recortar -->
                     </div>
 
                     <!-- Área de Upload de Nova Foto -->
@@ -870,8 +889,13 @@
                     </h4>
 
                     <div class="flex flex-col sm:flex-row items-center gap-5">
-                        <div class="w-32 h-44 bg-stone-950 rounded-xl border border-stone-700 overflow-hidden flex items-center justify-center shrink-0 p-2">
-                            <img id="ebookCoverPreview" src="assets/images/ebook-orpington.png" alt="Capa" class="w-full h-full object-contain">
+                        <div class="flex flex-col items-center gap-2 shrink-0">
+                            <div class="w-32 h-44 bg-stone-950 rounded-xl border border-stone-700 overflow-hidden flex items-center justify-center p-2">
+                                <img id="ebookCoverPreview" src="assets/images/ebook-orpington.png" alt="Capa" class="w-full h-full object-contain">
+                            </div>
+                            <button type="button" onclick="openCropperModal(0, 'ebook')" class="bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-[11px] py-1.5 px-3 rounded-lg transition-all border border-rustic-gold/30 flex items-center gap-1">
+                                <i class="ph-bold ph-crop"></i> Recortar Capa
+                            </button>
                         </div>
                         
                         <div class="flex-1 w-full space-y-3">
@@ -902,6 +926,95 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: AJUSTE E RECORTE DE IMAGEM (CROPPER)             -->
+    <!-- ======================================================== -->
+    <div id="imageCropperModal" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/40 rounded-3xl max-w-3xl w-full flex flex-col shadow-2xl relative my-auto overflow-hidden text-stone-100">
+            <!-- Header -->
+            <div class="p-4 sm:p-5 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15] shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 text-rustic-gold flex items-center justify-center text-xl shrink-0">
+                        <i class="ph-bold ph-crop"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-base sm:text-lg font-bold text-white">Ajustar e Recortar Imagem</h3>
+                        <p class="text-[11px] text-stone-400">Enquadre o animal, selecione a proporção e aplique o corte ideal</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeCropperModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Toolbar de Proporções e Ferramentas -->
+            <div class="p-3 sm:px-5 bg-black/40 border-b border-white/5 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <!-- Proporções de Recorte -->
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[11px] text-stone-400 font-semibold mr-1">Proporção:</span>
+                    <button type="button" onclick="setCropperRatio(4/3, this)" class="cropper-ratio-btn px-2.5 py-1 rounded-lg font-bold text-xs bg-rustic-gold text-rustic-dark">
+                        4:3 (Padrão)
+                    </button>
+                    <button type="button" onclick="setCropperRatio(1, this)" class="cropper-ratio-btn px-2.5 py-1 rounded-lg font-semibold text-xs bg-stone-800 text-stone-300 hover:text-white">
+                        1:1 (Quadrado)
+                    </button>
+                    <button type="button" onclick="setCropperRatio(16/9, this)" class="cropper-ratio-btn px-2.5 py-1 rounded-lg font-semibold text-xs bg-stone-800 text-stone-300 hover:text-white">
+                        16:9
+                    </button>
+                    <button type="button" onclick="setCropperRatio(NaN, this)" class="cropper-ratio-btn px-2.5 py-1 rounded-lg font-semibold text-xs bg-stone-800 text-stone-300 hover:text-white">
+                        Livre
+                    </button>
+                </div>
+
+                <!-- Botões de Ação na Imagem -->
+                <div class="flex items-center gap-1 ml-auto">
+                    <button type="button" onclick="cropperZoom(0.1)" class="p-2 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-sm transition-all" title="Aumentar Zoom">
+                        <i class="ph-bold ph-magnifying-glass-plus"></i>
+                    </button>
+                    <button type="button" onclick="cropperZoom(-0.1)" class="p-2 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-sm transition-all" title="Diminuir Zoom">
+                        <i class="ph-bold ph-magnifying-glass-minus"></i>
+                    </button>
+                    <button type="button" onclick="cropperRotate(-90)" class="p-2 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-sm transition-all" title="Girar 90° para Esquerda">
+                        <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                    </button>
+                    <button type="button" onclick="cropperRotate(90)" class="p-2 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-sm transition-all" title="Girar 90° para Direita">
+                        <i class="ph-bold ph-arrow-clockwise"></i>
+                    </button>
+                    <button type="button" onclick="cropperFlip()" class="p-2 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-sm transition-all" title="Espelhar Horizontalmente">
+                        <i class="ph-bold ph-arrows-left-right"></i>
+                    </button>
+                    <button type="button" onclick="cropperReset()" class="p-2 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-sm transition-all" title="Resetar Ajustes">
+                        <i class="ph-bold ph-arrows-counter-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Área de Visualização do Cropper -->
+            <div class="p-4 sm:p-6 bg-black/60 flex items-center justify-center min-h-[300px] max-h-[58vh] overflow-hidden">
+                <div class="w-full h-full max-h-[52vh] flex items-center justify-center">
+                    <img id="cropperTargetImg" src="" alt="Imagem para Recorte" class="max-w-full max-h-[52vh] block" style="display: block;">
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 sm:p-5 border-t border-rustic-gold/20 flex items-center justify-between gap-3 bg-[#191d15] shrink-0">
+                <span class="text-[11px] text-stone-400 hidden sm:inline flex items-center gap-1.5">
+                    <i class="ph-bold ph-info text-rustic-gold"></i>
+                    <span>Arraste ou dê zoom com pinça para posicionar o animal</span>
+                </span>
+                <div class="flex items-center gap-2 ml-auto">
+                    <button type="button" onclick="closeCropperModal()" class="px-4 py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold text-xs transition-all">
+                        Cancelar
+                    </button>
+                    <button type="button" id="btnApplyCropper" onclick="applyCroppedImage()" class="px-5 py-2.5 rounded-xl bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold text-xs transition-all flex items-center gap-1.5 shadow-md">
+                        <i class="ph-bold ph-crop text-sm"></i>
+                        <span>Aplicar Recorte</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1802,11 +1915,13 @@
                 }
 
                 const isDisponivel = p.disponivel !== false;
+                const fotoFit = p.fotoFit || 'cover';
+                const fitClass = fotoFit === 'contain' ? 'max-w-full max-h-full object-contain p-2' : 'w-full h-full object-cover';
 
                 card.innerHTML = `
                     <div class="relative h-64 bg-stone-950 overflow-hidden flex items-center justify-center">
                         <img src="${coverPhoto}" alt="" class="absolute inset-0 w-full h-full object-cover blur-xl opacity-20 pointer-events-none scale-125">
-                        <img src="${coverPhoto}" alt="${p.nome}" class="relative z-0 max-w-full max-h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105 ${!isDisponivel ? 'grayscale opacity-60' : ''}">
+                        <img src="${coverPhoto}" alt="${p.nome}" class="relative z-0 ${fitClass} transition-transform duration-500 group-hover:scale-105 ${!isDisponivel ? 'grayscale opacity-60' : ''}">
                         
                         <!-- Badge de Disponibilidade na Imagem -->
                         <div class="absolute top-3 left-3 z-10 flex items-center gap-1.5">
@@ -1891,6 +2006,9 @@
                     document.getElementById('prodFormOrnamentais').value = prod.detalhes.ornamentais || '';
                 }
 
+                const selectFit = document.getElementById('prodFormFotoFit');
+                if (selectFit) selectFit.value = prod.fotoFit || 'cover';
+
                 modalPhotos = prod.fotos ? [...prod.fotos] : [];
             } else {
                 title.textContent = 'Cadastrar Nova Ave / Produto';
@@ -1901,6 +2019,8 @@
                 document.getElementById('prodFormPesoMachos').value = '4 a 4,8 kg';
                 document.getElementById('prodFormPesoFemeas').value = '3 a 3,8 kg';
                 document.getElementById('prodFormPostura').value = 'Aproximadamente 150 a 200 ovos por ano';
+                const selectFit = document.getElementById('prodFormFotoFit');
+                if (selectFit) selectFit.value = 'cover';
                 modalPhotos = [];
             }
 
@@ -1927,18 +2047,23 @@
             modalPhotos.forEach((photoUrl, index) => {
                 const isCover = index === 0;
                 const photoCard = document.createElement('div');
-                photoCard.className = `relative rounded-xl overflow-hidden bg-black/60 border ${isCover ? 'border-rustic-gold ring-1 ring-rustic-gold' : 'border-stone-700'} group aspect-square flex items-center justify-center`;
+                photoCard.className = `relative rounded-xl overflow-hidden bg-black/60 border ${isCover ? 'border-rustic-gold ring-1 ring-rustic-gold' : 'border-stone-700'} flex flex-col`;
 
                 photoCard.innerHTML = `
-                    <img src="${photoUrl}" alt="Foto ${index + 1}" class="w-full h-full object-cover">
-                    ${isCover ? '<span class="absolute top-1.5 left-1.5 bg-rustic-gold text-rustic-dark text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider z-10 shadow">Capa</span>' : ''}
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 p-2 z-20">
+                    <div class="relative aspect-square w-full bg-stone-950 flex items-center justify-center overflow-hidden">
+                        <img src="${photoUrl}" alt="Foto ${index + 1}" class="w-full h-full object-cover">
+                        ${isCover ? '<span class="absolute top-2 left-2 bg-rustic-gold text-rustic-dark text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider z-10 shadow">Capa</span>' : ''}
+                    </div>
+                    <div class="p-1.5 bg-stone-900 border-t border-white/5 flex items-center justify-between gap-1">
+                        <button type="button" onclick="openCropperModal(${index}, 'ave')" class="flex-1 bg-rustic-gold/20 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark font-bold text-[10px] py-1.5 px-1.5 rounded-lg transition-all flex items-center justify-center gap-1" title="Ajustar e Recortar Imagem">
+                            <i class="ph-bold ph-crop"></i> Recortar
+                        </button>
                         ${!isCover ? `
-                            <button type="button" onclick="setPhotoAsCover(${index})" class="bg-rustic-gold hover:bg-yellow-400 text-rustic-dark p-2 rounded-lg text-xs font-bold" title="Definir como foto de capa">
+                            <button type="button" onclick="setPhotoAsCover(${index})" class="bg-stone-800 hover:bg-yellow-400 hover:text-stone-950 text-stone-300 p-1.5 rounded-lg text-xs font-bold transition-all" title="Definir como foto de capa">
                                 <i class="ph-bold ph-star text-sm"></i>
                             </button>
                         ` : ''}
-                        <button type="button" onclick="removePhotoFromModal(${index})" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg text-xs font-bold" title="Remover foto">
+                        <button type="button" onclick="removePhotoFromModal(${index})" class="bg-red-950/40 hover:bg-red-700 text-red-300 hover:text-white p-1.5 rounded-lg text-xs font-bold transition-all" title="Remover foto">
                             <i class="ph-bold ph-trash text-sm"></i>
                         </button>
                     </div>
@@ -1958,6 +2083,183 @@
         const removePhotoFromModal = (index) => {
             modalPhotos.splice(index, 1);
             renderModalPhotos();
+        };
+
+        // --- Variáveis e Métodos da Ferramenta de Recorte (Cropper.js) ---
+        let currentCropper = null;
+        let currentCroppingIndex = null;
+        let currentCroppingType = 'ave'; // 'ave' | 'ebook'
+        let currentFlipX = 1;
+
+        const openCropperModal = (indexOrZero, type = 'ave') => {
+            currentCroppingIndex = indexOrZero;
+            currentCroppingType = type;
+            currentFlipX = 1;
+
+            let targetUrl = '';
+            if (type === 'ave') {
+                if (!modalPhotos[indexOrZero]) return;
+                targetUrl = modalPhotos[indexOrZero];
+            } else if (type === 'ebook') {
+                targetUrl = document.getElementById('ebookFormFoto')?.value || document.getElementById('ebookCoverPreview')?.src;
+            }
+
+            if (!targetUrl) {
+                showToast('Nenhuma imagem disponível para recortar.', 'Aviso', true);
+                return;
+            }
+
+            const modal = document.getElementById('imageCropperModal');
+            const imgEl = document.getElementById('cropperTargetImg');
+
+            if (currentCropper) {
+                currentCropper.destroy();
+                currentCropper = null;
+            }
+
+            imgEl.src = targetUrl;
+            modal.classList.remove('hidden');
+
+            imgEl.onload = () => {
+                if (currentCropper) {
+                    currentCropper.destroy();
+                }
+                currentCropper = new Cropper(imgEl, {
+                    aspectRatio: type === 'ebook' ? (3 / 4) : (4 / 3),
+                    viewMode: 1,
+                    autoCropArea: 0.95,
+                    responsive: true,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false
+                });
+            };
+
+            if (imgEl.complete && imgEl.naturalWidth > 0) {
+                imgEl.onload();
+            }
+        };
+
+        const closeCropperModal = () => {
+            const modal = document.getElementById('imageCropperModal');
+            modal.classList.add('hidden');
+            if (currentCropper) {
+                currentCropper.destroy();
+                currentCropper = null;
+            }
+        };
+
+        const setCropperRatio = (ratio, btn) => {
+            if (!currentCropper) return;
+
+            const parent = btn.parentElement;
+            if (parent) {
+                parent.querySelectorAll('button').forEach(b => {
+                    b.classList.remove('bg-rustic-gold', 'text-rustic-dark');
+                    b.classList.add('bg-stone-800', 'text-stone-300');
+                });
+                btn.classList.remove('bg-stone-800', 'text-stone-300');
+                btn.classList.add('bg-rustic-gold', 'text-rustic-dark');
+            }
+
+            if (ratio === null || ratio === 'null' || ratio === 0) {
+                currentCropper.setAspectRatio(NaN);
+            } else {
+                currentCropper.setAspectRatio(ratio);
+            }
+        };
+
+        const cropperZoom = (delta) => {
+            if (currentCropper) currentCropper.zoom(delta);
+        };
+
+        const cropperRotate = (degree) => {
+            if (currentCropper) currentCropper.rotate(degree);
+        };
+
+        const cropperFlip = () => {
+            if (!currentCropper) return;
+            currentFlipX = currentFlipX === 1 ? -1 : 1;
+            currentCropper.scaleX(currentFlipX);
+        };
+
+        const cropperReset = () => {
+            if (!currentCropper) return;
+            currentFlipX = 1;
+            currentCropper.reset();
+        };
+
+        const applyCroppedImage = async () => {
+            if (!currentCropper) return;
+
+            const btn = document.getElementById('btnApplyCropper');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> Aplicando...`;
+            }
+
+            try {
+                const canvas = currentCropper.getCroppedCanvas({
+                    maxWidth: 1600,
+                    maxHeight: 1600,
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high'
+                });
+
+                if (!canvas) {
+                    showToast('Erro ao processar recorte.', 'Erro', true);
+                    return;
+                }
+
+                const croppedBase64 = canvas.toDataURL('image/jpeg', 0.90);
+                let finalUrl = croppedBase64;
+
+                // Tenta salvar via API se servidor estiver disponível
+                try {
+                    const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            filename: `crop-${Date.now()}.jpg`,
+                            base64: croppedBase64
+                        })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success && data.url) {
+                        finalUrl = data.url;
+                        isServerAvailable = true;
+                        updateEnvironmentBadge();
+                    }
+                } catch (err) {}
+
+                if (currentCroppingType === 'ave') {
+                    if (currentCroppingIndex !== null && modalPhotos[currentCroppingIndex] !== undefined) {
+                        modalPhotos[currentCroppingIndex] = finalUrl;
+                        renderModalPhotos();
+                        showToast('Foto recortada e enquadrada com sucesso!', 'Recorte Aplicado');
+                    }
+                } else if (currentCroppingType === 'ebook') {
+                    document.getElementById('ebookFormFoto').value = finalUrl;
+                    document.getElementById('ebookCoverPreview').src = finalUrl;
+                    showToast('Capa do e-book recortada com sucesso!', 'Recorte Aplicado');
+                }
+
+                closeCropperModal();
+            } catch (err) {
+                showToast('Não foi possível aplicar o recorte.', 'Erro', true);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="ph-bold ph-crop text-sm"></i> <span>Aplicar Recorte</span>`;
+                }
+            }
         };
 
         // --- Upload de Novas Fotos de Aves ---
@@ -2050,6 +2352,7 @@
                 ornamentais: document.getElementById('prodFormOrnamentais').value.trim() || 'Padrão genético selecionado no criatório.'
             };
             const disponivel = document.getElementById('prodFormDisponivel').checked;
+            const fotoFit = document.getElementById('prodFormFotoFit')?.value || 'cover';
 
             const btnSave = document.getElementById('btnSaveProduct');
             btnSave.disabled = true;
@@ -2066,6 +2369,7 @@
                         categoria: categoriaInput,
                         descricao: descricaoInput,
                         disponivel: disponivel,
+                        fotoFit: fotoFit,
                         precos: precos,
                         detalhes: detalhes,
                         fotos: modalPhotos.length > 0 ? modalPhotos : updatedProducts[index].fotos
@@ -2084,6 +2388,7 @@
                     categoria: categoriaInput,
                     descricao: descricaoInput,
                     disponivel: disponivel,
+                    fotoFit: fotoFit,
                     precos: precos,
                     detalhes: detalhes,
                     fotos: modalPhotos.length > 0 ? modalPhotos : ['assets/images/combo-surpresa.jpg']
