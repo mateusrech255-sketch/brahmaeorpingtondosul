@@ -107,6 +107,12 @@
         .inset-y-0 { top: 0 !important; bottom: 0 !important; }
         .top-1\/2 { top: 50% !important; }
         .-translate-y-1\/2 { transform: translateY(-50%) !important; -webkit-transform: translateY(-50%) !important; }
+
+        /* Prevenção de overflow horizontal em telas móveis */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
     </style>
 </head>
 <body class="bg-[#181c15] text-stone-100 font-sans min-h-screen antialiased flex flex-col selection:bg-rustic-gold selection:text-rustic-dark">
@@ -195,26 +201,26 @@
         
         <!-- Header Superior -->
         <header class="bg-[#20251c] border-b border-rustic-gold/25 sticky top-0 z-40 backdrop-blur-md bg-opacity-95 shadow-md">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20">
-                    <div class="flex items-center gap-4">
-                        <img src="assets/images/logo.svg" alt="Logo" class="w-12 h-12 object-contain rounded-full bg-rustic-dark p-1 border border-rustic-gold/30">
-                        <div>
-                            <h2 class="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Painel Administrativo</h2>
-                            <p class="text-[11px] text-stone-400">Brahma e Orpington do Sul</p>
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16 sm:h-20 gap-2">
+                    <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                        <img src="assets/images/logo.svg" alt="Logo" class="w-9 h-9 sm:w-12 sm:h-12 object-contain rounded-full bg-rustic-dark p-1 border border-rustic-gold/30 shrink-0">
+                        <div class="min-w-0">
+                            <h2 class="font-serif text-sm sm:text-xl font-bold text-white leading-tight truncate">Painel Administrativo</h2>
+                            <p class="text-[10px] sm:text-[11px] text-stone-400 truncate">Brahma e Orpington do Sul</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 sm:gap-3">
-                        <div id="envBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
+                    <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                        <div id="envBadge" class="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
                             <span id="envBadgeDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
                             <span id="envBadgeText">Servidor Conectado</span>
                         </div>
-                        <button type="button" id="btnHeaderSyncServer" onclick="syncAllDataToServer()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl border border-emerald-400/40 transition-all flex items-center gap-1.5 shadow-md" title="Salvar e publicar todas as alterações no servidor">
+                        <button type="button" id="btnHeaderSyncServer" onclick="syncAllDataToServer()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-2.5 sm:px-3.5 py-2 rounded-xl border border-emerald-400/40 transition-all flex items-center gap-1.5 shadow-md" title="Salvar e publicar todas as alterações no servidor">
                             <i class="ph-bold ph-cloud-arrow-up text-base"></i>
-                            <span>Salvar no Servidor</span>
+                            <span class="hidden sm:inline">Salvar no Servidor</span>
                         </button>
-                        <button type="button" onclick="openExportModal()" class="bg-rustic-gold/15 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark text-xs font-bold px-3 py-2 rounded-xl border border-rustic-gold/30 transition-all flex items-center gap-1.5" title="Sincronizar e gerenciar dados do servidor">
+                        <button type="button" onclick="openExportModal()" class="bg-rustic-gold/15 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl border border-rustic-gold/30 transition-all flex items-center gap-1.5" title="Sincronizar e gerenciar dados do servidor">
                             <i class="ph-bold ph-database text-base"></i>
                             <span class="hidden md:inline">Dados</span>
                         </button>
@@ -222,11 +228,11 @@
                             <i class="ph-bold ph-arrow-square-out text-base text-rustic-gold"></i>
                             Ver Loja
                         </a>
-                        <button type="button" onclick="openChangePasswordModal()" class="bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3 py-2 rounded-xl border border-stone-700 transition-all flex items-center gap-1.5" title="Alterar Senha de Acesso">
+                        <button type="button" onclick="openChangePasswordModal()" class="bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-2.5 sm:px-3 py-2 rounded-xl border border-stone-700 transition-all flex items-center gap-1.5" title="Alterar Senha de Acesso">
                             <i class="ph-bold ph-key text-base text-rustic-gold"></i>
                             <span class="hidden md:inline">Senha</span>
                         </button>
-                        <button type="button" onclick="handleLogout()" class="bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs font-bold px-3 py-2 rounded-xl border border-red-800/50 transition-all flex items-center gap-1.5" title="Sair do Painel">
+                        <button type="button" onclick="handleLogout()" class="bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl border border-red-800/50 transition-all flex items-center gap-1.5" title="Sair do Painel">
                             <i class="ph-bold ph-sign-out text-base text-red-400"></i>
                             <span class="hidden sm:inline">Sair</span>
                         </button>
@@ -588,17 +594,17 @@
     <!-- ======================================================== -->
     <!-- MODAL: EDITAR / CRIAR PRODUTO (AVES)                     -->
     <!-- ======================================================== -->
-    <div id="productModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-8 overflow-hidden">
+    <div id="productModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-2xl sm:rounded-3xl max-w-4xl w-full h-[94vh] sm:h-[90vh] max-h-[94vh] flex flex-col shadow-2xl relative my-auto overflow-hidden">
             
             <!-- Modal Header -->
-            <div class="p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15]">
+            <div class="p-4 sm:p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15] shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl shrink-0">
                         <i id="modalIcon" class="ph-bold ph-pencil-simple"></i>
                     </div>
                     <div>
-                        <h3 id="modalTitle" class="font-serif text-xl font-bold text-white">Editar Produto</h3>
+                        <h3 id="modalTitle" class="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Editar Produto</h3>
                         <p class="text-xs text-stone-400">Atualize informações, fotos e preços da ave</p>
                     </div>
                 </div>
@@ -607,12 +613,15 @@
                 </button>
             </div>
 
-            <!-- Modal Body (Formulário com Scroll) -->
-            <form id="productForm" onsubmit="saveProductForm(event)" class="overflow-y-auto p-6 sm:p-8 space-y-8 flex-1">
+            <!-- Formulário envolvendo Corpo Rolável e Rodapé Fixo -->
+            <form id="productForm" onsubmit="saveProductForm(event)" class="flex flex-col flex-1 min-h-0 overflow-hidden">
                 <input type="hidden" id="prodFormId">
 
-                <!-- 1. Informações Básicas -->
-                <div class="bg-black/30 p-5 sm:p-6 rounded-2xl border border-white/5 space-y-4">
+                <!-- Modal Body (Apenas esta área rola verticalmente) -->
+                <div class="overflow-y-auto p-4 sm:p-8 space-y-6 sm:space-y-8 flex-1 min-h-0">
+
+                    <!-- 1. Informações Básicas -->
+                    <div class="bg-black/30 p-4 sm:p-6 rounded-2xl border border-white/5 space-y-4">
                     <h4 class="text-xs font-bold text-rustic-gold uppercase tracking-wider flex items-center gap-2">
                         <i class="ph-bold ph-info text-base"></i> Identificação da Ave
                     </h4>
@@ -635,14 +644,14 @@
                     </div>
 
                     <!-- Disponibilidade em Estoque -->
-                    <div class="bg-stone-900/60 p-4 rounded-xl border border-white/5 flex items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
+                    <div class="bg-stone-900/60 p-3.5 sm:p-4 rounded-xl border border-white/5 flex items-center justify-between gap-3 sm:gap-4">
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg shrink-0">
                                 <i class="ph-bold ph-check-circle"></i>
                             </div>
-                            <div>
+                            <div class="min-w-0">
                                 <label for="prodFormDisponivel" class="text-xs font-bold text-white block cursor-pointer">Disponibilidade para Venda</label>
-                                <p class="text-[11px] text-stone-400">Quando desmarcado, a ave aparecerá como "Indisponível / Esgotado" na loja e não poderá ser adicionada ao carrinho.</p>
+                                <p class="text-[11px] text-stone-400 leading-snug">Quando desmarcado, a ave aparecerá como "Indisponível / Esgotado" na loja e não poderá ser adicionada ao carrinho.</p>
                             </div>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer shrink-0">
@@ -679,13 +688,13 @@
 
                     <!-- Controle de Enquadramento no Card -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-stone-900/60 border border-white/5">
-                        <div>
+                        <div class="min-w-0">
                             <span class="text-xs font-semibold text-stone-200 flex items-center gap-1.5">
                                 <i class="ph-bold ph-aspect-ratio text-rustic-gold"></i> Enquadramento da Foto no Card
                             </span>
                             <span class="text-[11px] text-stone-400">"Preencher Card" ajusta a foto ao espaço eliminando as faixas pretas laterais.</span>
                         </div>
-                        <select id="prodFormFotoFit" class="bg-stone-800 border border-stone-700 text-xs text-white rounded-lg px-3 py-2 focus:border-rustic-gold focus:outline-none">
+                        <select id="prodFormFotoFit" class="w-full sm:w-auto max-w-full bg-stone-800 border border-stone-700 text-xs text-white rounded-lg px-3 py-2 focus:border-rustic-gold focus:outline-none shrink-0">
                             <option value="cover" selected>Preencher Card (Sem faixas pretas - Recomendado)</option>
                             <option value="contain">Conter Inteira (Com faixas laterais se vertical)</option>
                         </select>
@@ -778,13 +787,15 @@
                         <textarea id="prodFormOrnamentais" rows="2" placeholder="Características de plumagem, crista, porte, conformação..." class="w-full bg-stone-900 border border-stone-700 focus:border-rustic-gold rounded-xl p-3.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-rustic-gold leading-relaxed"></textarea>
                     </div>
                 </div>
+                </div>
+                <!-- Fim do Modal Body -->
 
-                <!-- Footer do Modal -->
-                <div class="pt-4 border-t border-rustic-gold/20 flex items-center justify-end gap-3 sticky bottom-0 bg-[#1f241a] py-3">
-                    <button type="button" onclick="closeProductModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-5 py-3 rounded-xl text-xs transition-all">
+                <!-- Footer do Modal (Fixado na base do card, NUNCA sobrepõe os campos) -->
+                <div class="p-3.5 sm:p-5 border-t border-rustic-gold/20 flex items-center justify-end gap-2.5 sm:gap-3 bg-[#191d15] shrink-0 z-10 shadow-lg">
+                    <button type="button" onclick="closeProductModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs transition-all">
                         Cancelar
                     </button>
-                    <button type="submit" id="btnSaveProduct" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-7 py-3 rounded-xl text-xs transition-all shadow-lg hover:shadow-xl transform active:scale-95 flex items-center gap-2">
+                    <button type="submit" id="btnSaveProduct" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs transition-all shadow-lg hover:shadow-xl transform active:scale-95 flex items-center gap-2">
                         <i class="ph-bold ph-floppy-disk text-base"></i>
                         <span>Salvar Alterações</span>
                     </button>
@@ -796,17 +807,17 @@
     <!-- ======================================================== -->
     <!-- MODAL: EDITAR / CRIAR E-BOOK                             -->
     <!-- ======================================================== -->
-    <div id="ebookModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative my-8 overflow-hidden">
+    <div id="ebookModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-[#1f241a] border border-rustic-gold/30 rounded-2xl sm:rounded-3xl max-w-2xl w-full h-[94vh] sm:h-[90vh] max-h-[94vh] flex flex-col shadow-2xl relative my-auto overflow-hidden">
             
             <!-- Modal Header -->
-            <div class="p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15]">
+            <div class="p-4 sm:p-6 border-b border-rustic-gold/20 flex items-center justify-between bg-[#191d15] shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
+                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl shrink-0">
                         <i id="ebookModalIcon" class="ph-bold ph-book-open"></i>
                     </div>
                     <div>
-                        <h3 id="ebookModalTitle" class="font-serif text-xl font-bold text-white">Editar E-book</h3>
+                        <h3 id="ebookModalTitle" class="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Editar E-book</h3>
                         <p class="text-xs text-stone-400">Atualize título, capa, descrição e valores do material digital</p>
                     </div>
                 </div>
@@ -815,9 +826,12 @@
                 </button>
             </div>
 
-            <!-- Modal Body -->
-            <form id="ebookForm" onsubmit="saveEbookForm(event)" class="overflow-y-auto p-6 sm:p-8 space-y-6 flex-1">
+            <!-- Formulário envolvendo Corpo Rolável e Rodapé Fixo -->
+            <form id="ebookForm" onsubmit="saveEbookForm(event)" class="flex flex-col flex-1 min-h-0 overflow-hidden">
                 <input type="hidden" id="ebookFormId">
+
+                <!-- Modal Body (Apenas esta área rola verticalmente) -->
+                <div class="overflow-y-auto p-4 sm:p-8 space-y-6 flex-1 min-h-0">
 
                 <!-- 1. Identificação -->
                 <div class="bg-black/30 p-5 rounded-2xl border border-white/5 space-y-4">
@@ -914,13 +928,15 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                <!-- Fim do Modal Body -->
 
-                <!-- Footer do Modal -->
-                <div class="pt-4 border-t border-rustic-gold/20 flex items-center justify-end gap-3 sticky bottom-0 bg-[#1f241a] py-3">
-                    <button type="button" onclick="closeEbookModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-5 py-3 rounded-xl text-xs transition-all">
+                <!-- Footer do Modal (Fixado na base do card, NUNCA sobrepõe os campos) -->
+                <div class="p-3.5 sm:p-5 border-t border-rustic-gold/20 flex items-center justify-end gap-2.5 sm:gap-3 bg-[#191d15] shrink-0 z-10 shadow-lg">
+                    <button type="button" onclick="closeEbookModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs transition-all">
                         Cancelar
                     </button>
-                    <button type="submit" id="btnSaveEbook" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-7 py-3 rounded-xl text-xs transition-all shadow-lg hover:shadow-xl transform active:scale-95 flex items-center gap-2">
+                    <button type="submit" id="btnSaveEbook" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs transition-all shadow-lg hover:shadow-xl transform active:scale-95 flex items-center gap-2">
                         <i class="ph-bold ph-floppy-disk text-base"></i>
                         <span>Salvar E-book</span>
                     </button>
