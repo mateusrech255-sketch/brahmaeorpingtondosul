@@ -201,13 +201,17 @@
                     </div>
 
                     <div class="flex items-center gap-2 sm:gap-3">
-                        <div id="envBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-amber-950/40 border border-rustic-gold/30 text-rustic-gold">
-                            <span id="envBadgeDot" class="w-2 h-2 rounded-full bg-rustic-gold animate-pulse"></span>
-                            <span id="envBadgeText">GitHub Pages</span>
+                        <div id="envBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
+                            <span id="envBadgeDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            <span id="envBadgeText">Servidor Conectado</span>
                         </div>
-                        <button type="button" onclick="openExportModal()" class="bg-rustic-gold/15 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark text-xs font-bold px-3 py-2 rounded-xl border border-rustic-gold/30 transition-all flex items-center gap-1.5" title="Exportar dados salvos">
-                            <i class="ph-bold ph-download-simple text-base"></i>
-                            <span class="hidden md:inline">Exportar Dados</span>
+                        <button type="button" id="btnHeaderSyncServer" onclick="syncAllDataToServer()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl border border-emerald-400/40 transition-all flex items-center gap-1.5 shadow-md" title="Salvar e publicar todas as alterações no servidor">
+                            <i class="ph-bold ph-cloud-arrow-up text-base"></i>
+                            <span>Salvar no Servidor</span>
+                        </button>
+                        <button type="button" onclick="openExportModal()" class="bg-rustic-gold/15 hover:bg-rustic-gold text-rustic-gold hover:text-rustic-dark text-xs font-bold px-3 py-2 rounded-xl border border-rustic-gold/30 transition-all flex items-center gap-1.5" title="Sincronizar e gerenciar dados do servidor">
+                            <i class="ph-bold ph-database text-base"></i>
+                            <span class="hidden md:inline">Dados</span>
                         </button>
                         <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3 py-2 rounded-xl border border-stone-700 transition-all">
                             <i class="ph-bold ph-arrow-square-out text-base text-rustic-gold"></i>
@@ -1049,18 +1053,18 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- MODAL: EXPORTAR DADOS                                    -->
+    <!-- MODAL: SALVAR NO SERVIDOR E EXPORTAR DADOS               -->
     <!-- ======================================================== -->
     <div id="exportModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-[#20251c] border border-rustic-gold/30 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
             <div class="flex items-center justify-between mb-6 pb-4 border-b border-rustic-gold/20">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-rustic-gold/20 flex items-center justify-center text-rustic-gold text-xl">
-                        <i class="ph-bold ph-download-simple"></i>
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl">
+                        <i class="ph-bold ph-cloud-arrow-up"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif text-lg font-bold text-white">Exportar / Sincronizar Dados</h3>
-                        <p class="text-xs text-stone-400">Baixe os arquivos JSON atualizados para o Git</p>
+                        <h3 class="font-serif text-lg font-bold text-white">Salvar e Publicar no Servidor</h3>
+                        <p class="text-xs text-stone-400">Envie suas edições diretamente para o servidor online</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeExportModal()" class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors">
@@ -1068,63 +1072,76 @@
                 </button>
             </div>
 
-            <div class="space-y-4">
-                <p class="text-xs text-stone-300 leading-relaxed">
-                    Suas alterações ficam salvas no navegador neste dispositivo. Para que as fotos e preços sejam publicados na internet para todos os clientes, você pode baixar os arquivos JSON atualizados e enviá-los ao repositório:
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    <button type="button" onclick="downloadProductsJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Catálogo de Aves</span>
-                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
-                            </div>
-                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">products.json</code></p>
+            <div class="space-y-5">
+                <!-- Ação Principal: Salvar Direto no Servidor -->
+                <div class="p-4 sm:p-5 bg-emerald-950/30 border border-emerald-500/40 rounded-2xl space-y-3">
+                    <div class="flex items-start gap-3">
+                        <i class="ph-bold ph-check-circle text-emerald-400 text-xl shrink-0 mt-0.5"></i>
+                        <div class="space-y-1">
+                            <h4 class="text-xs sm:text-sm font-bold text-white">Publicação Direta no Servidor</h4>
+                            <p class="text-[11px] text-stone-300 leading-relaxed">
+                                Clique no botão abaixo para salvar todas as suas edições (disponibilidade das aves, preços, fotos, e-books e pedidos) diretamente no servidor para todos os clientes:
+                            </p>
                         </div>
-                    </button>
-
-                    <button type="button" onclick="downloadEbooksJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Lista de E-books</span>
-                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
-                            </div>
-                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">ebooks.json</code></p>
-                        </div>
-                    </button>
-
-                    <button type="button" onclick="downloadOrdersJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Histórico de Pedidos</span>
-                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
-                            </div>
-                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">pedidos.json</code></p>
-                        </div>
-                    </button>
-
-                    <button type="button" onclick="downloadClientsJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-4 rounded-2xl text-left transition-all group flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Base de Clientes</span>
-                                <i class="ph-bold ph-download-simple text-rustic-gold"></i>
-                            </div>
-                            <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">clientes.json</code></p>
-                        </div>
+                    </div>
+                    <button type="button" id="btnModalSyncServer" onclick="syncAllDataToServer()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-5 rounded-xl text-xs sm:text-sm transition-all shadow-lg flex items-center justify-center gap-2 transform active:scale-95">
+                        <i class="ph-bold ph-cloud-arrow-up text-lg"></i>
+                        <span>Salvar Tudo no Servidor Agora</span>
                     </button>
                 </div>
 
-                <div class="p-3.5 bg-black/40 border border-white/5 rounded-2xl text-[11px] text-stone-400 space-y-1">
-                    <p class="font-bold text-stone-300 flex items-center gap-1.5">
-                        <i class="ph-bold ph-info text-rustic-gold"></i> Onde colocar esses arquivos:
+                <!-- Backup Manual Opcional -->
+                <div class="space-y-2.5 pt-2 border-t border-white/10">
+                    <p class="text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
+                        Backup Manual em Arquivo JSON (Opcional)
                     </p>
-                    <p>Substitua os arquivos na pasta <code class="text-stone-300">data/</code> do seu projeto e rode <code class="text-rustic-gold">git push origin main</code>.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button type="button" onclick="downloadProductsJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-3.5 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Catálogo de Aves</span>
+                                    <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                                </div>
+                                <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">products.json</code></p>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="downloadEbooksJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-3.5 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Lista de E-books</span>
+                                    <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                                </div>
+                                <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">ebooks.json</code></p>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="downloadOrdersJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-3.5 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Histórico de Pedidos</span>
+                                    <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                                </div>
+                                <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">pedidos.json</code></p>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="downloadClientsJson()" class="bg-stone-800 hover:bg-stone-700 border border-rustic-gold/30 p-3.5 rounded-2xl text-left transition-all group flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold text-white group-hover:text-rustic-gold transition-colors">Base de Clientes</span>
+                                    <i class="ph-bold ph-download-simple text-rustic-gold"></i>
+                                </div>
+                                <p class="text-[11px] text-stone-400">Baixar <code class="text-rustic-gold">clientes.json</code></p>
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="pt-3 border-t border-white/5 flex items-center justify-between">
-                    <button type="button" onclick="resetToRepositoryData()" class="text-red-400 hover:text-red-300 text-xs font-semibold transition-colors flex items-center gap-1" title="Descartar alterações locais e restaurar original do Git">
-                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Restaurar dados originais
+                    <button type="button" onclick="resetToRepositoryData()" class="text-red-400 hover:text-red-300 text-xs font-semibold transition-colors flex items-center gap-1" title="Recarregar dados originais do servidor">
+                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Recarregar dados do servidor
                     </button>
                     <button type="button" onclick="closeExportModal()" class="bg-rustic-gold hover:bg-yellow-500 text-rustic-dark font-bold px-5 py-2.5 rounded-xl text-xs transition-all">
                         Fechar
@@ -1401,11 +1418,11 @@
             if (isServerAvailable) {
                 badge.className = "hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-950/40 border border-emerald-500/30 text-emerald-300";
                 dot.className = "w-2 h-2 rounded-full bg-emerald-400";
-                text.textContent = "Servidor Node Conectado";
+                text.textContent = "Servidor Conectado";
             } else {
                 badge.className = "hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-amber-950/40 border border-rustic-gold/30 text-rustic-gold";
                 dot.className = "w-2 h-2 rounded-full bg-rustic-gold animate-pulse";
-                text.textContent = "GitHub Pages (Local)";
+                text.textContent = "Modo Offline (Local)";
             }
         };
 
@@ -1503,19 +1520,10 @@
                 return;
             }
 
-            if (authToken.startsWith('bos_local_token_')) {
-                isServerAvailable = false;
-                showDashboardView();
-                updateEnvironmentBadge();
-                loadProducts();
-                loadEbooks();
-                loadOrders();
-                return;
-            }
-
             try {
                 const res = await fetch('/api/auth-check', {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    cache: 'no-store'
                 });
 
                 if (res.ok) {
@@ -1793,24 +1801,59 @@
 
         // --- Carregar e Renderizar Produtos (Aves) ---
         const loadProducts = async () => {
-            // 1. Se o servidor estiver disponível, tenta a API
-            if (isServerAvailable) {
+            const savedCustom = localStorage.getItem(STORAGE_PRODUCTS_KEY);
+            const initialSyncDone = localStorage.getItem('bos_initial_sync_done');
+
+            // Se o usuário já tinha edições salvas no aparelho antes da ativação do servidor, preserva e sincroniza automaticamente
+            if (savedCustom && !initialSyncDone) {
                 try {
-                    const res = await fetch('/api/produtos');
-                    if (res.ok) {
-                        products = applyDefaultProductCardLinks(await res.json());
+                    const parsed = JSON.parse(savedCustom);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        products = applyDefaultProductCardLinks(parsed);
+                        updateStats();
+                        renderProductsGrid();
+                        try {
+                            const resSync = await fetch('/api/produtos', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authToken}`
+                                },
+                                body: JSON.stringify(products)
+                            });
+                            if (resSync.ok) {
+                                isServerAvailable = true;
+                                updateEnvironmentBadge();
+                                localStorage.setItem('bos_initial_sync_done', 'true');
+                            }
+                        } catch (e) {}
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            // 1. Tenta carregar sempre do Servidor / API primeiro
+            try {
+                const res = await fetch('/api/produtos?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const serverProducts = await res.json();
+                    if (Array.isArray(serverProducts) && serverProducts.length > 0) {
+                        isServerAvailable = true;
+                        updateEnvironmentBadge();
+                        products = applyDefaultProductCardLinks(serverProducts);
+                        localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(products));
+                        localStorage.setItem('bos_initial_sync_done', 'true');
                         updateStats();
                         renderProductsGrid();
                         return;
                     }
-                } catch (err) {
-                    isServerAvailable = false;
-                    updateEnvironmentBadge();
                 }
+            } catch (err) {
+                isServerAvailable = false;
+                updateEnvironmentBadge();
             }
 
-            // 2. Tenta do localStorage (alterações feitas pelo criador neste aparelho)
-            const savedCustom = localStorage.getItem(STORAGE_PRODUCTS_KEY);
+            // 2. Fallback: Tenta do localStorage
             if (savedCustom) {
                 try {
                     const parsed = JSON.parse(savedCustom);
@@ -1823,9 +1866,9 @@
                 } catch (e) {}
             }
 
-            // 3. Fallback: carrega do arquivo estático data/produtos.json (compatível com GitHub Pages e Cloudflare)
+            // 3. Fallback: carrega do arquivo estático data/produtos.json
             try {
-                const res = await fetch('data/produtos.json');
+                const res = await fetch('data/produtos.json?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     products = applyDefaultProductCardLinks(await res.json());
                     updateStats();
@@ -2110,26 +2153,26 @@
                     const base64 = await readFileAsBase64(file);
                     let uploadedUrl = null;
 
-                    if (isServerAvailable) {
-                        try {
-                            const res = await fetch('/api/upload', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authToken}`
-                                },
-                                body: JSON.stringify({
-                                    filename: file.name,
-                                    base64: base64
-                                })
-                            });
+                    try {
+                        const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authToken}`
+                            },
+                            body: JSON.stringify({
+                                filename: file.name,
+                                base64: base64
+                            })
+                        });
 
-                            const data = await res.json();
-                            if (res.ok && data.success) {
-                                uploadedUrl = data.url;
-                            }
-                        } catch (err) {}
-                    }
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            uploadedUrl = data.url;
+                            isServerAvailable = true;
+                            updateEnvironmentBadge();
+                        }
+                    } catch (err) {}
 
                     // Se não tiver servidor rodando, usa Data URL Base64 direto (compatível com GitHub Pages e mobile)
                     if (!uploadedUrl) {
@@ -2248,39 +2291,40 @@
                 updatedProducts.push(newProduct);
             }
 
-            // Sempre persiste no localStorage (ativa na loja deste aparelho)
+            // Sempre persiste no localStorage e envia imediatamente ao Servidor
             localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(updatedProducts));
+            localStorage.setItem('bos_initial_sync_done', 'true');
             products = updatedProducts;
             updateStats();
             renderProductsGrid();
             closeProductModal();
 
-            // Se o servidor estiver ativo, envia para gravar no disco
+            // Envia para gravar no servidor
             let savedOnDisk = false;
-            if (isServerAvailable) {
-                try {
-                    const res = await fetch('/api/produtos', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify(updatedProducts)
-                    });
-                    const data = await res.json();
-                    if (res.ok && data.success) {
-                        savedOnDisk = true;
-                    }
-                } catch (err) {}
-            }
+            try {
+                const res = await fetch('/api/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedProducts)
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    savedOnDisk = true;
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {}
 
             btnSave.disabled = false;
             btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar Alterações</span>`;
 
             if (savedOnDisk) {
-                showToast('Produto gravado no servidor e arquivos do projeto!', 'Salvo');
+                showToast('Alterações salvas e publicadas no servidor!', 'Salvo no Servidor');
             } else {
-                showToast('Produto salvo no navegador! Ativo na loja deste aparelho.', 'Salvo');
+                showToast('Produto salvo no navegador! Clique em "Salvar no Servidor" quando estiver online.', 'Salvo Local');
             }
         };
 
@@ -2294,24 +2338,27 @@
 
             const updatedProducts = products.filter(p => p.id !== productId);
             localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(updatedProducts));
+            localStorage.setItem('bos_initial_sync_done', 'true');
             products = updatedProducts;
             updateStats();
             renderProductsGrid();
 
-            if (isServerAvailable) {
-                try {
-                    await fetch('/api/produtos', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify(updatedProducts)
-                    });
-                } catch (err) {}
-            }
+            try {
+                const res = await fetch('/api/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedProducts)
+                });
+                if (res.ok) {
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {}
 
-            showToast(`"${prod.nome}" foi removido com sucesso.`);
+            showToast(`"${prod.nome}" foi removido do servidor com sucesso.`);
         };
 
         // --- Alternar Disponibilidade da Ave ---
@@ -2325,45 +2372,86 @@
 
             const updatedProducts = products.map(p => p.id === productId ? { ...p, disponivel: newDisponivel } : p);
             localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(updatedProducts));
+            localStorage.setItem('bos_initial_sync_done', 'true');
             products = updatedProducts;
             updateStats();
             renderProductsGrid();
 
-            if (isServerAvailable) {
-                try {
-                    await fetch('/api/produtos', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify(updatedProducts)
-                    });
-                } catch (err) {}
-            }
+            let savedServer = false;
+            try {
+                const res = await fetch('/api/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedProducts)
+                });
+                if (res.ok) {
+                    savedServer = true;
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {}
 
-            showToast(`"${prod.nome}" agora está ${newDisponivel ? 'DISPONÍVEL' : 'INDISPONÍVEL'}.`, newDisponivel ? 'Disponível' : 'Indisponível');
+            showToast(
+                `"${prod.nome}" agora está ${newDisponivel ? 'DISPONÍVEL' : 'INDISPONÍVEL'}${savedServer ? ' no servidor!' : '.'}`,
+                newDisponivel ? 'Disponível' : 'Indisponível'
+            );
         };
 
         // ========================================================
         // GERENCIAMENTO DE E-BOOKS
         // ========================================================
         const loadEbooks = async () => {
-            if (isServerAvailable) {
+            const savedCustom = localStorage.getItem(STORAGE_EBOOKS_KEY);
+            const initialEbooksSyncDone = localStorage.getItem('bos_initial_ebooks_sync_done');
+
+            if (savedCustom && !initialEbooksSyncDone) {
                 try {
-                    const res = await fetch('/api/ebooks');
-                    if (res.ok) {
-                        ebooks = applyDefaultEbookCardLinks(await res.json());
+                    const parsed = JSON.parse(savedCustom);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        ebooks = applyDefaultEbookCardLinks(parsed);
+                        renderEbooksGrid();
+                        try {
+                            const resSync = await fetch('/api/ebooks', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authToken}`
+                                },
+                                body: JSON.stringify(ebooks)
+                            });
+                            if (resSync.ok) {
+                                isServerAvailable = true;
+                                updateEnvironmentBadge();
+                                localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
+                            }
+                        } catch (e) {}
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            try {
+                const res = await fetch('/api/ebooks?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const serverEbooks = await res.json();
+                    if (Array.isArray(serverEbooks) && serverEbooks.length > 0) {
+                        isServerAvailable = true;
+                        updateEnvironmentBadge();
+                        ebooks = applyDefaultEbookCardLinks(serverEbooks);
+                        localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(ebooks));
+                        localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
                         renderEbooksGrid();
                         return;
                     }
-                } catch (err) {
-                    isServerAvailable = false;
-                    updateEnvironmentBadge();
                 }
+            } catch (err) {
+                isServerAvailable = false;
+                updateEnvironmentBadge();
             }
 
-            const savedCustom = localStorage.getItem(STORAGE_EBOOKS_KEY);
             if (savedCustom) {
                 try {
                     const parsed = JSON.parse(savedCustom);
@@ -2376,7 +2464,7 @@
             }
 
             try {
-                const res = await fetch('data/ebooks.json');
+                const res = await fetch('data/ebooks.json?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     ebooks = applyDefaultEbookCardLinks(await res.json());
                     renderEbooksGrid();
@@ -2515,26 +2603,26 @@
                 const base64 = await readFileAsBase64(file);
                 let uploadedUrl = null;
 
-                if (isServerAvailable) {
-                    try {
-                        const res = await fetch('/api/upload', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${authToken}`
-                            },
-                            body: JSON.stringify({
-                                filename: file.name,
-                                base64: base64
-                            })
-                        });
+                try {
+                    const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            base64: base64
+                        })
+                    });
 
-                        const data = await res.json();
-                        if (res.ok && data.success) {
-                            uploadedUrl = data.url;
-                        }
-                    } catch (err) {}
-                }
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        uploadedUrl = data.url;
+                        isServerAvailable = true;
+                        updateEnvironmentBadge();
+                    }
+                } catch (err) {}
 
                 if (!uploadedUrl) {
                     uploadedUrl = base64;
@@ -2589,9 +2677,7 @@
                         pixTitular: pixTitularInput,
                         linkCartao: linkCartaoInput,
                         cartaoParcelas: cartaoParcelasInput,
-                        linkCartao: linkCartaoInput,
-                        cartaoParcelas: cartaoParcelasInput,
-                        linksCartao: linksCartao,
+                        linksCartao: linkCartaoInput ? { pdf: linkCartaoInput } : (updatedEbooks[idx].linksCartao || {}),
                         foto: fotoInput,
                         link: linkInput || `ebooks.html#${idInput}`
                     };
@@ -2611,6 +2697,11 @@
                     descricao: descricaoInput,
                     precoDe: precoDeInput,
                     precoPor: precoPorInput,
+                    chavePix: chavePixInput,
+                    pixTitular: pixTitularInput,
+                    linkCartao: linkCartaoInput,
+                    cartaoParcelas: cartaoParcelasInput,
+                    linksCartao: linkCartaoInput ? { pdf: linkCartaoInput } : {},
                     foto: fotoInput,
                     link: linkInput || `ebooks.html#${newId}`
                 };
@@ -2618,35 +2709,36 @@
             }
 
             localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(updatedEbooks));
+            localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
             ebooks = updatedEbooks;
             renderEbooksGrid();
             closeEbookModal();
 
             let savedOnDisk = false;
-            if (isServerAvailable) {
-                try {
-                    const res = await fetch('/api/ebooks', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify(updatedEbooks)
-                    });
-                    const data = await res.json();
-                    if (res.ok && data.success) {
-                        savedOnDisk = true;
-                    }
-                } catch (err) {}
-            }
+            try {
+                const res = await fetch('/api/ebooks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedEbooks)
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    savedOnDisk = true;
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {}
 
             btnSave.disabled = false;
             btnSave.innerHTML = `<i class="ph-bold ph-floppy-disk text-base"></i> <span>Salvar E-book</span>`;
 
             if (savedOnDisk) {
-                showToast('E-book gravado no servidor!', 'Salvo');
+                showToast('E-book gravado e publicado no servidor!', 'Salvo no Servidor');
             } else {
-                showToast('E-book salvo com sucesso no navegador!', 'Salvo');
+                showToast('E-book salvo no navegador! Clique em "Salvar no Servidor" quando estiver online.', 'Salvo Local');
             }
         };
 
@@ -2660,23 +2752,26 @@
 
             const updatedEbooks = ebooks.filter(e => e.id !== ebookId);
             localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(updatedEbooks));
+            localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
             ebooks = updatedEbooks;
             renderEbooksGrid();
 
-            if (isServerAvailable) {
-                try {
-                    await fetch('/api/ebooks', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify(updatedEbooks)
-                    });
-                } catch (err) {}
-            }
+            try {
+                const res = await fetch('/api/ebooks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedEbooks)
+                });
+                if (res.ok) {
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {}
 
-            showToast(`E-book "${eb.titulo}" excluído.`);
+            showToast(`E-book "${eb.titulo}" excluído do servidor.`);
         };
 
         // --- Modal Alterar Senha ---
@@ -2709,27 +2804,27 @@
             btn.textContent = 'Salvando...';
 
             let serverSuccess = false;
-            if (isServerAvailable) {
-                try {
-                    const res = await fetch('/api/change-password', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify({
-                            currentPassword: currentPass,
-                            newUsername: newUsername,
-                            newPassword: newPass
-                        })
-                    });
+            try {
+                const res = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword: currentPass,
+                        newUsername: newUsername,
+                        newPassword: newPass
+                    })
+                });
 
-                    const data = await res.json();
-                    if (res.ok && data.success) {
-                        serverSuccess = true;
-                    }
-                } catch (err) {}
-            }
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    serverSuccess = true;
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {}
 
             // Validação no modo local / GitHub Pages
             const currentCreds = getStoredCreds();
@@ -2755,13 +2850,90 @@
             showToast('Credenciais atualizadas com sucesso!', 'Segurança');
         };
 
-        // --- Exportação e Download de Dados JSON ---
+        // --- Sincronização Direta com o Servidor + Exportação JSON ---
         const openExportModal = () => {
             document.getElementById('exportModal').classList.remove('hidden');
         };
 
         const closeExportModal = () => {
             document.getElementById('exportModal').classList.add('hidden');
+        };
+
+        const syncAllDataToServer = async () => {
+            const btnHeader = document.getElementById('btnHeaderSyncServer');
+            const btnModal = document.getElementById('btnModalSyncServer');
+            const statusText = document.getElementById('serverSyncStatusText');
+
+            if (btnHeader) {
+                btnHeader.disabled = true;
+                btnHeader.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> <span class="hidden sm:inline">Salvando...</span>`;
+            }
+            if (btnModal) {
+                btnModal.disabled = true;
+                btnModal.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-lg"></i> <span>Enviando para o Servidor...</span>`;
+            }
+
+            // Garante que o estado local também está salvo
+            localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(products));
+            localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(ebooks));
+            localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(orders));
+            localStorage.setItem('bos_initial_sync_done', 'true');
+            localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
+
+            const paymentCfg = getGlobalPaymentConfig();
+            let success = false;
+
+            try {
+                const res = await fetch('/api/sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        products: products,
+                        ebooks: ebooks,
+                        orders: orders,
+                        paymentConfig: {
+                            enabled: true,
+                            handle: paymentCfg.handle || DEFAULT_INFINITEPAY_HANDLE,
+                            apiKey: paymentCfg.apiKey || DEFAULT_INFINITEPAY_API_KEY,
+                            linkCartao: paymentCfg.linkCartao || '',
+                            cartaoParcelas: paymentCfg.cartaoParcelas || 'Em até 12x no Cartão',
+                            chavePix: paymentCfg.chavePix || 'contato@brahmaeorpingtondosul.com.br'
+                        }
+                    })
+                });
+
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.success) {
+                    success = true;
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (err) {
+                success = false;
+            }
+
+            if (btnHeader) {
+                btnHeader.disabled = false;
+                btnHeader.innerHTML = `<i class="ph-bold ph-cloud-check text-base"></i> <span class="hidden sm:inline">Salvar no Servidor</span>`;
+            }
+            if (btnModal) {
+                btnModal.disabled = false;
+                btnModal.innerHTML = `<i class="ph-bold ph-cloud-arrow-up text-lg"></i> <span>Salvar Tudo no Servidor Agora</span>`;
+            }
+
+            if (success) {
+                const nowStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                if (statusText) {
+                    statusText.textContent = `Sincronizado com o servidor às ${nowStr}`;
+                    statusText.classList.remove('hidden');
+                }
+                showToast('Todas as edições foram salvas e publicadas no servidor!', 'Salvo no Servidor');
+            } else {
+                showToast('Alterações salvas neste aparelho, mas o servidor não pôde ser contatado agora.', 'Aviso', true);
+            }
         };
 
         const downloadJsonFile = (filename, dataObj) => {
@@ -2784,26 +2956,23 @@
         };
 
         const resetToRepositoryData = async () => {
-            const confirmReset = confirm("Deseja realmente descartar todas as alterações salvas no navegador e restaurar os dados originais do repositório?");
+            const confirmReset = confirm("Deseja realmente descartar o cache local deste navegador e recarregar os dados atuais do servidor?");
             if (!confirmReset) return;
 
             localStorage.removeItem(STORAGE_PRODUCTS_KEY);
             localStorage.removeItem(STORAGE_EBOOKS_KEY);
+            localStorage.setItem('bos_initial_sync_done', 'true');
+            localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
 
             try {
-                const [resProd, resEb] = await Promise.all([
-                    fetch('data/products.json'),
-                    fetch('data/ebooks.json')
+                await Promise.all([
+                    loadProducts(),
+                    loadEbooks()
                 ]);
-                if (resProd.ok) products = await resProd.json();
-                if (resEb.ok) ebooks = await resEb.json();
-                updateStats();
-                renderProductsGrid();
-                renderEbooksGrid();
                 closeExportModal();
-                showToast('Dados restaurados para o padrão do repositório!', 'Restaurado');
+                showToast('Dados recarregados diretamente do servidor!', 'Atualizado');
             } catch (e) {
-                showToast('Erro ao recarregar dados do repositório.', 'Erro', true);
+                showToast('Erro ao recarregar dados do servidor.', 'Erro', true);
             }
         };
 
@@ -3600,36 +3769,47 @@
 
             localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(products));
             localStorage.setItem(STORAGE_EBOOKS_KEY, JSON.stringify(ebooks));
+            localStorage.setItem('bos_initial_sync_done', 'true');
+            localStorage.setItem('bos_initial_ebooks_sync_done', 'true');
             renderProductsGrid();
             renderEbooksGrid();
 
-            if (isServerAvailable) {
-                try {
-                    await Promise.all([
-                        fetch('/api/produtos', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-                            body: JSON.stringify(products)
-                        }),
-                        fetch('/api/ebooks', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-                            body: JSON.stringify(ebooks)
-                        }),
-                        fetch('/api/infinitepay/config', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-                            body: JSON.stringify({
-                                enabled: true,
-                                handle: gHandle,
-                                apiKey: gApiKey
-                            })
+            let savedOnServer = false;
+            try {
+                const [resP, resE, resC] = await Promise.all([
+                    fetch('/api/produtos', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                        body: JSON.stringify(products)
+                    }),
+                    fetch('/api/ebooks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                        body: JSON.stringify(ebooks)
+                    }),
+                    fetch('/api/infinitepay/config', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                        body: JSON.stringify({
+                            enabled: true,
+                            handle: gHandle,
+                            apiKey: gApiKey
                         })
-                    ]);
-                } catch (e) {}
-            }
+                    })
+                ]);
+                if (resP.ok || resE.ok || resC.ok) {
+                    savedOnServer = true;
+                    isServerAvailable = true;
+                    updateEnvironmentBadge();
+                }
+            } catch (e) {}
 
-            showToast('Configurações da API InfinitePay, links de cartão e chaves PIX salvos!', 'Pagamentos Salvos');
+            showToast(
+                savedOnServer
+                    ? 'Configurações da API InfinitePay, links de cartão e chaves PIX salvos no servidor!'
+                    : 'Configurações de pagamento salvas neste aparelho!',
+                'Pagamentos Salvos'
+            );
         };
 
         const testInfinitePayApiCheckout = async () => {

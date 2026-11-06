@@ -4,6 +4,9 @@ node_modules/
 .github/
 .vscode/
 server.js
+worker.js
+wrangler.jsonc
+functions/
 package.json
 package-lock.json
 README.md

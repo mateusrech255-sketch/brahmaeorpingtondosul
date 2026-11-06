@@ -1285,18 +1285,24 @@
         const syncCustomEbooks = async () => {
             let list = null;
             try {
-                const saved = localStorage.getItem('bos_custom_ebooks');
-                if (saved) list = JSON.parse(saved);
+                const res = await fetch('/api/ebooks?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const parsed = await res.json();
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        list = parsed;
+                        localStorage.setItem('bos_custom_ebooks', JSON.stringify(list));
+                    }
+                }
             } catch (e) {}
             if (!list) {
                 try {
-                    const res = await fetch('/api/ebooks');
-                    if (res.ok) list = await res.json();
+                    const saved = localStorage.getItem('bos_custom_ebooks');
+                    if (saved) list = JSON.parse(saved);
                 } catch (e) {}
             }
             if (!list) {
                 try {
-                    const res = await fetch('data/ebooks.json');
+                    const res = await fetch('data/ebooks.json?t=' + Date.now(), { cache: 'no-store' });
                     if (res.ok) list = await res.json();
                 } catch (e) {}
             }

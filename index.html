@@ -4180,9 +4180,23 @@
             });
         };
 
-        // --- Sincronização Dinâmica com Painel Admin ---
+        // --- Sincronização Dinâmica com Painel Admin e Servidor ---
         const carregarProdutosDaApi = async () => {
-            // 1. Tenta carregar do localStorage (alterações feitas pelo dono no navegador)
+            // 1. Tenta carregar sempre do Servidor / API primeiro (com cache desativado para refletir edições em tempo real)
+            try {
+                const res = await fetch('/api/produtos?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        produtos = applyDefaultProductCardLinks(data);
+                        localStorage.setItem('bos_custom_products', JSON.stringify(produtos));
+                        renderProducts();
+                        return;
+                    }
+                }
+            } catch (err) {}
+
+            // 2. Fallback: Tenta carregar do localStorage
             const savedCustom = localStorage.getItem('bos_custom_products');
             if (savedCustom) {
                 try {
@@ -4195,22 +4209,9 @@
                 } catch (e) {}
             }
 
-            // 2. Tenta API do servidor local
+            // 3. Fallback: carrega do arquivo estático data/produtos.json
             try {
-                const res = await fetch('/api/produtos');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (Array.isArray(data) && data.length > 0) {
-                        produtos = applyDefaultProductCardLinks(data);
-                        renderProducts();
-                        return;
-                    }
-                }
-            } catch (err) {}
-
-            // 3. Fallback: carrega do arquivo estático data/produtos.json (compatível com GitHub Pages e Cloudflare)
-            try {
-                const res = await fetch('data/produtos.json');
+                const res = await fetch('data/produtos.json?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
@@ -4225,26 +4226,32 @@
         const carregarEbooksDaApi = async () => {
             let dataEbooks = null;
 
-            // 1. Tenta do localStorage
-            const savedCustom = localStorage.getItem('bos_custom_ebooks');
-            if (savedCustom) {
-                try {
-                    dataEbooks = JSON.parse(savedCustom);
-                } catch (e) {}
+            // 1. Tenta carregar sempre do Servidor / API primeiro
+            try {
+                const res = await fetch('/api/ebooks?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const parsed = await res.json();
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        dataEbooks = parsed;
+                        localStorage.setItem('bos_custom_ebooks', JSON.stringify(dataEbooks));
+                    }
+                }
+            } catch (err) {}
+
+            // 2. Fallback: Tenta do localStorage
+            if (!dataEbooks) {
+                const savedCustom = localStorage.getItem('bos_custom_ebooks');
+                if (savedCustom) {
+                    try {
+                        dataEbooks = JSON.parse(savedCustom);
+                    } catch (e) {}
+                }
             }
 
-            // 2. Tenta do servidor local
+            // 3. Fallback: Tenta do arquivo estático
             if (!dataEbooks) {
                 try {
-                    const res = await fetch('/api/ebooks');
-                    if (res.ok) dataEbooks = await res.json();
-                } catch (err) {}
-            }
-
-            // 3. Tenta do arquivo estático
-            if (!dataEbooks) {
-                try {
-                    const res = await fetch('data/ebooks.json');
+                    const res = await fetch('data/ebooks.json?t=' + Date.now(), { cache: 'no-store' });
                     if (res.ok) dataEbooks = await res.json();
                 } catch (err) {}
             }
