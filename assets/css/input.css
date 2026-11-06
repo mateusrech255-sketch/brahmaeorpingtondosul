@@ -131,3 +131,23 @@ header#inicio:not(:has(> header#inicio)):not(:has(> section)){padding-top:7rem!i
 
 .w-11 { width: 2.75rem; }
 .h-11 { height: 2.75rem; }
+
+/* Indicador de radio selecionado nas opcoes de produto */
+.product-option-radio:checked ~ .product-option-box {
+  border-color: #3B4D36;
+  background-color: rgba(59, 77, 54, 0.05);
+  box-shadow: 0 0 0 2px #3B4D36;
+}
+.product-option-radio:checked ~ .product-option-box .product-option-radio-circle {
+  border-color: #2A2F25;
+}
+.product-option-radio:checked ~ .product-option-box .product-option-radio-dot {
+  opacity: 1 !important;
+  background-color: #000000;
+}
+.product-option-radio:checked ~ .product-option-box .product-option-title {
+  color: #2A2F25;
+}
+.product-option-radio:checked ~ .product-option-box .product-option-price {
+  color: #3B4D36;
+}

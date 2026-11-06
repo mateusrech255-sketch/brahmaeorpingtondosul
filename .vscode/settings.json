@@ -1,3 +1,5 @@
 {
-    "livePreview.defaultPreviewPath": "/index.html"
+    "livePreview.defaultPreviewPath": "/index.html",
+    "tailwindCSS.lint.cssConflict": "ignore",
+    "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
 }

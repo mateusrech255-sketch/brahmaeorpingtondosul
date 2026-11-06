@@ -1554,16 +1554,16 @@
                 const precosEntries = Object.entries(prod.precos);
                 const hasSingleOption = precosEntries.length === 1;
                 const optionsHtml = precosEntries.map(([key, val], idx) => `
-                    <label for="opt-${prod.id}-${key}" class="cursor-pointer block" onclick="selectProductOption('${prod.id}', '${key}')">
-                        <input type="radio" id="opt-${prod.id}-${key}" name="qty-${prod.id}" value="${key}" class="peer sr-only" ${(key === 'umaDuzia' || (hasSingleOption && idx === 0)) ? 'checked' : ''} onchange="selectProductOption('${prod.id}', '${key}')">
-                        <div class="border border-gray-200 rounded-xl p-3 text-sm flex justify-between items-center peer-checked:border-rustic-green peer-checked:bg-rustic-green/5 peer-checked:ring-2 peer-checked:ring-rustic-green transition-all hover:bg-gray-50">
+                    <label for="opt-${prod.id}-${key}" class="cursor-pointer block product-option-label" onclick="selectProductOption('${prod.id}', '${key}')">
+                        <input type="radio" id="opt-${prod.id}-${key}" name="qty-${prod.id}" value="${key}" class="peer sr-only product-option-radio" ${(key === 'umaDuzia' || (hasSingleOption && idx === 0)) ? 'checked' : ''} onchange="selectProductOption('${prod.id}', '${key}')">
+                        <div class="product-option-box border border-gray-200 rounded-xl p-3 text-sm flex justify-between items-center transition-all hover:bg-gray-50">
                             <div class="flex items-center gap-2.5">
-                                <div class="w-4 h-4 rounded-full border-2 border-gray-300 peer-checked:border-rustic-green flex items-center justify-center transition-all bg-white shrink-0">
-                                    <div class="w-2 h-2 rounded-full bg-rustic-green opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                                <div class="product-option-radio-circle w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center transition-all bg-white shrink-0">
+                                    <div class="product-option-radio-dot w-2 h-2 rounded-full bg-rustic-dark opacity-0 transition-opacity"></div>
                                 </div>
-                                <span class="font-semibold text-gray-700 peer-checked:text-rustic-dark">${optionLabels[key] || key}</span>
+                                <span class="product-option-title font-semibold text-gray-700">${optionLabels[key] || key}</span>
                             </div>
-                            <span class="font-bold text-rustic-dark peer-checked:text-rustic-green text-sm">${formatMoney(val)}</span>
+                            <span class="product-option-price font-bold text-rustic-dark text-sm">${formatMoney(val)}</span>
                         </div>
                     </label>
                 `).join('');
@@ -3927,7 +3927,8 @@
                     headers: clientToken ? { 'Authorization': `Bearer ${clientToken}` } : {}
                 });
                 if (res.ok) {
-                    clientOrders = await res.json();
+                    const data = await res.json();
+                    clientOrders = Array.isArray(data) ? data : (data && Array.isArray(data.pedidos) ? data.pedidos : []);
                 }
             } catch (err) {}
 
@@ -3937,12 +3938,19 @@
                 localOrders = JSON.parse(localStorage.getItem(STORAGE_ORDERS_LOCAL)) || [];
             } catch (e) {}
 
-            const localForClient = localOrders.filter(o => o.cliente && o.cliente.email && o.cliente.email.toLowerCase() === currentClient.email.toLowerCase());
+            // 3. Mescla também com pedidos pendentes de pagamento (rascunhos guardados)
+            let pendingOrders = [];
+            try {
+                pendingOrders = getPendingPaymentOrders();
+            } catch (e) {}
+
+            const localForClient = [...localOrders, ...pendingOrders].filter(o => o && o.cliente && o.cliente.email && o.cliente.email.toLowerCase() === currentClient.email.toLowerCase());
             
-            // Unifica sem duplicidades por ID
+            // Unifica sem duplicidades por ID/número
             const allOrders = [...clientOrders];
             localForClient.forEach(lo => {
-                if (!allOrders.some(o => o.id === lo.id)) {
+                const loId = String(lo.id || lo.numero || '').replace(/^#/, '').trim();
+                if (!allOrders.some(o => String(o.id || o.numero || '').replace(/^#/, '').trim() === loId)) {
                     allOrders.push(lo);
                 }
             });
@@ -3966,14 +3974,20 @@
 
             container.innerHTML = allOrders.map(o => {
                 const statusMap = {
-                    'pendente': { label: 'Pendente (PIX)', class: 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' },
+                    'pendente': { label: 'Pendente', class: 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' },
                     'pago': { label: 'Pago', class: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' },
                     'enviado': { label: 'Enviado (SEDEX)', class: 'bg-blue-500/20 text-blue-300 border border-blue-500/30' },
                     'concluido': { label: 'Concluído', class: 'bg-purple-500/20 text-purple-300 border border-purple-500/30' },
                     'cancelado': { label: 'Cancelado', class: 'bg-red-500/20 text-red-300 border border-red-500/30' }
                 };
                 const st = statusMap[o.status] || statusMap['pendente'];
-                const dataFormatada = new Date(o.data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                let dataFormatada = 'Data não disponível';
+                if (o.data) {
+                    const parsedDate = new Date(o.data);
+                    if (!isNaN(parsedDate.getTime())) {
+                        dataFormatada = parsedDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    }
+                }
 
                 return `
                     <div class="bg-black/25 p-4 rounded-2xl border border-white/5 space-y-3">
